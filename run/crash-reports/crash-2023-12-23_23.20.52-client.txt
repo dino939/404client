@@ -1,0 +1,163 @@
+---- Minecraft Crash Report ----
+// Daisy, daisy...
+
+Time: 23.12.23 23:20
+Description: Rendering entity in world
+
+java.lang.NullPointerException: Rendering entity in world
+	at net.minecraft.client.renderer.entity.EntityRendererManager.distanceToSqr(EntityRendererManager.java:442) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.LivingRenderer.shouldShowName(LivingRenderer.java:230) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.LivingRenderer.shouldShowName(LivingRenderer.java:30) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.EntityRenderer.render(EntityRenderer.java:65) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.LivingRenderer.render(LivingRenderer.java:130) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.PlayerRenderer.render(PlayerRenderer.java:64) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,xf:fml:forge:crossbows.2,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.PlayerRenderer.render(PlayerRenderer.java:41) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,xf:fml:forge:crossbows.2,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.EntityRendererManager.render(EntityRendererManager.java:251) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at com.denger.client.another.hooks.EntityRendererManagerHook.render(EntityRendererManagerHook.java:27) ~[main/:?] {re:classloading}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.lambda$renderEntityInInventory$1(InventoryScreen.java:129) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at com.mojang.blaze3d.systems.RenderSystem.runAsFancy(RenderSystem.java:823) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.renderEntityInInventory(InventoryScreen.java:128) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.renderBg(InventoryScreen.java:97) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.ContainerScreen.render(ContainerScreen.java:88) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.DisplayEffectsScreen.render(DisplayEffectsScreen.java:48) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.render(InventoryScreen.java:81) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraftforge.client.ForgeHooksClient.drawScreenInternal(ForgeHooksClient.java:363) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading}
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:356) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading}
+	at com.denger.client.another.hooks.GameRendererHook.render(GameRendererHook.java:493) ~[main/:?] {re:classloading}
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:977) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.run(Minecraft.java:607) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:184) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_381] {}
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_381] {}
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_381] {}
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_381] {}
+	at net.minecraftforge.userdev.FMLUserdevClientLaunchProvider.lambda$launchService$0(FMLUserdevClientLaunchProvider.java:38) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:54) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:72) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.1.3.jar:?] {}
+	at net.minecraftforge.userdev.LaunchTesting.main(LaunchTesting.java:94) [forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at net.minecraft.client.renderer.entity.EntityRendererManager.distanceToSqr(EntityRendererManager.java:442) ~[forge:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.LivingRenderer.shouldShowName(LivingRenderer.java:230) ~[forge:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.LivingRenderer.shouldShowName(LivingRenderer.java:30) ~[forge:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.EntityRenderer.render(EntityRenderer.java:65) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.LivingRenderer.render(LivingRenderer.java:130) ~[forge:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.PlayerRenderer.render(PlayerRenderer.java:64) ~[forge:?] {re:classloading,xf:fml:forge:crossbows.2,pl:runtimedistcleaner:A}
+	at net.minecraft.client.renderer.entity.PlayerRenderer.render(PlayerRenderer.java:41) ~[forge:?] {re:classloading,xf:fml:forge:crossbows.2,pl:runtimedistcleaner:A}
+-- Entity being rendered --
+Details:
+	Entity Type: minecraft:player (net.minecraft.client.entity.player.ClientPlayerEntity)
+	Entity ID: 276
+	Entity Name: Shaori
+	Entity's Exact location: -250.06, 70.00, -250.43
+	Entity's Block location: World: (-251,70,-251), Chunk: (at 5,4,5 in -16,-16; contains blocks -256,0,-256 to -241,255,-241), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)
+	Entity's Momentum: 0.00, -0.08, 0.00
+	Entity's Passengers: []
+	Entity's Vehicle: ~~ERROR~~ NullPointerException: null
+
+-- Renderer details --
+Details:
+	Assigned renderer: net.minecraft.client.renderer.entity.PlayerRenderer@520c235f
+	Location: 0.00,0.00,0.00 - World: (0,0,0), Chunk: (at 0,0,0 in 0,0; contains blocks 0,0,0 to 15,255,15), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Rotation: 0.0
+	Delta: 1.0
+Stacktrace:
+	at net.minecraft.client.renderer.entity.EntityRendererManager.render(EntityRendererManager.java:251) ~[forge:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at com.denger.client.another.hooks.EntityRendererManagerHook.render(EntityRendererManagerHook.java:27) ~[?:?] {re:classloading}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.lambda$renderEntityInInventory$1(InventoryScreen.java:129) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at com.mojang.blaze3d.systems.RenderSystem.runAsFancy(RenderSystem.java:823) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.renderEntityInInventory(InventoryScreen.java:128) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.renderBg(InventoryScreen.java:97) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.ContainerScreen.render(ContainerScreen.java:88) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.DisplayEffectsScreen.render(DisplayEffectsScreen.java:48) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.gui.screen.inventory.InventoryScreen.render(InventoryScreen.java:81) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraftforge.client.ForgeHooksClient.drawScreenInternal(ForgeHooksClient.java:363) ~[forge:?] {re:classloading}
+	at net.minecraftforge.client.ForgeHooksClient.drawScreen(ForgeHooksClient.java:356) ~[forge:?] {re:classloading}
+
+
+-- Screen render details --
+Details:
+	Screen name: net.minecraft.client.gui.screen.inventory.InventoryScreen
+	Mouse location: Scaled: (213, 120). Absolute: (427.000000, 240.000000)
+	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2.000000
+
+-- Affected level --
+Details:
+	All players: 1 total; [ClientPlayerEntity['Shaori'/276, l='ClientLevel', x=-250.06, y=70.00, z=-250.43]]
+	Chunk stats: Client Chunk Cache: 121, 49
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (-192,63,-200), Chunk: (at 0,3,8 in -12,-13; contains blocks -192,0,-208 to -177,255,-193), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)
+	Level time: 2784913 game time, 692221 day time
+	Server brand: forge
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.world.ClientWorld.fillReportDetails(ClientWorld.java:458) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.fillReport(Minecraft.java:2031) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.run(Minecraft.java:623) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:184) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_381] {}
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_381] {}
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_381] {}
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_381] {}
+	at net.minecraftforge.userdev.FMLUserdevClientLaunchProvider.lambda$launchService$0(FMLUserdevClientLaunchProvider.java:38) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:54) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:72) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.1.3.jar:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.1.3.jar:?] {}
+	at net.minecraftforge.userdev.LaunchTesting.main(LaunchTesting.java:94) [forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.16.5
+	Minecraft Version ID: 1.16.5
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_381, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 1511320048 bytes (1441 MB) / 3531079680 bytes (3367 MB) up to 3745513472 bytes (3572 MB)
+	CPUs: 8
+	JVM Flags: 2 total; -XX:+IgnoreUnrecognizedVMOptions -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	ModLauncher: 8.1.3+8.1.3+main-8.1.x.c94d18ec
+	ModLauncher launch target: fmluserdevclient
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		/mixin-0.8.4.jar mixin PLUGINSERVICE 
+		/eventbus-4.0.0.jar eventbus PLUGINSERVICE 
+		/forge-1.16.5-36.2.39_mapped_official_1.16.5-launcher.jar object_holder_definalize PLUGINSERVICE 
+		/forge-1.16.5-36.2.39_mapped_official_1.16.5-launcher.jar runtime_enum_extender PLUGINSERVICE 
+		/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE 
+		/forge-1.16.5-36.2.39_mapped_official_1.16.5-launcher.jar capability_inject_definalize PLUGINSERVICE 
+		/forge-1.16.5-36.2.39_mapped_official_1.16.5-launcher.jar runtimedistcleaner PLUGINSERVICE 
+		/mixin-0.8.4.jar mixin TRANSFORMATIONSERVICE 
+		/forge-1.16.5-36.2.39_mapped_official_1.16.5-launcher.jar fml TRANSFORMATIONSERVICE 
+	FML: 36.2
+	Forge: net.minecraftforge:36.2.39
+	FML Language Providers: 
+		javafml@36.2
+		minecraft@1
+	Mod List: 
+		client-extra.jar                                  |Minecraft                     |minecraft                     |1.16.5              |DONE      |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp|Forge                         |forge                         |36.2.39             |DONE      |Manifest: NOSIGNATURE
+		main                                              |Example Mod                   |examplemod                    |NONE                |DONE      |Manifest: NOSIGNATURE
+	Crash Report UUID: 11c63a17-1659-4d2a-b8c9-1a4c27a2a865
+	Launched Version: MOD_DEV
+	Backend library: LWJGL version 3.2.2 build 10
+	Backend API: AMD Radeon(TM) Vega 8 Graphics GL version 4.6.0 Compatibility Profile Context 23.11.1.231017, ATI Technologies Inc.
+	GL Caps: Using framebuffer using OpenGL 3.0
+	Using VBOs: Yes
+	Is Modded: Definitely; Client brand changed to 'forge'
+	Type: Client (map_client.txt)
+	Graphics mode: fast
+	Resource Packs: vanilla, mod_resources
+	Current Language: English (US)
+	CPU: 8x AMD Ryzen 5 3550H with Radeon Vega Mobile Gfx 
