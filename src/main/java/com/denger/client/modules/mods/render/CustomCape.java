@@ -10,7 +10,7 @@ import com.denger.client.modules.another.Category;
 public class CustomCape extends Module {
     public static boolean enable;
     @SettingTarget(name = "Мод")
-    public static ModSetting mode = new ModSetting().setMods("клиент", "аниме","гиф").setCurent("гиф");
+    public static ModSetting mode = new ModSetting().setMods("клиент", "аниме","гиф").setCurent("аниме");
 
     @Override
     public void onEnable() {

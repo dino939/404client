@@ -16,8 +16,6 @@ public class GifManagerNative {
 
     public void init() {
         try {
-            gifs.add(new Gif("https://i.imgur.com/VhZIC3H.gif"));
-            gifs.add(new Gif("https://i.imgur.com/OUTtw6d.gif", 25));
             dash_X = new Gif("https://i.imgur.com/cEmzLdG.gif");
             dash_infinity = new Gif("https://i.imgur.com/n1oRYKa.gif");
             dash_line = new Gif("https://i.imgur.com/yn2XbRg.gif");

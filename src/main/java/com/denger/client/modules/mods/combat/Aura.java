@@ -6,6 +6,7 @@ import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.settings.sett.FloatSetting;
 import com.denger.client.another.settings.sett.ModSetting;
+import com.denger.client.another.settings.sett.MultiBoolSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
@@ -16,18 +17,24 @@ import com.denger.client.utils.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.network.play.client.CHeldItemChangePacket;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.denger.client.MainNative.getInstance;
 import static com.denger.client.MainNative.mc;
@@ -40,18 +47,37 @@ import static net.minecraft.util.math.MathHelper.atan2;
 public class Aura extends Module {
     @SettingTarget(name = "Дистанция")
     FloatSetting distanciya = new FloatSetting().setMin(1).setMax(6).setVal(3.3f);
-    @SettingTarget(name = "Бить инвизок без брони")
-    BoolSetting bitInvizokBezBroni = new BoolSetting().setBol(false);
+    //@SettingTarget(name = "Бить инвизок без брони")
+    //BoolSetting bitInvizokBezBroni = new BoolSetting().setBol(false);
     @SettingTarget(name = "Крит режим")
     private ModSetting сrit = new ModSetting().setMods("умный", "толко", "без").setCurent("умный");
     @SettingTarget(name = "Ротации")
     private ModSetting rots = new ModSetting().setMods("Matrix", "NCP", "Vulcan", "Test").setCurent("Matrix");
-    public static PlayerEntity target;
-    AnimationUtils yawAnim = new AnimationUtils(0.0f, 0.0f, 0.1f);
-    AnimationUtils pitchAnim = new AnimationUtils(0.0f, 0.0f, 0.1f);
+    public static Entity target;
+    @SettingTarget(name = "Выбор таргета")
+    public ModSetting getTarg = new ModSetting().setMods("RayTrace", "Сортировка").setCurent("Сортировка");
+    //
+    @SettingTarget(name = "Игроков", toAdd = false)
+    BoolSetting players = new BoolSetting().setBol(true);
+    @SettingTarget(name = "Животных", toAdd = false)
+    BoolSetting entiti = new BoolSetting();
+    @SettingTarget(name = "Таргетица на")
+    MultiBoolSetting bools = (MultiBoolSetting) new MultiBoolSetting().addBools(players, entiti).setVisible(() -> getTarg.getCurent().equals("Сортировка"));
+    //
+    @SettingTarget(name = "Здоровью", toAdd = false)
+    BoolSetting poHp = new BoolSetting();
+    @SettingTarget(name = "Дистанции", toAdd = false)
+    BoolSetting poDist = new BoolSetting();
+    @SettingTarget(name = "Сортировка по")
+    MultiBoolSetting sortPo = (MultiBoolSetting) new MultiBoolSetting().addBools(poHp, poDist).setVisible(() -> getTarg.getCurent().equals("Сортировка"));
+    AnimationUtils yawAnim = new AnimationUtils(0.0f, 0.0f, 0.1f), pitchAnim = new AnimationUtils(0.0f, 0.0f, 0.1f);
     float xRotC = 0, yRotC = 0;
     Random random = new Random();
     boolean critflag;
+
+    public Aura() {
+        setModSetting(rots);
+    }
 
     @SubscribeEvent
     public void onUpdate(WorldUpdate e) {
@@ -68,13 +94,18 @@ public class Aura extends Module {
                         axe = index;
                     }
                 }
-                if (axe != 0 && target.isBlocking()) {
-                    mc.player.connection.send(new CHeldItemChangePacket(axe));
-                    attackModule(target);
-                    mc.player.connection.send(new CHeldItemChangePacket(mc.player.inventory.selected));
+                if (target instanceof PlayerEntity) {
+                    if (axe != 0 && ((PlayerEntity) target).isBlocking()) {
+                        mc.player.connection.send(new CHeldItemChangePacket(axe));
+                        attackModule(target);
+                        mc.player.connection.send(new CHeldItemChangePacket(mc.player.inventory.selected));
+                    } else {
+                        attackModule(target);
+                    }
                 } else {
                     attackModule(target);
                 }
+
             }
         }
     }
@@ -88,7 +119,7 @@ public class Aura extends Module {
 
     }
 
-    public void rotation(LivingEntity t) {
+    public void rotation(Entity t) {
         switch (rots.getCurent()) {
             case "Matrix":
                 rotMatrix(t);
@@ -105,7 +136,7 @@ public class Aura extends Module {
         }
     }
 
-    public void rotMatrix(LivingEntity t) {
+    public void rotMatrix(Entity t) {
         float speed = 0.05f;
         assert mc.player != null;
         float yo = mc.player.distanceTo(t) / distanciya.getVal() * 1.2f;
@@ -119,7 +150,7 @@ public class Aura extends Module {
 
     }
 
-    public void rotNCP(LivingEntity t) {
+    public void rotNCP(Entity t) {
         float speed = 0.05f;
         float yo = mc.player.distanceTo(t) / distanciya.getVal() * 1.2f;
         yo = MathUtils.clamp(yo, 0.0f, 1.2f);
@@ -130,21 +161,21 @@ public class Aura extends Module {
         this.pitchAnim.to = rot[1];
     }
 
-    public void rotVulcan(LivingEntity t) {
+    public void rotVulcan(Entity t) {
         float speed = 0.2f;
 
         float[] rot = Utils.rotationsPro((Entity) t, 0.5f);
         float[] rot2 = Utils.rotationsPro((Entity) t, 0.3f);
         this.yawAnim.speed = Math.abs(rot[0] - mc.player.yHeadRot) <= t.getBbWidth() * 30.0f / mc.player.distanceTo(t) ? 0.0015f : speed;
         this.pitchAnim.speed = Math.abs(rot[1] - this.xRotC) <= t.getBbHeight() * 10.0f / mc.player.distanceTo(t) ? 0.0015f : speed;
-        this.yawAnim.to = rot[0] ;
+        this.yawAnim.to = rot[0];
         this.pitchAnim.to = rot2[1];
     }
 
-    public void rotTest(LivingEntity t) {
+    public void rotTest(Entity t) {
         float speed = 0.5f;
         float speedAnim = 0.2f;
-        if (isInHitBox(mc.player, t)) {
+        if (isInHit(mc.player, t)) {
             Vector3d vec3d = getVector3d(mc.player, t);
 
             float rawYaw = wrapDegrees((float) (toDegrees(atan2(vec3d.z, vec3d.x)) - 90));
@@ -165,11 +196,12 @@ public class Aura extends Module {
             this.pitchAnim.to = getSensitivity(clamp(pitch, -89, 89));
         }
     }
-    public void rotTest2(LivingEntity t){
+
+    public void rotTest2(LivingEntity t) {
 
     }
 
-    private Vector3d getVector3d(LivingEntity me, LivingEntity to) {
+    private Vector3d getVector3d(LivingEntity me, Entity to) {
         double wHalf = to.getBbWidth() / 2;
 
         double yExpand = MathHelper.clamp(me.getEyeY() - to.getY(), 0, to.getBbHeight() * (mc.player.distanceTo(to) / distanciya.getVal()));
@@ -184,7 +216,7 @@ public class Aura extends Module {
         );
     }
 
-    private boolean isInHitBox(LivingEntity me, LivingEntity to) {
+    private boolean isInHit(LivingEntity me, Entity to) {
         double wHalf = to.getBbWidth() / 2;
 
         double yExpand = MathHelper.clamp(me.getEyeY() - to.getY(), 0, to.getBbHeight());
@@ -224,20 +256,66 @@ public class Aura extends Module {
     }
 
     public void setTarget() {
-        ArrayList<PlayerEntity> targets = new ArrayList<>();
-        for (PlayerEntity playerEntity : mc.level.players()) {
-            if (playerEntity != mc.player && mc.player.distanceTo(playerEntity) < distanciya.getVal() && playerEntity.isAlive() && PlayerUtil.checkBot(playerEntity) && !getInstance.getFriendManager().isFriend(playerEntity)) {
-                if (playerEntity.getArmorValue() != 0 || !playerEntity.hasEffect(Effects.LEVITATION) || bitInvizokBezBroni.getState()) {
-                    targets.add(playerEntity);
+        switch (getTarg.getCurent()) {
+            case "Сортировка":
+                target = getTarget();
+                break;
+            case "RayTrace":
+                RayTraceResult traceResult = Utils.pickCustom(distanciya.getVal(), mc.player.xRot, mc.player.yRot, true);
+                if (traceResult instanceof EntityRayTraceResult) {
+                    target = ((EntityRayTraceResult) traceResult).getEntity();
+                } else {
+                    target = null;
                 }
-            }
+                break;
         }
-        targets.sort((target1, target2) -> (int) (target2.getHealth() - target1.getHealth()));
-        target = targets.isEmpty() ? null : targets.get(0);
     }
+
+    private Entity getTarget() {
+        if (mc.level == null || mc.player == null) return null;
+
+        boolean players = this.players.getState();
+        boolean mobs = this.entiti.getState();
+
+        List<LivingEntity> entities = StreamSupport.stream(mc.level.entitiesForRendering().spliterator(), false)
+                .filter(entity -> entity instanceof LivingEntity)
+                .map(entity -> (LivingEntity) entity)
+                .filter(entity -> {
+                    if (entity instanceof PlayerEntity) {
+                        return players;
+                    } else if (entity instanceof MobEntity) {
+                        return mobs;
+                    }
+                    return true;
+                })
+                .filter(player ->
+                        player != mc.player &&
+                                mc.gameMode.getPickRange() > Objects.requireNonNull(mc.player).distanceTo(player) &&
+                                player.canSee(mc.player) &&
+                                !player.isDeadOrDying() &&
+                                !getInstance.getFriendManager().isFriend(player)
+                )
+                .collect(Collectors.toList());
+
+        if (entities.isEmpty()) return null;
+
+        if (poHp.getState()) {
+            entities.sort(Comparator.comparingDouble(LivingEntity::getHealth));
+        }
+
+        if (poDist.getState()) {
+            entities.sort(Comparator.comparingDouble(entity -> entity.distanceTo(mc.player)));
+        }
+
+        return entities.get(0);
+    }
+
 
     public void attackModule(Entity t) {
         assert mc.player != null;
+        RayTraceResult rayTraceResult = Utils.pickCustom(mc.gameMode.getPickRange(), xRotC, yRotC, true);
+        if (!((rayTraceResult instanceof EntityRayTraceResult) && ((EntityRayTraceResult) rayTraceResult).getEntity() == t))
+            return;
         boolean flag = mc.player.getAttackStrengthScale(0.5f) > 0.9f;
         boolean flag2 = flag && mc.player.fallDistance != 0.0f && !mc.player.isOnGround() && !mc.player.isRidingJumpable();
         float f5 = mc.player.getAttackStrengthScale(0.0f);

@@ -16,6 +16,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.opengl.GL46;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -87,6 +88,8 @@ public class TargetEsp extends Module {
         RenderSystem.depthMask( true);
         RenderSystem.disableCull();
         RenderSystem.enableAlphaTest();
+        GL46.glEnable(GL46.GL_BLEND);
+        GL46.glEnable(3042);
         bufferbuilder.begin(mode, DefaultVertexFormats.POSITION_COLOR);
 
         for (int j = 0; j < vecs.size() - 1; ++j) {

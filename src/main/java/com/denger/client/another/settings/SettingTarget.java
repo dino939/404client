@@ -8,5 +8,6 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface SettingTarget {
     String name() default "NotName";
+    boolean toAdd() default true;
 
 }

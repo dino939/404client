@@ -1,6 +1,7 @@
 package com.denger.client.another.hooks;
 
 import com.denger.client.screens.main.MainScreen;
+import com.denger.client.utils.rect.BloomUtil;
 import com.denger.client.utils.rect.BlurUtil;
 import com.denger.client.utils.rect.RectUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -94,11 +95,11 @@ public class InventoryScreenHook extends DisplayEffectsScreen<PlayerContainer> i
         xMouse = (float) p_230430_2_;
         yMouse = (float) p_230430_3_;
         Themes themes = getInstance.theme;
-        BlurUtil.registerRenderCall(()->{
+        BloomUtil.registerRenderCall(()->{
             RectUtil.drawGradientRound(mc.getWindow().getGuiScaledWidth() / 2 - 50, mc.getWindow().getGuiScaledHeight() / 2 - 120, 100, 20, 10,themes.getColor(100),themes.getColor(200),themes.getColor(300),themes.getColor(400));
 
         });
-        BlurUtil.draw(6);
+        BloomUtil.draw(14);
         BlurUtil.drawBlur(6,()->{
             RectUtil.drawRound(mc.getWindow().getGuiScaledWidth() / 2 - 50, mc.getWindow().getGuiScaledHeight() / 2 - 120, 100, 20, 10,-1);
         });

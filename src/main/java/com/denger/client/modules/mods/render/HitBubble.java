@@ -36,8 +36,8 @@ import static com.denger.client.MainNative.mc;
 
 @ModuleTarget(ModName = "IjuCvccmf", category = Category.RENDER)
 public class HitBubble extends Module {
-    @SettingTarget(name = "Мод ->")
-    ModSetting modSetting = new ModSetting().setMods("Bubble", "Triangle").setCurent("Bubble");
+    @SettingTarget(name = "Мод ->", toAdd = false)
+    ModSetting modSetting = new ModSetting().setMods("Bubble").setCurent("Bubble");
     @SettingTarget(name = "Крутица?")
     BoolSetting rotationOwn = new BoolSetting().setBol(true);
     @SettingTarget(name = "Сохранение камеры")
@@ -106,9 +106,6 @@ public class HitBubble extends Module {
                     GL46.glDepthMask(true);
 
                 });
-
-
-
 
 
             });

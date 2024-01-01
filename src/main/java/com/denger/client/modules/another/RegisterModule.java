@@ -41,7 +41,7 @@ public class RegisterModule {
                 DashParticle.class,
                 Velocity.class,
                 NoEffect.class,
-                AutoPotion.class,
+               //AutoPotion.class,
                 FreeCam.class,
                 AutoSprint.class,
                 SelfDestruct.class,
@@ -171,8 +171,11 @@ public class RegisterModule {
                     Setting setting = (Setting) field.get(module);
                     setting.setName(annotat.name());
                     setting.setModule(module);
-                    module.getSettings().add(setting);
-                    getInstance.getSettingManager().addSett(setting);
+                    if (annotat.toAdd()){
+                        module.getSettings().add(setting);
+                        getInstance.getSettingManager().addSett(setting);
+                    }
+
 
                 }
             } catch (IllegalAccessException e) {

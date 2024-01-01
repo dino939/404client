@@ -1,6 +1,5 @@
 package com.denger.client.modules.mods.misc;
 
-import com.denger.client.another.hooks.forge.even.addevents.ModuleToggleEvent;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.sound.SoundManager;
@@ -18,8 +17,8 @@ import static com.denger.client.MainNative.mc;
 public class SystemSounds extends Module {
     @SettingTarget(name = "Ударный звук")
     BoolSetting attackSound = new BoolSetting().setBol(true);
-    @SettingTarget(name = "Звук гуи")
-    BoolSetting guisound = new BoolSetting().setBol(false   );
+//    @SettingTarget(name = "Звук гуи")
+//    BoolSetting guisound = new BoolSetting().setBol(false   );
     TimerUtil timerUtil = new TimerUtil();
 
     @SubscribeEvent
@@ -27,10 +26,10 @@ public class SystemSounds extends Module {
         if ( event.getPlayer() == mc.player && attackSound.getState()){
             SoundManager.playSound(getInstance.getSoundManager().hitsound, event.getTarget());
           }}
-    @SubscribeEvent
-    public void onModule(ModuleToggleEvent event){
-        if (!guisound.getState() && timerUtil.hasReached(1500))return;
-        timerUtil.reset();
-        SoundManager.playSound(getInstance.getSoundManager().toggle, 10);
-    }
+//    @SubscribeEvent
+//    public void onModule(ModuleToggleEvent event){
+//        if (!guisound.getState() && timerUtil.hasReached(1500))return;
+//        timerUtil.reset();
+//        SoundManager.playSound(getInstance.getSoundManager().toggle, 10);
+//    }
 }

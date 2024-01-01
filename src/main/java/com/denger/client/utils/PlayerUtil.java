@@ -36,4 +36,5 @@ public class PlayerUtil {
             return mc.player.fallDistance > 0.2;
         }
     }
+
 }

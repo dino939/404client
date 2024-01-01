@@ -18,6 +18,7 @@ public enum Themes {
     Simpatico("Simpatico",new Color(157, 170, 242),new Color(255, 106, 61)),
     Lewerentz("Lewerentz",new Color(160, 174, 205),new Color(0, 0, 0)),
     Festival("Festival",new Color(171, 246, 45),new Color(214, 163, 251)),
+    Watts("Watts",new Color(-1941665),new Color(-16733697)),
     Starnight("Starnight",new Color(255, 255, 0, 255), new Color(70, 130, 180, 255));
 
 

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Implementation-Title: 404Client-Rewrite
+Implementation-Title: 404client
 Implementation-Version: 1.0
 Specification-Vendor: examplemodsareus
 Specification-Title: examplemod
-Implementation-Timestamp: 2023-12-29T21:18:28+0100
+Implementation-Timestamp: 2023-12-31T18:04:47+0100
 Specification-Version: 1
 Implementation-Vendor: examplemodsareus
 

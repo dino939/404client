@@ -53,29 +53,9 @@ public class Events {
     @SubscribeEvent
     public void worldUpdate(WorldUpdate update) {
 
-//       if (mc.level == null) return;
-//       if (mc.player != null) {
-//           if (!(mc.player instanceof ClientPlayerEntityHook)) {
-//               boolean temp = mc.player.isCreative();
-//               Vector3d posOld = mc.player.position();
-//               getInstance.getHandlerUtil().sendSelfPacket(new SRespawnPacket(mc.level.dimensionType(), mc.level.dimension(), -8609512560664653198L, mc.gameMode.getPlayerMode(), mc.gameMode.getPreviousPlayerMode(), mc.level.isDebug(), false, true));
-//              try {
-//                  if (temp) {
-//                      ObfuscationReflectionHelper.setPrivateValue(NetworkPlayerInfo.class, mc.getConnection().getPlayerInfo(mc.player.getUUID()), GameType.CREATIVE, "field_178866_b");
-//                  }
-
-//              } catch (Exception ignore   ) {
-//              }
-//               mc.player.setPos(posOld.x,posOld.y,posOld.z);
-//           }
-
-//       }
         if (!(mc.gameMode instanceof PlayerControllerHook)) {
-        Utils.sleepVoid(()->{
             assert mc.player != null;
             mc.gameMode = new PlayerControllerHook(mc, mc.player.connection);
-        },1000);
-
        }
  }
 }

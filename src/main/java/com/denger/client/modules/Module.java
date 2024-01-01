@@ -1,6 +1,5 @@
 package com.denger.client.modules;
 
-import com.denger.client.another.hooks.forge.even.addevents.ModuleToggleEvent;
 import com.denger.client.another.networkutills.ConnectionUtil;
 import com.denger.client.another.settings.Setting;
 import com.denger.client.another.settings.sett.*;
@@ -9,7 +8,6 @@ import com.denger.client.utils.Utils;
 import com.google.gson.JsonObject;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,6 +29,7 @@ public abstract class Module {
     private ModSetting modSetting;
     protected static Tessellator tessellator = Tessellator.getInstance();
     protected static BufferBuilder bufferbuilder = tessellator.getBuilder();
+
     public void onEnable() {
     }
 
@@ -58,14 +57,12 @@ public abstract class Module {
         this.state = state;
         if (state) {
             onEnable();
-            MinecraftForge.EVENT_BUS.post(new ModuleToggleEvent.EnableEventModule(this));
             eventManager.register(this);
         } else {
             preDisable();
             Utils.sleepVoid(() -> {
                 if (this.state) return;
                 eventManager.unregister(this);
-                MinecraftForge.EVENT_BUS.post(new ModuleToggleEvent.DisableEventModule(this));
                 try {
                     onDisable();
                 } catch (Exception ignore) {
@@ -98,7 +95,7 @@ public abstract class Module {
                 continue;
             }
             if (set instanceof ThemeSetting) {
-                propertiesObject.addProperty(set.getName(),getInstance.theme == ((ThemeSetting)set).getTheme());
+                propertiesObject.addProperty(set.getName(), getInstance.theme == ((ThemeSetting) set).getTheme());
                 continue;
             }
             if (set instanceof ColorSetting) {
@@ -142,8 +139,8 @@ public abstract class Module {
                     continue;
                 }
                 if (set instanceof ThemeSetting) {
-                    if (propertiesObject.get(set.getName()).getAsBoolean()){
-                        getInstance.theme = ((ThemeSetting)set).getTheme();
+                    if (propertiesObject.get(set.getName()).getAsBoolean()) {
+                        getInstance.theme = ((ThemeSetting) set).getTheme();
                     }
                     continue;
                 }

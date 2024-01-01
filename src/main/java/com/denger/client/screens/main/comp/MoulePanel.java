@@ -133,7 +133,9 @@ public class MoulePanel {
         } else if (s instanceof ColorSetting) {
 
         return new ColorComp(s);
-    }
+    }else if (s instanceof MultiBoolSetting){
+            return new MultiBoolComp(s);
+        }
         return null;
     }
 

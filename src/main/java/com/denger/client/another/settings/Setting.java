@@ -1,5 +1,6 @@
 package com.denger.client.another.settings;
 
+import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.settings.sett.ModSetting;
 import com.denger.client.modules.Module;
 
@@ -18,8 +19,9 @@ public abstract class Setting {
         this.module = module;
     }
 
-    public void setName(String name) {
+    public Setting setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Setting setVisible(Supplier<Boolean> visible) {

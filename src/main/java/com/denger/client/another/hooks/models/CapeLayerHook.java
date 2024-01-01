@@ -1,5 +1,6 @@
 package com.denger.client.another.hooks.models;
 
+import com.denger.client.another.resource.Gif;
 import com.denger.client.another.resource.NativeManager;
 import com.denger.client.modules.mods.render.CustomCape;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -26,7 +27,7 @@ public class CapeLayerHook extends CapeLayer {
     public CapeLayerHook(IEntityRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> p_i50950_1_) {
         super(p_i50950_1_);
     }
-
+    Gif gif = new Gif("https://i.imgur.com/VhZIC3H.gif");
     @Override
     public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, AbstractClientPlayerEntity p_225628_4_, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
         if (CustomCape.enable && p_225628_4_ == mc.player) {
@@ -75,7 +76,7 @@ public class CapeLayerHook extends CapeLayer {
             case "аниме":
                 return NativeManager.getResource("custom_cape2", getInstance.getNativeManager().capeNative2);
             case "гиф":
-                return getInstance.getGifManager().getGifs().get(0).getResource();
+                return gif.getResource();
             default:
                 return NativeManager.getResource("custom_cape", getInstance.getNativeManager().capeNative);
         }

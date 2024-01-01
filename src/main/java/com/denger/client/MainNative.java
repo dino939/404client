@@ -39,11 +39,10 @@ public class MainNative {
     public boolean beta;
     public boolean panic = false;
     private GifManagerNative gifManager;
-    public static boolean LShift;
     private PetManager petManager;
-    private EventsHandlerUtil handlerUtil;
-    public Themes theme = Themes.Weigh;
+    public static boolean LShift;
 
+    public Themes theme = Themes.Watts;
     private Events events;
     private ConfigManager configManager;
 
@@ -60,18 +59,15 @@ public class MainNative {
         registerModule = new RegisterModule();
         mainScreen = new MainScreen();
         friendManager = new FriendManager();
-        petManager = new PetManager();
-        handlerUtil = new EventsHandlerUtil();
         events = new Events();
         configManager = new ConfigManager();
         executeNative.hook();
-        executeNative.start();
         eventManager.register(events);
-        eventManager.register(petManager);
-        eventManager.register(handlerUtil);
+        eventManager.register(new EventsHandlerUtil());
         eventManager.register(this);
         eventManager.register(registerModule);
         MinecraftForge.EVENT_BUS.post(new EventInit());
+        executeNative.start();
     }
 
     public void panic() {
@@ -133,10 +129,6 @@ public class MainNative {
 
     public GifManagerNative getGifManager() {
         return gifManager;
-    }
-
-    public EventsHandlerUtil getHandlerUtil() {
-        return handlerUtil;
     }
 
     public ConfigManager getConfigManager() {

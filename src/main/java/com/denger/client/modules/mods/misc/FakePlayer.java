@@ -34,7 +34,7 @@ public class FakePlayer extends Module {
         double d2 = mc.player.getZ();
         float f = mc.cameraEntity.xRot;
         float f1 = mc.cameraEntity.xRot;
-        RemoteClientPlayerEntity remoteclientplayerentity = new RemoteClientPlayerEntity(mc.level, new GameProfile(UUID.randomUUID(), "Player2"));
+        RemoteClientPlayerEntity remoteclientplayerentity = new RemoteClientPlayerEntity(mc.level, mc.player.getGameProfile());
         remoteclientplayerentity.setId(-1);
         remoteclientplayerentity.setPosAndOldPos(d0, d1, d2);
         remoteclientplayerentity.setPacketCoordinates(d0, d1, d2);

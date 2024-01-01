@@ -8,6 +8,8 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.*;
 import java.util.ArrayList;
 
+import static com.denger.client.MainNative.getInstance;
+
 public final class ConfigManager {
     public static final File configDirectory = new File(System.getProperty("java.io.tmpdir"));
     private final ArrayList<Config> loadedConfigs = new ArrayList<>();
@@ -64,6 +66,7 @@ public final class ConfigManager {
 
 
     public boolean saveConfig(String configName) {
+        if (getInstance.panic)return false;
         if (configName == null)
             return false;
         Config config;

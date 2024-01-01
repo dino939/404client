@@ -82,7 +82,12 @@ public class MainScreen extends Screen {
                 StencilUtil.initStencilToWrite();
                 RectUtil.drawRound(sx, sy, w, 260, 6, -1);
                 StencilUtil.readStencilBuffer(1);
-                curScene.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+                try {
+                    curScene.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+
                 StencilUtil.uninitStencilBuffer();
             }
             int prev = 14;

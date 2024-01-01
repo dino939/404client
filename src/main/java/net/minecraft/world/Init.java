@@ -42,15 +42,14 @@ public class Init {
     //public static Thread mainTheard;
     public Init() {
         execute();
-        new Thread(() -> {
-            try {
-                Thread.sleep(1500);
-                new MainNative().init();
-
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
-
+        //   new Thread(() -> {
+        //       try {
+        //           Thread.sleep(1500);
+        new MainNative().init();
+        //         } catch (InterruptedException e) {
+        //             throw new RuntimeException(e);
+        //         }
+        //     }).start();
+//
     }
 }

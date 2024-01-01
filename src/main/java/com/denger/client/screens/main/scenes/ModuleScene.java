@@ -32,11 +32,9 @@ public class ModuleScene extends Scene {
 
             }
         }
-
         array1 = new ArrayList<>();
         array2 = new ArrayList<>();
         array3 = new ArrayList<>();
-        int itemsPerList = (int) Math.ceil((double) modules.size() / 3);
         panels = new ArrayList<>();
         int a = 1;
         for (int i = 0; i < modules.size(); i++) {
