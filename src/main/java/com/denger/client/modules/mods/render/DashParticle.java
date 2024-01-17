@@ -14,6 +14,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
@@ -49,8 +50,8 @@ public class DashParticle extends Module {
         if (mc.options.getCameraType().isFirstPerson() && !noFirstPerson.getState()) {
             return;
         }
-        MatrixStack ms = renderWorldLastEvent.getMatrixStack();//
-
+        MatrixStack ms = Utils.get3DMatrix();
+        mc.player.getPosition(1);
         particls.removeIf(particl -> {
             return particl.timer.hasReached(particl.time);
         });
@@ -176,8 +177,21 @@ public class DashParticle extends Module {
             this.timer = new TimerUtil();
             this.pos = e.position();
             float add = MathUtils.getBps(e) > 1?0: (float) (MathUtils.getBps(e) * 4);
-            this.pos2 = e.getPosition((e.isOnGround() ? 4 : 2)+add);
+            add = MathUtils.clamp(add,2,99);
+           // this.pos2 = new Vector3d(smoothPos((float) e.getX(), (float) e.xOld),smoothPos((float) e.getY(), (float) e.yOld),smoothPos((float) e.getZ(), (float) e.zOld));
+           this.pos2 = e.getPosition((e.isOnGround() ? 4 : 2)+add);
 
+
+        }
+        public float smoothPos(float pos,float oldPos){
+            float prev = (float) (pos-oldPos);
+            if (prev == 0)return pos;
+            if (prev<1){
+                return   pos + 2.5f;
+            }else if (prev < 0){
+                return   pos - 2.5f;
+            }
+            return pos;
         }
 
         public int getColor(int a) {

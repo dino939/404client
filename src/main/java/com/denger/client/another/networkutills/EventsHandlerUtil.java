@@ -1,9 +1,12 @@
 package com.denger.client.another.networkutills;
 
 import com.denger.client.another.hooks.GameRendererHook;
+import com.denger.client.another.hooks.IngameGuiHook;
 import com.denger.client.modules.Module;
 import com.denger.client.utils.ReflectFileld;
+import com.denger.client.utils.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.IngameGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -30,10 +33,15 @@ public class EventsHandlerUtil {
     public void onUpdate(TickEvent.ClientTickEvent eventUpdate) {
         if (mc.player != null && mc.level != null) {
             if (!initialized) {
-                  new ConnectionUtil(this);
+                new ConnectionUtil(this);
                 if (!hooked) {
                     hooked = !hooked;
-                    getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32");
+                    try {
+                        Utils.sleepVoid(() -> getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32"), 5000);
+                    } catch (Exception e) {
+                        getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32");
+                    }
+                    new ReflectFileld(mc, Minecraft.class, IngameGui.class).setValueFinal(new IngameGuiHook(mc));
                     new ReflectFileld(mc, Minecraft.class, 25).setValueFinal(new GameRendererHook(mc, mc.getResourceManager(), mc.renderBuffers()));
                     //ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, mc, new FontRendererHook(ObfuscationReflectionHelper.getPrivateValue(FontRenderer.class, mc.font, "field_211127_e")), "field_71466_p");
                 }

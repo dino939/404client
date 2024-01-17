@@ -4,14 +4,17 @@ import com.denger.client.MainNative;
 import com.denger.client.another.hooks.PlayerControllerHook;
 import com.denger.client.another.hooks.forge.even.addevents.WorldUpdate;
 import com.denger.client.modules.Module;
+import com.denger.client.modules.mods.misc.SystemSounds;
 import com.denger.client.utils.Utils;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
 import static com.denger.client.MainNative.getInstance;
 import static com.denger.client.MainNative.mc;
+import static net.minecraftforge.event.TickEvent.Phase.START;
 
 public class Events {
     MainNative main = getInstance;
@@ -23,7 +26,15 @@ public class Events {
             m.onEventContinuous(e);
         });
     }
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event){
+        if (event.phase == START){
+            if (SystemSounds.guiMusicTuner != null){
+            //    SystemSounds.guiMusicTuner.controlTrackUpdater();;
+            }
 
+        }
+    }
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent event) {
         if (event.getAction() == 1) {

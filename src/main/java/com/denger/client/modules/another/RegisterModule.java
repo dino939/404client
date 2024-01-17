@@ -7,8 +7,10 @@ import com.denger.client.modules.ShineModule;
 import com.denger.client.modules.mods.combat.*;
 import com.denger.client.modules.mods.hud.Design;
 import com.denger.client.modules.mods.hud.ModuleList;
+import com.denger.client.modules.mods.hud.Overlay;
 import com.denger.client.modules.mods.misc.*;
 import com.denger.client.modules.mods.render.*;
+import net.minecraft.world.Init;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -35,20 +37,16 @@ public class RegisterModule {
                 ViewModel.class,
                 NoFireOverlay.class,
                 InventoryThrow.class,
-                SystemSounds.class,
                 DethMove.class,
-                //TargetEsp.class,
                 DashParticle.class,
                 Velocity.class,
                 NoEffect.class,
-               //AutoPotion.class,
                 FreeCam.class,
                 AutoSprint.class,
                 SelfDestruct.class,
                 HitBox.class,
                 NoHitBoxes.class,
                 AutoTotem.class,
-                NoAttackFriends.class,
                 MiddleClickPearl.class,
                 GlowEsp.class,
                 ShieldBreak.class,
@@ -66,27 +64,31 @@ public class RegisterModule {
                 AutoRespawn.class,
                 NoJumpDelay.class,
                 ChestStealer.class,
-                //NameTag.class,
                 NameTag2.class,
                 FakePlayer.class,
                 AntiAfk.class,
-                DethCoords.class,
-                MiddleClickFriend.class,
                 Scaffold.class,
                 HitBubble.class,
-                //Test.class,
                 Aura.class,
                 TargetEsp.class,
                 AutoGapple.class,
                 NoPacket.class,
                 NoCameraClip.class,
                 Hat.class,
-                Criticals.class
-
-
-
+                Criticals.class,
+                SystemSounds.class
 
         );
+        if (Init.UID().equals("2")) {
+            addModules(
+                    Overlay.class,
+                    DethCoords.class,
+                    NoAttackFriends.class,
+                    MiddleClickFriend.class,
+                    AutoPotion.class
+
+            );
+        }
     }
 
     public ArrayList<ShineModule> getModulesShine() {
@@ -171,7 +173,7 @@ public class RegisterModule {
                     Setting setting = (Setting) field.get(module);
                     setting.setName(annotat.name());
                     setting.setModule(module);
-                    if (annotat.toAdd()){
+                    if (annotat.toAdd()) {
                         module.getSettings().add(setting);
                         getInstance.getSettingManager().addSett(setting);
                     }

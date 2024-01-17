@@ -24,6 +24,7 @@ ModSetting type = (ModSetting) new ModSetting().setMods("Цвет 1","Цвет 2
 
     @SubscribeEvent
     public void onFogColors(EntityViewRenderEvent.FogColors fogColors) {
+
         int color;
         if (transfusion.getState()){
             color = getInstance.theme.getColor2(0,speed.getVal()/100);

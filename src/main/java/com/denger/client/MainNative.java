@@ -16,6 +16,7 @@ import com.denger.client.another.settings.SettingManager;
 import com.denger.client.another.sound.SoundManager;
 import com.denger.client.modules.another.RegisterModule;
 import com.denger.client.screens.main.MainScreen;
+import com.denger.client.utils.GuiMusicTuner;
 import com.denger.client.utils.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Timer;
@@ -45,7 +46,7 @@ public class MainNative {
     public Themes theme = Themes.Watts;
     private Events events;
     private ConfigManager configManager;
-
+    public static boolean optifine = false;
     public void init() {
         getInstance = this;
         executeNative = new ExecuteNative(this);
@@ -66,7 +67,6 @@ public class MainNative {
         eventManager.register(new EventsHandlerUtil());
         eventManager.register(this);
         eventManager.register(registerModule);
-        MinecraftForge.EVENT_BUS.post(new EventInit());
         executeNative.start();
     }
 

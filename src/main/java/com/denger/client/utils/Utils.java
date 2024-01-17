@@ -2,6 +2,12 @@ package com.denger.client.utils;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sun.jna.Native;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.platform.win32.WinUser;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.Texture;
@@ -23,10 +29,12 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -199,9 +207,9 @@ public class Utils {
             double x = entity.getX() - mc.player.getX();
             double y = entity.getY() - (mc.player.getY() + (double) mc.player.getBbHeight() - (double) (mc.player.getEyeHeight() * yOffset));
             double z = entity.getZ() - mc.player.getZ();
-            double u = MathHelper.sqrt((double) (x * x + z * z));
-            float u2 = (float) (MathHelper.atan2((double) z, (double) x) * 57.29577951308232 - 90.0);
-            float u3 = (float) (-MathHelper.atan2((double) y, (double) u) * 57.29577951308232);
+            double u = MathHelper.sqrt(x * x + z * z);
+            float u2 = (float) (MathHelper.atan2(z, x) * 57.29577951308232 - 90.0);
+            float u3 = (float) (-MathHelper.atan2(y, u) * 57.29577951308232);
             return new float[]{u2, u3};
         } catch (Exception exception) {
             return new float[]{0.0f, 0.0f};
@@ -278,7 +286,8 @@ public class Utils {
             if (entity != null) {
                 if (mc.level != null) {
                     double d0 = distance;
-                    result = pickCustom(xRot, yRot, d0, p_78473_1_, false);
+                    result = pickCustom(xRot, yRot, d0, p_78473_1_, true);
+
                     Vector3d vector3d = entity.getEyePosition(p_78473_1_);
                     boolean flag = false;
                     double d1 = d0;
@@ -296,12 +305,13 @@ public class Utils {
                         d1 = result.getLocation().distanceToSqr(vector3d);
                     }
 
-                    Vector3d vector3d1 = entity.getViewVector(1.0F);
+                    Vector3d vector3d1 = calculateViewVector(xRot,yRot);
                     Vector3d vector3d2 = vector3d.add(vector3d1.x * d0, vector3d1.y * d0, vector3d1.z * d0);
                     AxisAlignedBB axisalignedbb = entity.getBoundingBox().expandTowards(vector3d1.scale(d0)).inflate(1.0D, 1.0D, 1.0D);
                     EntityRayTraceResult entityraytraceresult = ProjectileHelper.getEntityHitResult(entity, vector3d, vector3d2, axisalignedbb, (p_215312_0_) -> {
                         return !p_215312_0_.isSpectator() && p_215312_0_.isPickable();
                     }, d1);
+
                     if (entityraytraceresult != null) {
                         Vector3d vector3d3 = entityraytraceresult.getLocation();
                         double d2 = vector3d.distanceToSqr(vector3d3);
@@ -320,8 +330,15 @@ public class Utils {
         }
 
     }
-
-
+    public static final Vector3d calculateViewVector(float p_174806_1_, float p_174806_2_) {
+        float f = p_174806_1_ * ((float)Math.PI / 180F);
+        float f1 = -p_174806_2_ * ((float)Math.PI / 180F);
+        float f2 = MathHelper.cos(f1);
+        float f3 = MathHelper.sin(f1);
+        float f4 = MathHelper.cos(f);
+        float f5 = MathHelper.sin(f);
+        return new Vector3d(f3 * f4, -f5, f2 * f4);
+    }
     public static RayTraceResult pickCustom(float xRot, float yRot, double p_213324_1_, float p_213324_3_, boolean p_213324_4_) {
         Vector3d vector3d = mc.player.getEyePosition(p_213324_3_);
         Vector3d vector3d1 = calculateViewVectorPro(xRot, yRot);
@@ -649,7 +666,10 @@ public class Utils {
         }
         return null;
     }
-
+    public static int getPd(){
+        String name = ManagementFactory.getRuntimeMXBean().getName();
+        return Integer.parseInt(name.split("@")[0]);
+    }
     public static byte[] readAllBytes(InputStream is) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[0xFFFF];
@@ -660,6 +680,41 @@ public class Utils {
         }
 
         return baos.toByteArray();
+    }
+    public interface User32 extends StdCallLibrary, WinUser, WinNT {
+        User32 INSTANCE = Native.loadLibrary("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
+
+        int MB_OK = 0x00000000;
+        int MB_ICONINFORMATION = 0x00000040;
+
+        int IDOK = 1;
+        int IDCANCEL = 2;
+
+        int MB_OKCANCEL = 0x00000001;
+        int MB_ICONERROR = 0x00000010;
+
+        int IDYES = 6;
+        int IDNO = 7;
+
+        int MessageBox(WinDef.HWND hWnd, String text, String caption, int type);
+    }
+    public static void ok(String message) {
+        showMessage(message,"404bust");
+    }
+    public static void showMessage(String text, String title) {
+
+        User32 user32 = User32.INSTANCE;
+
+        // Display a simple message box
+        int result = user32.MessageBox(null, text, title, User32.MB_OK | User32.MB_ICONINFORMATION);
+
+        // Check the result
+        if (result == User32.IDOK) {
+            System.out.println("User clicked OK");
+        } else {
+            System.out.println("User closed the message box");
+        }
+
     }
 
     public static String readFile(File file) {
@@ -730,7 +785,7 @@ public class Utils {
             in[0] = in[0] * in[3] + 0.5F;
             in[1] = in[1] * in[3] + 0.5F;
             in[2] = in[2] * in[3] + 0.5F;
-            win_pos.put(0, in[0] * (float) viewport.get(viewport.position() + 2) + (float) viewport.get(viewport.position() + 0));
+            win_pos.put(0, in[0] * (float) viewport.get(viewport.position() + 2) + (float) viewport.get(viewport.position()));
             win_pos.put(1, in[1] * (float) viewport.get(viewport.position() + 3) + (float) viewport.get(viewport.position() + 1));
             win_pos.put(2, in[2]);
             return true;
@@ -739,7 +794,7 @@ public class Utils {
 
     private static void __gluMultMatrixVecf(FloatBuffer m, float[] in, float[] out) {
         for (int i = 0; i < 4; ++i) {
-            out[i] = in[0] * m.get(m.position() + 0 + i) + in[1] * m.get(m.position() + 4 + i) + in[2] * m.get(m.position() + 8 + i) + in[3] * m.get(m.position() + 12 + i);
+            out[i] = in[0] * m.get(m.position() + i) + in[1] * m.get(m.position() + 4 + i) + in[2] * m.get(m.position() + 8 + i) + in[3] * m.get(m.position() + 12 + i);
         }
 
     }

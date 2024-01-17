@@ -8,9 +8,10 @@ public class FloatSetting extends Setting{
     private float min = 0;
     private float max = 0;
     private String type = "";
-
+    private Runnable runnable = ()->{};
     public FloatSetting setVal(float val) {
         this.val = MathUtils.clamp(val,min,max);
+        runnable.run();
         return this;
     }
 
@@ -27,6 +28,12 @@ public class FloatSetting extends Setting{
         this.type = type;
         return this;
     }
+
+    public FloatSetting setRunnable(Runnable runnable) {
+        this.runnable = runnable;
+        return this;
+    }
+
     public float getMin() {
         return min;
     }

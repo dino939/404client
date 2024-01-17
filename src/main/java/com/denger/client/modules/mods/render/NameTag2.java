@@ -61,10 +61,9 @@ public class NameTag2 extends Module {
             float w = fontManager.font20.getStringWidth(name) + 5;
             float h = fontManager.font28.getFontHeight() / 2;
             float cen = (-35.5f - w + 7) / 2;
-            RectUtil.drawGradientRound(matrixStack, cen + 13.5f, -6.5f, w + 0.5f, h + 4.5f, 2, getInstance.theme.getColor(100), getInstance.theme.getColor(200), getInstance.theme.getColor(300), getInstance.theme.getColor(400));
             matrixStack.translate(0, 0, 0.5f);
 
-            RectUtil.drawRound(matrixStack, cen + 13.5f, -6, w, h + 4, 2, new Color(0, 0, 0, 215).hashCode());
+
 
             fontManager.font20.drawCenteredString(matrixStack, name, -1.5f, -0, -1);
 

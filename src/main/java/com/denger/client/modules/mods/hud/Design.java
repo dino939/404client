@@ -40,6 +40,7 @@ public class Design extends Module {
 
     @Override
     public void onEnable() {
+
          toggle();
     }
 }

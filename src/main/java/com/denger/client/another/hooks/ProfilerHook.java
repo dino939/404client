@@ -3,6 +3,7 @@ package com.denger.client.another.hooks;
 import com.denger.client.another.hooks.forge.even.addevents.Event2D;
 import com.denger.client.another.hooks.forge.even.addevents.WorldUpdate;
 import com.denger.client.modules.mods.combat.HitBox;
+import com.denger.client.modules.mods.combat.NoPush;
 import com.denger.client.utils.AnimationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,6 +40,13 @@ public class ProfilerHook implements IResultableProfiler {
 
     @Override
     public void push(String p_76320_1_) {
+        if (p_76320_1_.contains("livingEntityBaseTick")){
+            if (mc.player.isInWall() && getInstance.getRegisterModule().isEnable(NoPush.class)){
+                mc.player.setBoundingBox(new AxisAlignedBB( mc.player.getX(),  mc.player.getY(),  mc.player.getZ(),  mc.player.getX(),   mc.player.getY(),  mc.player.getZ()));
+            }
+
+
+        }
         if (p_76320_1_.contains("render")) {
             if (getInstance.getRegisterModule().isEnable(HitBox.class) && HitBox.nevidimie.getState()) {
                 assert mc.level != null;

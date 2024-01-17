@@ -6,7 +6,7 @@ import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
-import net.minecraft.network.play.client.CHeldItemChangePacket;
+import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.SEntityPacket;
 import net.minecraft.network.play.server.SHeldItemChangePacket;
 
@@ -31,7 +31,6 @@ public class NoPacket extends Module {
                 return false;
             }
         }
-
         return super.onPacket(packet, side);
     }
 

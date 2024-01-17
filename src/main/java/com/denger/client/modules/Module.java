@@ -31,6 +31,7 @@ public abstract class Module {
     protected static BufferBuilder bufferbuilder = tessellator.getBuilder();
 
     public void onEnable() {
+
     }
 
     public void onDisable() {

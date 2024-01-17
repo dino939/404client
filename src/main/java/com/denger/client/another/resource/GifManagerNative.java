@@ -21,7 +21,6 @@ public class GifManagerNative {
             dash_line = new Gif("https://i.imgur.com/yn2XbRg.gif");
             dash_BX = new Gif("https://i.imgur.com/daBF8Yl.gif");
             dash_cirle = new Gif("https://i.imgur.com/ysjmLYu.gif");
-
         } catch (Exception ignored) {
         }
     }

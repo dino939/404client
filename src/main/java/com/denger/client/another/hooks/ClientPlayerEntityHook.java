@@ -1,13 +1,18 @@
 package com.denger.client.another.hooks;
 
 import com.denger.client.another.hooks.forge.even.addevents.RotationEvent;
+import com.denger.client.modules.mods.combat.NoPush;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.util.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.stats.StatisticsManager;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
+
+import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.MainNative.mc;
 
 public class ClientPlayerEntityHook extends ClientPlayerEntity {
     public RotationEvent exent = new RotationEvent(0, 0);
@@ -18,40 +23,50 @@ public class ClientPlayerEntityHook extends ClientPlayerEntity {
 
     @Override
     public void tick() {
+
         exent = new RotationEvent(this.xRot, yRot);
+
         MinecraftForge.EVENT_BUS.post(exent);
         this.xRot = exent.getxRot();
         this.yRot = exent.getyRot();
+
         super.tick();
+
         this.xRot = exent.getStaticXrot();
         this.yRot = exent.getStaticYrot();
     }
 
     @Override
-    public void aiStep() {
-        if (exent.isStepCancel()) {
-            this.xRot = exent.getStaticXrot();
-            this.yRot = exent.getStaticYrot();
-        }
-        super.aiStep();
-        if (exent.isStepCancel()) {
-            this.xRot = exent.getxRot();
-            this.yRot = exent.getyRot();
+    public void baseTick() {
+
+        super.baseTick();
+        if (getInstance.getRegisterModule().isEnable(NoPush.class)){
+            this.setBoundingBox(new AxisAlignedBB(this.getBoundingBox().maxX, this.getBoundingBox().maxY, this.getBoundingBox().maxZ, this.getBoundingBox().minX,  this.getBoundingBox().minY, this.getBoundingBox().minZ));
+
         }
 
+   }
 
+    @Override
+    public void push(double p_70024_1_, double p_70024_3_, double p_70024_5_) {
+
+
+        if (getInstance.getRegisterModule().isEnable(NoPush.class)){
+            return;
+        }
+        super.push(p_70024_1_, p_70024_3_, p_70024_5_);
     }
 
     @Override
     public void serverAiStep() {
         if (exent.isStepCancel()) {
-            this.xRot = exent.getxRot();
-            this.yRot = exent.getyRot();
+            this.xRot = exent.getStaticXrot();
+            this.yRot = exent.getStaticYrot();
         }
         super.serverAiStep();
         if (exent.isStepCancel()) {
-            this.xRot = exent.getStaticXrot();
-            this.yRot = exent.getStaticYrot();
+            this.xRot = exent.getxRot();
+            this.yRot = exent.getyRot();
         }
     }
 }

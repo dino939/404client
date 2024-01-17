@@ -1,6 +1,7 @@
 package com.denger.client.utils;
 
 import by.radioegor146.nativeobfuscator.Native;
+import com.sun.jna.win32.StdCallLibrary;
 import net.minecraft.client.renderer.Tessellator;
 
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ public class WebUtilsNative {
         ArrayList<Object> arrayList = new ArrayList<Object>();
         String string2 = "";
         try {
+
             Object object;
             URL uRL = new URL(string);
             URLConnection object2 = uRL.openConnection();

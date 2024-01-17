@@ -1,5 +1,6 @@
 package com.denger.client.another.hooks;
 
+import com.denger.client.another.hooks.forge.even.addevents.EventRayPick;
 import com.denger.client.another.hooks.forge.even.addevents.RenderWorldEvent;
 import com.denger.client.modules.mods.misc.NoHurtCam;
 import com.denger.client.utils.ESPUtil;
@@ -223,8 +224,10 @@ public class GameRendererHook extends GameRenderer {
             if (this.minecraft.level != null) {
                 this.minecraft.getProfiler().push("pick");
                 this.minecraft.crosshairPickEntity = null;
-                double d0 = (double) this.minecraft.gameMode.getPickRange();
-                this.minecraft.hitResult = entity.pick(d0, p_78473_1_, false);
+                double d0 = this.minecraft.gameMode.getPickRange();
+                EventRayPick rayPick = new EventRayPick(entity.pick(d0, p_78473_1_, false));
+                MinecraftForge.EVENT_BUS.post(rayPick);
+                this.minecraft.hitResult = rayPick.getRayTrace();
                 Vector3d vector3d = entity.getEyePosition(p_78473_1_);
                 boolean flag = false;
                 int i = 3;

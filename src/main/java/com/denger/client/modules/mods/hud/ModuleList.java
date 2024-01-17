@@ -42,6 +42,7 @@ public class ModuleList extends Module {
 
     @SubscribeEvent
     public void onRender2D(Event2D e) {
+        h = 8.5f;
         mods.stream().filter(mod -> {
             return !mod.name.equals(mod.getName());
         }).forEach(mod -> {
@@ -60,7 +61,7 @@ public class ModuleList extends Module {
             }
             mod.lasState = mod.module.getState();
         });
-        final int[] mval = {0};
+        final int[] mval = {getInstance.getRegisterModule().isEnable(Overlay.class)?12:0};
         IRenderCall bg = () -> {
             mods.stream().filter(mod -> {
                 return mod.animX.getAnim() > -19;

@@ -809,7 +809,7 @@ public class IngameGuiHook extends IngameGui
         minecraft.getTextureManager().bind(res);
     }
 
-    private class GuiOverlayDebugForge extends DebugOverlayGui
+    private class GuiOverlayDebugForge extends GuiOverlayDebug
     {
         private Minecraft mc;
         private GuiOverlayDebugForge(Minecraft mc)
@@ -825,6 +825,7 @@ public class IngameGuiHook extends IngameGui
         }
         @Override protected void drawGameInformation(MatrixStack mStack){}
         @Override protected void drawSystemInformation(MatrixStack mStack){}
+
         private List<String> getLeft()
         {
             List<String> ret = this.getGameInformation();

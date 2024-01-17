@@ -14,7 +14,9 @@ public class NativeManager {
     public final NativeImage logo;
     public final NativeImage image;
     public final NativeImage particleHeart;
+    public final NativeImage arrows;
     public final NativeImage bubble;
+    public final NativeImage extazyy;
     public static int anInt = 0;
     static HashMap<String, ResourceLocation> map = new HashMap<>();
 
@@ -25,7 +27,8 @@ public class NativeManager {
         image = getNativeImage("https://i.imgur.com/ODRtAOH.png");
         particleHeart = getNativeImage("https://i.imgur.com/lQU5k2f.png");
         bubble = getNativeImage("https://i.imgur.com/Rk73tcJ.png");
-
+        arrows = getNativeImage("https://i.imgur.com/ZWcasgr.png");
+        extazyy = getNativeImage("https://i.imgur.com/iCktLC8.png");
     }
 
     public NativeImage getNativeImage(String url) {
@@ -47,11 +50,14 @@ public class NativeManager {
         }
     }
 
-    public static ResourceLocation getResourceDinamic(String url, NativeImage nativeImage) {
+    public static ResourceLocation getResourceDinamic(String url) {
         if (map.containsKey(url)) {
             return map.get(url);
         } else {
-            map.put(url, Minecraft.getInstance().textureManager.register("dinamic_texture" + anInt, new DynamicTexture(nativeImage)));
+            try {
+                map.put(url, Minecraft.getInstance().textureManager.register("dinamic_texture" + anInt,new DynamicTexture(NativeImage.read(new URL(url).openStream()))));
+            }catch (Exception ignore){
+            }
             anInt++;
             return map.get(url);
         }

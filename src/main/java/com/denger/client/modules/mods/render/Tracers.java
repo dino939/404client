@@ -29,14 +29,6 @@ import static com.denger.client.MainNative.mc;
 public class Tracers extends Module {
     @SettingTarget(name = "Животные")
     BoolSetting Animals = new BoolSetting();
-    Bloom3D bloomUtil;
-
-    @Override
-    public void onEnable() {
-        if (bloomUtil == null) {
-            bloomUtil = new Bloom3D();
-        }
-    }
 
 
     @SubscribeEvent
