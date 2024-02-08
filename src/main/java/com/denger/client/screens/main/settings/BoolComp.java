@@ -11,7 +11,7 @@ import com.denger.client.utils.rect.RenderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.denger.client.screens.main.comp.GuiColors;
 
-import static com.denger.client.MainNative.fontManager;
+import static com.denger.client.Main.fontManager;
 
 public class BoolComp extends SettComp {
     private BoolSetting boolSetting;

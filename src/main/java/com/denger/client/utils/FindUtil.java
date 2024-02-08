@@ -2,7 +2,7 @@ package com.denger.client.utils;
 
 import net.minecraft.item.Item;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 
 public class FindUtil {

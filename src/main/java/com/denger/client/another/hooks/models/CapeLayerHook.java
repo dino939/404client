@@ -1,8 +1,9 @@
 package com.denger.client.another.hooks.models;
 
 import com.denger.client.another.resource.Gif;
-import com.denger.client.another.resource.NativeManager;
+import com.denger.client.another.resource.ImageManager;
 import com.denger.client.modules.mods.render.CustomCape;
+import com.denger.client.utils.Utils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -20,14 +21,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 public class CapeLayerHook extends CapeLayer {
     public CapeLayerHook(IEntityRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> p_i50950_1_) {
         super(p_i50950_1_);
     }
-    Gif gif = new Gif("https://i.imgur.com/VhZIC3H.gif");
+    Gif gif = new Gif(Utils.getResource("texture/gifs/cape.gif"));
     @Override
     public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, AbstractClientPlayerEntity p_225628_4_, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
         if (CustomCape.enable && p_225628_4_ == mc.player) {
@@ -74,11 +75,11 @@ public class CapeLayerHook extends CapeLayer {
     public ResourceLocation getCape() {
         switch (CustomCape.mode.getCurent()) {
             case "аниме":
-                return NativeManager.getResource("custom_cape2", getInstance.getNativeManager().capeNative2);
+                return ImageManager.getResource("cape2.png");
             case "гиф":
                 return gif.getResource();
             default:
-                return NativeManager.getResource("custom_cape", getInstance.getNativeManager().capeNative);
+                return ImageManager.getResource("cape.png" );
         }
     }
 }

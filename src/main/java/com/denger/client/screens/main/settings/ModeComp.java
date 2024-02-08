@@ -12,7 +12,7 @@ import com.denger.client.screens.main.comp.GuiColors;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.*;
+import static com.denger.client.Main.*;
 import static com.denger.client.screens.main.MainScreen.ishover;
 
 public class ModeComp extends SettComp {

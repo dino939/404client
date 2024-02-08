@@ -6,7 +6,7 @@ import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "BvupTqsjou", category = Category.MISC)
 public class AutoSprint extends Module {

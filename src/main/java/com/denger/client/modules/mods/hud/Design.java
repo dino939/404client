@@ -9,14 +9,14 @@ import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.modules.another.Category;
 import com.denger.client.another.Themes;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 
 @ModuleTarget(ModName = "Eftjho", category = Category.HUD)
 public class Design extends Module {
     //@SettingTarget(name = "Бета функции")
     //public BoolSetting beta = new BoolSetting().setOn(() -> getInstance.beta = true).setOff(() -> getInstance.beta = false);
-     public BoolSetting customColor = new BoolSetting().setOn(()->{getInstance.executeNative.customColor = true;}).setOff(()->{getInstance.executeNative.customColor = false;});
+     public BoolSetting customColor = new BoolSetting().setOn(()->{getInstance.execute.customColor = true;}).setOff(()->{getInstance.execute.customColor = false;});
     @SettingTarget(name = "Цвет 1")
     public ColorSetting color1 = new ColorSetting();
     @SettingTarget(name = "Цвет 2")

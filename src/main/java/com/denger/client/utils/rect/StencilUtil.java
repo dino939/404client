@@ -6,7 +6,7 @@ import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.EXTPackedDepthStencil;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static org.lwjgl.opengl.GL11.*;
 
 public class StencilUtil {

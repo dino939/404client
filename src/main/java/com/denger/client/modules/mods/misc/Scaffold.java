@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "Tdbggpme", category = Category.MISC)
 public class Scaffold extends Module {

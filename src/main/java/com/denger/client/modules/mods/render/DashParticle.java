@@ -1,7 +1,7 @@
 package com.denger.client.modules.mods.render;
 
 import com.denger.client.another.resource.Gif;
-import com.denger.client.another.resource.GifManagerNative;
+import com.denger.client.another.resource.GifManager;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.settings.sett.FloatSetting;
@@ -14,7 +14,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
@@ -26,8 +25,8 @@ import org.lwjgl.opengl.GL46;
 
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 import static com.denger.client.utils.rect.RenderUtil.resetColor;
 import static com.mojang.blaze3d.platform.GlStateManager._bindTexture;
 import static com.mojang.blaze3d.platform.GlStateManager._disableBlend;
@@ -43,7 +42,7 @@ public class DashParticle extends Module {
     @SettingTarget(name = "Диапазон")
     FloatSetting range = new FloatSetting().setMin(1).setMax(4).setVal(1);
     ArrayList<Particl> particls = new ArrayList<>();
-    GifManagerNative gifManager = getInstance.getGifManager();
+    GifManager gifManager = getInstance.getGifManager();
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent renderWorldLastEvent) {
@@ -76,8 +75,6 @@ public class DashParticle extends Module {
         int colorAWT = getInstance.theme.getC().getRGB();
         particls.forEach(particl -> {
 
-            if (particl.local.equals(gifManager.dash_X)) {
-            }
             {
                 if (particls.indexOf(particl) > this.particls.size() - 2) return;
                 int a = (int) ((float) this.particls.indexOf(particl) / (float) this.particls.size() * 255);
@@ -145,15 +142,15 @@ public class DashParticle extends Module {
         int a = MathUtils.randomInt(1, 6);
         switch (a) {
             case 1:
-                return gifManager.dash_X;
+                return GifManager.getResource("X");
             case 2:
-                return gifManager.dash_infinity;
+                return GifManager.getResource("infinity");
             case 3:
-                return gifManager.dash_line;
+                return GifManager.getResource("line");
             case 4:
-                return gifManager.dash_BX;
+                return GifManager.getResource("BX");
             default:
-                return gifManager.dash_cirle;
+                return GifManager.getResource("cirle");
         }
     }
 

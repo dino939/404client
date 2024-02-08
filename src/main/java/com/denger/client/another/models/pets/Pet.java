@@ -7,8 +7,8 @@ import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 

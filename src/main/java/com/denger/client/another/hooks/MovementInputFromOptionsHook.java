@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.MovementInputFromOptions;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class MovementInputFromOptionsHook extends MovementInputFromOptions {
 

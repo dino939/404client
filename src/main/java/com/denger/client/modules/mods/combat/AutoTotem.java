@@ -11,7 +11,7 @@ import com.denger.client.utils.Utils;
 import net.minecraft.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "BvupUpufn", category = Category.COMBAT)
 public class AutoTotem extends Module {

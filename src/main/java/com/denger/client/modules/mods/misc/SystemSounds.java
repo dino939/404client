@@ -19,8 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "TztufnTpvoet", category = Category.MISC)
 public class SystemSounds extends Module {

@@ -9,7 +9,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 @ModuleTarget(ModName = "FmzusbTxbq",category = Category.MISC)
 public class ElytraSwap extends Module {
 

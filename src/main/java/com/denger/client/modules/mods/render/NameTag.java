@@ -20,7 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.awt.*;
 
-import static com.denger.client.MainNative.*;
+import static com.denger.client.Main.*;
 
 @ModuleTarget(ModName = "ObnfUbh", category = Category.RENDER)
 public class NameTag extends Module {

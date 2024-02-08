@@ -8,8 +8,8 @@ import com.denger.client.utils.rect.RectUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.denger.client.screens.main.comp.GuiColors;
 
-import static com.denger.client.MainNative.fontManager;
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.fontManager;
+import static com.denger.client.Main.getInstance;
 
 public class ThemeComp extends SettComp {
     ThemeSetting setting;

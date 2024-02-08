@@ -5,6 +5,7 @@ import com.denger.client.another.hooks.forge.even.addevents.WorldUpdate;
 import com.denger.client.modules.mods.combat.HitBox;
 import com.denger.client.modules.mods.combat.NoPush;
 import com.denger.client.utils.AnimationUtil;
+import com.denger.client.utils.rect.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.profiler.IProfileResult;
@@ -14,14 +15,15 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.util.function.Supplier;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 
 public class ProfilerHook implements IResultableProfiler {
 
 
     public static IResultableProfiler INSTANCE = new ProfilerHook();
+
 
     @Override
     public IProfileResult getResults() {
@@ -68,7 +70,9 @@ public class ProfilerHook implements IResultableProfiler {
         }
         if (p_76320_1_.contains("bossHealth")) {
             if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null) {
+                RenderUtil.setScaleRender(2);
                 MinecraftForge.EVENT_BUS.post(new Event2D());
+                RenderUtil.setScaleRenderStandar();
             }
         }
 

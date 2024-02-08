@@ -3,7 +3,13 @@ package com.denger.client.another.hooks;
 import com.denger.client.another.hooks.forge.even.addevents.EventRayPick;
 import com.denger.client.another.hooks.forge.even.addevents.RenderWorldEvent;
 import com.denger.client.modules.mods.misc.NoHurtCam;
+import com.denger.client.modules.mods.render.CustomHand;
+import com.denger.client.utils.ColorUtil;
 import com.denger.client.utils.ESPUtil;
+import com.denger.client.utils.Emulator.WindowEmulator;
+import com.denger.client.utils.Utils;
+import com.denger.client.utils.rect.RectUtil;
+import com.denger.client.utils.rect.ShaderUtil;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -18,6 +24,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -43,13 +50,20 @@ import net.minecraft.world.GameType;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Random;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
+import static com.denger.client.utils.rect.RenderUtil.resetColor;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static org.lwjgl.opengl.GL11C.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11C.GL_SRC_ALPHA;
 
 public class GameRendererHook extends GameRenderer {
     private static final ResourceLocation NAUSEA_LOCATION = new ResourceLocation("textures/misc/nausea.png");
@@ -76,7 +90,7 @@ public class GameRendererHook extends GameRenderer {
     private float zoom = 1.0F;
     private float zoomX;
     private float zoomY;
-    private NoHurtCam noHurtCam;
+
     @Nullable
     private ItemStack itemActivationItem;
     private int itemActivationTicks;
@@ -89,7 +103,12 @@ public class GameRendererHook extends GameRenderer {
     private int effectIndex = EFFECT_NONE;
     private boolean effectActive;
     private final ActiveRenderInfo mainCamera = new ActiveRenderInfoHook();
-
+    private final MainWindow window = mc.getWindow();
+    private final Framebuffer hand = new Framebuffer(window.getWidth(), window.getHeight(), true, Minecraft.ON_OSX);
+    private final Framebuffer outFrameBuffer = new Framebuffer(window.getWidth(), window.getHeight(), true, Minecraft.ON_OSX);
+    private final ShaderUtil blur = new ShaderUtil("blur");
+    private final CustomHand customHand;
+    private final NoHurtCam noHurtCam;
     public GameRendererHook(Minecraft p_i225966_1_, IResourceManager p_i225966_2_, RenderTypeBuffers p_i225966_3_) {
         super(p_i225966_1_, p_i225966_2_, p_i225966_3_);
         this.minecraft = p_i225966_1_;
@@ -99,9 +118,66 @@ public class GameRendererHook extends GameRenderer {
         this.lightTexture = new LightTexture(this, p_i225966_1_);
         this.renderBuffers = p_i225966_3_;
         this.postEffect = null;
-        this.noHurtCam = (NoHurtCam) getInstance.getRegisterModule().getModule(NoHurtCam.class);
+        this.noHurtCam = getInstance.getRegisterModule().getModule(NoHurtCam.class);
+        this.customHand = getInstance.getRegisterModule().getModule(CustomHand.class);
+
     }
 
+    public void on2D(){
+        if (customHand.getState()){
+            resetColor();
+            GlStateManager._disableBlend();
+            _enableBlend();
+            _blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            //hand.bindRead();
+            //ShaderUtil.drawQuadsRevers();
+            //hand.unbindRead();
+
+
+            int radius = 4;
+            outFrameBuffer.bindWrite(true);
+
+            blur.load();
+            blur.setUniformf("radius", radius);
+            blur.setUniformi("sampler1", 0);
+            blur.setUniformi("sampler2", 20);
+            blur.setUniformfb("kernel", Utils.getKernel(radius));
+            blur.setUniformf("texelSize", 1.0F / (float) window.getWidth(), 1.0F / (float) window.getHeight());
+            blur.setUniformf("direction", 2.0F, 0.0F);
+
+            GlStateManager._disableBlend();
+            GlStateManager._blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+            mc.getMainRenderTarget().bindRead();
+            ShaderUtil.drawQuads();
+
+            mc.getMainRenderTarget().bindWrite(true);
+
+            blur.setUniformf("direction", 0.0F, 2.0F);
+
+            outFrameBuffer.bindRead();
+            GL30.glActiveTexture(GL30.GL_TEXTURE20);
+            hand.bindRead();
+            GL30.glActiveTexture(GL30.GL_TEXTURE0);
+            ShaderUtil.drawQuads();
+
+            blur.unload();
+            hand.unbindRead();
+            WindowEmulator.texture = hand.getColorTextureId();
+            resetColor();
+            GlStateManager._disableBlend();
+            _enableBlend();
+            _blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            float[] c = ColorUtil.rgba(getInstance.theme.getColor());
+             RectUtil.OUTLINE.load();
+             RectUtil.OUTLINE.setUniformi("sampler",0);
+             RectUtil.OUTLINE.setUniformf("color", c[0],c[1],c[2],c[3]);
+             hand.bindRead();
+             ShaderUtil.drawQuads();
+            RectUtil.OUTLINE.unload();
+             hand.unbindRead();
+             GlStateManager._disableBlend();
+        }
+    }
     public void close() {
         this.lightTexture.close();
         this.mapRenderer.close();
@@ -141,6 +217,7 @@ public class GameRendererHook extends GameRenderer {
     }
 
     public void loadEffect(ResourceLocation p_175069_1_) {
+
         if (this.postEffect != null) {
             this.postEffect.close();
         }
@@ -473,6 +550,7 @@ public class GameRendererHook extends GameRenderer {
                 if (!this.minecraft.options.hideGui || this.minecraft.screen != null) {
                     RenderSystem.defaultAlphaFunc();
                     this.renderItemActivationAnimation(this.minecraft.getWindow().getGuiScaledWidth(), this.minecraft.getWindow().getGuiScaledHeight(), p_195458_1_);
+                    this.on2D();
                     this.minecraft.gui.render(matrixstack, p_195458_1_);
                     RenderSystem.clear(256, Minecraft.ON_OSX);
                 }
@@ -619,13 +697,31 @@ public class GameRendererHook extends GameRenderer {
         ESPUtil.setProjectionViewMatrix(getProjectionMatrix(activerenderinfo, p_228378_1_, true), p_228378_4_.last().pose());
         this.minecraft.getProfiler().popPush("hand");
         if (this.renderHand) {
+            if (customHand.getState()) {
+                setupBuffer(hand);
+                setupBuffer(outFrameBuffer);
+                hand.clear(true);
+                hand.bindWrite(true);
+            }
             RenderSystem.clear(256, Minecraft.ON_OSX);
             this.renderItemInHand(p_228378_4_, activerenderinfo, p_228378_1_);
+            if (customHand.getState()) {
+
+                hand.unbindWrite();
+                mc.getMainRenderTarget().bindWrite(true);
+            }
         }
 
         this.minecraft.getProfiler().pop();
     }
+    private void setupBuffer(Framebuffer frameBuffer) {
+        if(frameBuffer.width != window.getWidth() || frameBuffer.height != window.getHeight())
+            frameBuffer.resize(window.getWidth(), window.getHeight(), Minecraft.ON_OSX);
+        else
+            frameBuffer.clear(Minecraft.ON_OSX);
+        frameBuffer.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+    }
     public void resetData() {
         this.itemActivationItem = null;
         this.mapRenderer.resetData();

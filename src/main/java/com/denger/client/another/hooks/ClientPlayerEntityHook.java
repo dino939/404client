@@ -11,8 +11,7 @@ import net.minecraft.stats.StatisticsManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
 
 public class ClientPlayerEntityHook extends ClientPlayerEntity {
     public RotationEvent exent = new RotationEvent(0, 0);

@@ -19,7 +19,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "TijfmeCsfbl", category = Category.COMBAT)
 public class ShieldBreak extends Module {

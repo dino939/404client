@@ -6,8 +6,8 @@ import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 @ModuleTarget(ModName = "",category = Category.RENDER)
 public class Petst extends Module {
 

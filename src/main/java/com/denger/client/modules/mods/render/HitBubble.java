@@ -1,8 +1,9 @@
 package com.denger.client.modules.mods.render;
 
-import com.denger.client.another.resource.NativeManager;
+import com.denger.client.another.resource.ImageManager;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
+import com.denger.client.another.settings.sett.FloatSetting;
 import com.denger.client.another.settings.sett.ModSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
@@ -31,8 +32,8 @@ import org.lwjgl.opengl.GL46;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "IjuCvccmf", category = Category.RENDER)
 public class HitBubble extends Module {
@@ -42,6 +43,8 @@ public class HitBubble extends Module {
     BoolSetting rotationOwn = new BoolSetting().setBol(true);
     @SettingTarget(name = "Сохранение камеры")
     BoolSetting rotationC = new BoolSetting().setBol(true);
+    @SettingTarget(name = "Длительность")
+    FloatSetting speed = new FloatSetting().setMin(1000).setMax(5000).setVal(2500).seType("ms");
     private ResourceLocation bubble;
     ArrayList<Bubble> bubbles = new ArrayList<>();
 
@@ -79,9 +82,18 @@ public class HitBubble extends Module {
 
             matrixStack.translate(0, 0, 0.5f);
             BufferBuilder buffer = Tessellator.getInstance().getBuilder();
+
+
+            if (bubbleObj.getLifeProgers() <= 0.5f) {
+                bubbleObj.anim = MathUtils.lerp(bubbleObj.anim, 1, bubbleObj.getLifeProgers() / 2);
+            } else {
+                bubbleObj.anim = MathUtils.lerp(bubbleObj.anim, 0, (MathUtils.calcPercentage(MathUtils.clamp(bubbleObj.getLifeProgers(), 0.50f, 1), 0.50f, 1) / 100));
+            }
+
+
             bubbleObj.color = ColorUtil.swapAlpha(bubbleObj.color, MathUtils.clamp((1 - bubbleObj.getLifeProgers()), 0, 1) * 255);
             mc.getTextureManager().bind(getBubbleTex());
-            RenderUtil.scale(matrixStack, -5, -5, 10, 10, 1, () -> {
+            RenderUtil.scale(matrixStack, -5, -5, 10, 10, bubbleObj.anim, () -> {
                 RenderUtil.rotate(matrixStack, -5, -5, 10, 10, rotationOwn.getState() ? bubbleObj.getLifeProgers() * 360 : 0, () -> {
                     buffer.begin(GL20.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
                     buffer.vertex(matrixStack.last().pose(), -5, -5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), ColorUtil.a(bubbleObj.color)).uv(0.0F, 0.0F).endVertex();
@@ -95,7 +107,6 @@ public class HitBubble extends Module {
                     GL46.glDisable(3008);
                     GL46.glEnable(GL46.GL_BLEND);
                     GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE);
-
                     Tessellator.getInstance().end();
 
                     GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
@@ -117,19 +128,16 @@ public class HitBubble extends Module {
 
     ResourceLocation getBubbleTex() {
         if (bubble == null) {
-            bubble = NativeManager.getResource("bubble", getInstance.getNativeManager().bubble);
+            bubble = ImageManager.getResource("bubble.png");
         }
-        switch (modSetting.getCurent()) {
-            case "Triangle":
-                return getInstance.getGifManager().getGifs().get(1).getResource();
-            case "Bubble":
-                return bubble;
+        if (modSetting.getCurent().equals("Bubble")) {
+            return bubble;
         }
         return bubble;
     }
 
     private float getMaxLifeTime() {
-        return 1200f;
+        return speed.getVal();
     }
 
     private class Bubble {
@@ -138,6 +146,7 @@ public class HitBubble extends Module {
         int color;
         long bornTime;
         Quaternion quaternion;
+        float anim;
 
         public Bubble(Vector3d pos, float BbHeight, Quaternion quaternion, int color) {
             this.pos = pos;
@@ -145,6 +154,7 @@ public class HitBubble extends Module {
             this.quaternion = quaternion;
             this.color = color;
             bornTime = System.currentTimeMillis();
+            this.anim = 0;
         }
 
         public float getLifeProgers() {

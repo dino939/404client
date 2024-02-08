@@ -9,7 +9,7 @@ import net.minecraft.network.play.client.CChatMessagePacket;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "LuMfbw",category = Category.MISC)
 public class KtLeav extends Module {

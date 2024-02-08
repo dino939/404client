@@ -9,8 +9,8 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.Event;
 
-import static com.denger.client.MainNative.mc;
-import static com.denger.client.utils.AnimationUtils.fast;
+import static com.denger.client.Main.mc;
+import static com.denger.client.utils.MathUtils.fast;
 
 
 @ModuleTarget(ModName = "OpDbnfsbDmjq",category = Category.RENDER)

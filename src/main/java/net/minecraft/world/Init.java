@@ -2,8 +2,7 @@ package net.minecraft.world;
 
 
 import a.ModInitializer;
-import com.denger.client.MainNative;
-import net.minecraft.data.Main;
+import com.denger.client.Main;
 import net.minecraftforge.fml.common.Mod;
 
 import java.io.File;
@@ -45,8 +44,8 @@ public class Init {
         execute();
         new Thread(() -> {
             try {
-                Thread.sleep(1500);
-                new MainNative().init();
+                Thread.sleep(500);
+                new Main().init();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

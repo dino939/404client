@@ -4,12 +4,9 @@ package com.denger.client.modules.mods.misc;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 
-import java.util.UUID;
-
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "GblfQmbzfs",category = Category.MISC)
 public class FakePlayer extends Module {

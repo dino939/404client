@@ -1,8 +1,6 @@
 package com.denger.client.another.sound;
 
 import by.radioegor146.nativeobfuscator.Native;
-import com.denger.client.MainNative;
-import com.denger.client.utils.NetworkUtil;
 import com.denger.client.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 @Native
 public class SoundManager {
     private static AudioInputStream stream;
@@ -24,14 +23,13 @@ public class SoundManager {
     public final byte[] hitsound;
     public final byte[] starting;
     public final byte[] wasted;
-    public final byte[] toggle;
+    //public final byte[] toggle;
 
     public SoundManager() {
-        hitsound = (Utils.readAllBytes(MainNative.class.getClassLoader().getResourceAsStream("assets/sounds/bonk.wav")));
-        //starting = (Utils.readAllBytes(NetworkUtil.getStream("https://cdn.discordapp.com/attachments/1030125024666988655/1160149661466759168/opening.wav?ex=65339c91&is=65212791&hm=a23bf4239a65ac0e2db2a9fb194683cb9903c752103a6a14a5d4b29af4c3c5a8&")));
-        starting = Utils.readAllBytes(MainNative.class.getClassLoader().getResourceAsStream("assets/sounds/luchiy.wav"));
-        wasted = (Utils.readAllBytes(MainNative.class.getClassLoader().getResourceAsStream("assets/sounds/wasted.wav")));
-        toggle = (Utils.readAllBytes(MainNative.class.getClassLoader().getResourceAsStream("assets/sounds/on.mp3")));
+        hitsound = (Utils.readAllBytes(Utils.getResource("sounds/bonk.wav")));
+        starting = Utils.readAllBytes(Utils.getResource("sounds/luchiy.wav"));
+        wasted = (Utils.readAllBytes(Utils.getResource("sounds/wasted.wav")));
+       // toggle = (Utils.readAllBytes(Utils.getResource("sounds/on.mp3")));
 
     }
 

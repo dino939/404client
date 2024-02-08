@@ -15,7 +15,7 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "NjeemfDmjdlQfbsm", category = Category.COMBAT)
 public class MiddleClickPearl extends Module {

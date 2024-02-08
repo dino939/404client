@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static com.denger.client.MainNative.fontManager;
+import static com.denger.client.Main.fontManager;
 import static org.lwjgl.opengl.GL11.glVertex2d;
 import static org.lwjgl.opengl.GL11C.*;
 

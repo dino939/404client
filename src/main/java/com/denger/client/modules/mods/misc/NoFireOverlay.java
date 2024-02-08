@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "OpGjsfPwfsmbz",category = Category.MISC)
 public class NoFireOverlay extends Module {

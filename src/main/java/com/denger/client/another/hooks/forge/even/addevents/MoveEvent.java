@@ -2,7 +2,7 @@ package com.denger.client.another.hooks.forge.even.addevents;
 
 import net.minecraftforge.eventbus.api.Event;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class MoveEvent extends Event {
     private float xRot,YRot;

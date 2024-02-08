@@ -3,26 +3,24 @@ package com.denger.client.modules.mods.misc;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import com.denger.client.utils.ReflectFileld;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.client.Minecraft;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
-@ModuleTarget(ModName = "",category = Category.MISC)
+@ModuleTarget(ModName = "ObnfQspufdu", category = Category.MISC)
 public class NameProtect extends Module {
-
-    @SubscribeEvent
-    public void name(PlayerEvent.NameFormat e){
-        if (e.getEntity() == mc.player){
-             e.setDisplayname(ITextComponent.nullToEmpty("Sosnul?"));
-        }
+    String name = "";
+    @Override
+    public void onEnable() {
+        new ReflectFileld(mc, Minecraft.class,"isLocalServer").setValue(false);
+        name = (String) new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).getFinalValue();
+       // new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).setValue("HuiVRot");
     }
-    @SubscribeEvent
-    public void onName2(PlayerEvent.TabListNameFormat e){
-        if (e.getEntity() == mc.player){
 
-             e.setDisplayName(ITextComponent.nullToEmpty("Sosnul?"));
-        }
+    @Override
+    public void onDisable() {
+        //new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).setValue(name);
     }
 }

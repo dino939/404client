@@ -14,7 +14,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 @ModuleTarget(ModName = "JufnTspmmfs",category = Category.MISC)
 public class ItemSroller extends Module {

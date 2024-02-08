@@ -1,9 +1,11 @@
 package com.denger.client.another.hooks;
 
 
+import com.denger.client.Main;
+import com.denger.client.another.hooks.forge.even.addevents.Event2D;
 import com.denger.client.modules.mods.render.SwingAnimation;
 import com.denger.client.modules.mods.render.ViewModel;
-import com.denger.client.utils.AnimationUtils;
+import com.denger.client.utils.anims.Animation;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -29,9 +31,10 @@ import net.minecraft.world.storage.MapData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @OnlyIn(Dist.CLIENT)
 public class FirstPersonRendererHook extends FirstPersonRenderer {
@@ -45,10 +48,11 @@ public class FirstPersonRendererHook extends FirstPersonRenderer {
     private float oOffHandHeight;
     private final EntityRendererManager entityRenderDispatcher = mc.getEntityRenderDispatcher();
     private final ItemRenderer itemRenderer = mc.getItemRenderer();
-    AnimationUtils animationUtil = new AnimationUtils(0,0,0.1f);
+    Animation animationUtil = new Animation(0,0,0.1f);
 
     public FirstPersonRendererHook() {
         super(mc);
+        Main.eventManager.register(this);
     }
 
     public void renderItem(LivingEntity p_228397_1_, ItemStack p_228397_2_, ItemCameraTransforms.TransformType p_228397_3_, boolean p_228397_4_, MatrixStack p_228397_5_, IRenderTypeBuffer p_228397_6_, int p_228397_7_) {
@@ -56,7 +60,10 @@ public class FirstPersonRendererHook extends FirstPersonRenderer {
             itemRenderer.renderStatic(p_228397_1_, p_228397_2_, p_228397_3_, p_228397_4_, p_228397_5_, p_228397_6_, p_228397_1_.level, p_228397_7_, OverlayTexture.NO_OVERLAY);
         }
     }
+    @SubscribeEvent
+    public void on2DEvent(Event2D e){
 
+    }
     private float calculateMapTilt(float p_178100_1_) {
         float f = 1 - p_178100_1_ / 45 + 0.1f;
         f = MathHelper.clamp(f, 0, 1);
@@ -264,6 +271,7 @@ public class FirstPersonRendererHook extends FirstPersonRenderer {
     }
 
     private void renderArmWithItem(AbstractClientPlayerEntity p_228405_1_, float p_228405_2_, float p_228405_3_, Hand p_228405_4_, float p_228405_5_, ItemStack p_228405_6_, float p_228405_7_, MatrixStack p_228405_8_, IRenderTypeBuffer p_228405_9_, int p_228405_10_) {
+
         boolean flag = p_228405_4_ == Hand.MAIN_HAND;
         HandSide handside = flag ? p_228405_1_.getMainArm() : p_228405_1_.getMainArm().getOpposite();
         p_228405_8_.pushPose();

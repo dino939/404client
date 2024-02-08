@@ -1,6 +1,6 @@
 package com.denger.client.screens.main.scenes;
 
-import com.denger.client.MainNative;
+import com.denger.client.Main;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.screens.main.comp.MoulePanel;
@@ -11,7 +11,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 public class ModuleScene extends Scene {
     ArrayList<MoulePanel> array1, array2, array3;
@@ -100,7 +100,7 @@ public class ModuleScene extends Scene {
 
     @Override
     public void scrole(float num) {
-        scrol += num * (6.5 + (MainNative.LShift ? 6 : 0));
+        scrol += num * (6.5 + (Main.LShift ? 6 : 0));
         float size = 0;
         float size1 = 0;
         float size2 = 0;

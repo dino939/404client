@@ -20,8 +20,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 @ModuleTarget(ModName = "Usbjmt",category = Category.RENDER)
 public class Trails extends Module {
     ArrayList<Trail> trails = new ArrayList<>();

@@ -9,8 +9,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "NjeemfDmjdlGsjfoe", category = Category.MISC)
 public class MiddleClickFriend extends Module {

@@ -1,23 +1,22 @@
 package com.denger.client.another;
 
-import com.denger.client.MainNative;
+import com.denger.client.Main;
 import com.denger.client.another.hooks.PlayerControllerHook;
 import com.denger.client.another.hooks.forge.even.addevents.WorldUpdate;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.mods.misc.SystemSounds;
-import com.denger.client.utils.Utils;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 import static net.minecraftforge.event.TickEvent.Phase.START;
 
 public class Events {
-    MainNative main = getInstance;
+    Main main = getInstance;
 
 
     @SubscribeEvent
@@ -55,9 +54,9 @@ public class Events {
             }
         }
         if (event.getKey() == GLFW.GLFW_KEY_LEFT_SHIFT && event.getAction() == 1) {
-            MainNative.LShift = true;
+            Main.LShift = true;
         } else if (event.getKey() == GLFW.GLFW_KEY_LEFT_SHIFT && event.getAction() == 0) {
-            MainNative.LShift = false;
+            Main.LShift = false;
         }
     }
 

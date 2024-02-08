@@ -12,7 +12,7 @@ import net.minecraft.network.play.server.SEntityVelocityPacket;
 
 import java.util.SplittableRandom;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "Wfmpdjuz", category = Category.COMBAT)
 public class Velocity extends Module {

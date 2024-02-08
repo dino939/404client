@@ -10,7 +10,7 @@ import net.minecraft.client.shader.Framebuffer;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static com.denger.client.utils.rect.RenderUtil.resetColor;
 import static com.mojang.blaze3d.platform.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;

@@ -8,7 +8,7 @@ import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.utils.TimerUtil;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "BoujBgl",category = Category.MISC)
 public class AntiAfk extends Module {

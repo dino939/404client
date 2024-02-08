@@ -27,7 +27,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import static com.denger.client.MainNative.*;
+import static com.denger.client.Main.*;
 
 
 @OnlyIn(Dist.CLIENT)

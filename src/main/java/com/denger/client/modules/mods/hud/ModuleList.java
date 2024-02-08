@@ -1,12 +1,13 @@
 package com.denger.client.modules.mods.hud;
 
-import com.denger.client.MainNative;
+import com.denger.client.Main;
 import com.denger.client.another.hooks.forge.even.addevents.Event2D;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
-import com.denger.client.utils.AnimationUtils;
+import com.denger.client.utils.anims.Animation;
 import com.denger.client.utils.Crypt;
+import com.denger.client.utils.anims.Type;
 import com.denger.client.utils.rect.BloomUtil;
 import com.denger.client.utils.rect.RectUtil;
 import com.mojang.blaze3d.systems.IRenderCall;
@@ -16,8 +17,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.denger.client.MainNative.fontManager;
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.fontManager;
+import static com.denger.client.Main.getInstance;
 
 @ModuleTarget(ModName = "NpevmfMjtu", category = Category.HUD, description = "отображает список функций")
 public class ModuleList extends Module {
@@ -35,7 +36,7 @@ public class ModuleList extends Module {
             getInstance.getRegisterModule().getModules().forEach(module -> {
                 mods.add(new Mod(module));
             });
-            mods.sort((module1, module2) -> MainNative.fontManager.code16.getStringWidth(module2.getName()) - MainNative.fontManager.code16.getStringWidth(module1.getName()));
+            mods.sort((module1, module2) -> Main.fontManager.code16.getStringWidth(module2.getName()) - Main.fontManager.code16.getStringWidth(module1.getName()));
         }
     }
 
@@ -47,7 +48,7 @@ public class ModuleList extends Module {
             return !mod.name.equals(mod.getName());
         }).forEach(mod -> {
             mod.name = mod.getName();
-            mods.sort((module1, module2) -> MainNative.fontManager.code16.getStringWidth(module2.getName()) - MainNative.fontManager.code16.getStringWidth(module1.getName()));
+            mods.sort((module1, module2) -> Main.fontManager.code16.getStringWidth(module2.getName()) - Main.fontManager.code16.getStringWidth(module1.getName()));
         });
         mods.stream().filter(mod -> {
             return mod.lasState != mod.module.getState();
@@ -70,8 +71,8 @@ public class ModuleList extends Module {
                 float locY = m.animY.getAnim();
                 float locX = x + m.animX.getAnim();
                 int num = mval[0];
-                int color1 = MainNative.getInstance.theme.getColor(num * 5);
-                int color2 = MainNative.getInstance.theme.getColor((num - 1) * 5);
+                int color1 = Main.getInstance.theme.getColor(num * 5);
+                int color2 = Main.getInstance.theme.getColor((num - 1) * 5);
                 RectUtil.drawGradientRound(locX, locY + 4, fontManager.code16.getStringWidth(m.name) + 7, h * 0.985f + 1, 1.8f, color2, color1, color2, color1);
                 RectUtil.drawGradientRound(locX, locY + 4, 2, h * 1.1f, 0, color2, color1, color2, color1);
                 mval[0]++;
@@ -84,6 +85,7 @@ public class ModuleList extends Module {
         mods.stream().filter(mod -> {
             return mod.animX.getAnim() > -19;
         }).forEach(m -> {
+
             float locY = m.animY.getAnim();
             float locX = x + m.animX.getAnim();
             fontManager.code16.drawString(e.getMs(), m.getModule().getName(), locX + 2, locY + 2, -1);
@@ -95,8 +97,8 @@ public class ModuleList extends Module {
     }
 
     static class Mod {
-        AnimationUtils animX;
-        AnimationUtils animY;
+        Animation animX;
+        Animation animY;
         Module module;
         boolean lasState;
         String name;
@@ -105,8 +107,8 @@ public class ModuleList extends Module {
         public Mod(Module m) {
             module = m;
             name = module.getName() + (module.getModSetting() != null ? module.getModSetting().getCurent() : "");
-            animX = new AnimationUtils(-20, -20, 0.9f);
-            animY = new AnimationUtils(-20, -20, 0.9f);
+            animX = new Animation(-20, -20, 0.5f, Type.FAST);
+            animY = new Animation(-20, -20, 0.5f,Type.FAST);
         }
 
         public Module getModule() {

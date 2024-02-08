@@ -9,7 +9,6 @@ import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.utils.ESPUtil;
 import com.denger.client.utils.Transform;
 import com.denger.client.utils.Utils;
-import com.denger.client.utils.rect.RenderUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.vector.Vector3d;
@@ -20,8 +19,7 @@ import org.lwjgl.opengl.GL46;
 
 import java.util.Objects;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 @ModuleTarget(ModName = "UbshfuFtq", category = Category.RENDER)
@@ -62,7 +60,7 @@ public class TargetEspOld extends Module {
         GL46.glEnable(GL46.GL_BLEND);
         GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE);
 
-        RenderUtil.drawImage(ev.getMs(), getInstance.getGifManager().getGifs().get(1).getResource(), -20, -25, 40, 40);
+        //RenderUtil.drawImage(ev.getMs(), getInstance.getGifManager().getGifs().get(1).getResource(), -20, -25, 40, 40);
 
         GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
         GL46.glDisable(GL46.GL_BLEND);

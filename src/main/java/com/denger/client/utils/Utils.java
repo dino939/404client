@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import org.apache.commons.lang3.RandomUtils;
@@ -34,14 +35,13 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.TimerTask;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 import static com.denger.client.utils.rect.RenderUtil.resetColor;
 import static com.mojang.blaze3d.platform.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -62,6 +62,9 @@ public class Utils {
         RenderSystem.disableCull();
         RenderSystem.shadeModel(7425);
         //RenderSystem.depthMask(false);
+    }
+    public static InputStream getResource(String str){
+        return Utils.class.getClassLoader().getResourceAsStream("assets/minecraft/"+str);
     }
 
     public static void endRender() {
@@ -129,55 +132,9 @@ public class Utils {
         }
         return buffer;
     }
-
-    public static float[] getMatrixRots(Entity entityIn) {
-        Entity e = entityIn;
-        double d = e.getX() - mc.player.getX();
-        double d1 = e.getZ() - mc.player.getZ();
-
-        LivingEntity LivingEntity = (LivingEntity) e;
-        float y = (float) (LivingEntity.getY() + (double) LivingEntity.getEyeHeight() - (double) (LivingEntity.getEyeHeight() / 3.0f));
-        double lastY = (double) y + 0.5 - (mc.player.getY() + (double) mc.player.getEyeHeight());
-        if (mc.player.getY() + 1.5 < e.getY()) {
-            lastY = mc.player.distanceTo(e) > 3.0f ? (double) y - (double) 0.7f - (mc.player.getY() + (double) mc.player.getEyeHeight()) : (double) y - (double) 0.2f - (mc.player.getY() + (double) mc.player.getEyeHeight());
-        }
-        if (mc.player.getY() > e.getY() + 2.0) {
-            lastY = (double) y + (double) 1.2f - (mc.player.getY() + (double) mc.player.getEyeHeight());
-        }
-        if (mc.player.getY() > e.getY() + 2.5) {
-            lastY = mc.player.distanceToSqr(e) <= 3.0 ? (double) y + 1.0 - (mc.player.getY() + (double) mc.player.getEyeHeight()) : (double) y + (double) 1.2f - (mc.player.getY() + (double) mc.player.getEyeHeight());
-        }
-        if (mc.player.getY() > e.getY() + 3.5) {
-            lastY = (double) y + (double) 2.2f - (mc.player.getY() + (double) mc.player.getEyeHeight());
-        }
-        if (mc.player.getY() > e.getY() + 4.5) {
-            lastY = (double) y + (double) 2.2f - (mc.player.getY() + (double) mc.player.getEyeHeight());
-        }
-        double d2 = MathHelper.sqrt(d * d + d1 * d1);
-        float yaw = (float) (Math.atan2(d1, d) * 180.0 / Math.PI - 92.0) + RandomUtils.nextFloat(1.0f, 6.0f);
-        float pitch = (float) (-(Math.atan2(lastY, d2) * 210.0 / Math.PI)) + RandomUtils.nextFloat(1.0f, 6.0f);
-        if (mc.player.distanceTo(e) <= 3.0f) {
-            yaw = (float) (Math.atan2(d1, d) * 180.0 / Math.PI - 92.0) + RandomUtils.nextFloat(1.0f, 5.0f);
-            pitch = (float) (-(Math.atan2(lastY, d2) * 200.0 / Math.PI)) + RandomUtils.nextFloat(1.0f, 7.0f);
-        }
-        if (mc.player.distanceTo(e) >= 2.0f) {
-            yaw = (float) (Math.atan2(d1, d) * 180.0 / Math.PI - 92.0) + RandomUtils.nextFloat(1.0f, 6.0f);
-            pitch = (float) (-(Math.atan2(lastY, d2) * 200.0 / Math.PI)) + RandomUtils.nextFloat(1.0f, 6.0f);
-        }
-        if (mc.player.distanceTo(e) >= 4.0f) {
-            yaw = (float) (Math.atan2(d1, d) * 180.0 / Math.PI - 92.0) + RandomUtils.nextFloat(1.0f, 5.0f);
-            pitch = (float) (-(Math.atan2(lastY, d2) * 200.0 / Math.PI)) + RandomUtils.nextFloat(1.0f, 5.0f);
-        }
-        if (mc.player.distanceTo(e) <= 0.5f) {
-            yaw = (float) (Math.atan2(d1, d) * 180.0 / Math.PI - 92.0) + RandomUtils.nextFloat(1.0f, 6.0f);
-            pitch = (float) (-(Math.atan2(lastY, d2) * 180.0 / Math.PI)) + RandomUtils.nextFloat(1.0f, 6.0f);
-        }
-        yaw = mc.player.yRot + RotationUtil.getSensitivity(MathHelper.wrapDegrees(yaw - mc.player.yRot));
-        pitch = mc.player.xRot + RotationUtil.getSensitivity(MathHelper.wrapDegrees(pitch - mc.player.xRot));
-        pitch = MathHelper.clamp(pitch, -89.999f, 87.5f);
-        Yaw += RotationUtil.getSensitivity(MathHelper.clamp(MathHelper.wrapDegrees(yaw - Yaw), -80.0f, 80.0f));
-        Pitch += RotationUtil.getSensitivity(MathHelper.clamp(pitch - Pitch, -5.0f, 5.0f));
-        return new float[]{Yaw, Pitch};
+    public static Vector2f getMouseScaled(double mX, double mY){
+        int scale = mc.getWindow().calculateScale(mc.options.guiScale, mc.isEnforceUnicode());
+        return new Vector2f((float) (mX * scale / 2), (float) (mY * scale / 2));
     }
 
     public static void bool(boolean state, Runnable True, Runnable False) {

@@ -25,7 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static com.denger.client.utils.TextureUtil.uploadTextureImageAllocate;
 import static com.denger.client.utils.rect.RenderUtil.resetColor;
 import static com.mojang.blaze3d.platform.GlStateManager.*;
@@ -36,7 +36,6 @@ public class RectUtil {
     public static ShaderUtil roundedShader = new ShaderUtil("roundedRect");
     private static final ShaderUtil roundedGradientShader = new ShaderUtil("roundedRectGradient");
     public static ShaderUtil roundedOutlineShader = new ShaderUtil("roundRectOutline");
-    public static ShaderUtil cirlce = new ShaderUtil("jumpcirlce");
     private static final ShaderUtil ROUNDED_TEXTURE = new ShaderUtil("rounded_texture");
     public static final ShaderUtil OUTLINE = new ShaderUtil("outline");
     public static final HashMap<Integer, Integer> glowCache = new HashMap();
@@ -80,17 +79,6 @@ public class RectUtil {
         RenderUtil.drawFinishShader();
     }
 
-
-    public static void drawJumpCircle(float time) {
-        RenderUtil.drawSetupShader();
-        cirlce.load();
-        MainWindow mainWindow = mc.getWindow();
-        GL30.glUniform2f(GL30.glGetUniformLocation(cirlce.getProgramID(), "resolution"), mainWindow.getGuiScaledWidth(), mainWindow.getGuiScaledHeight());
-        GL30.glUniform1f(GL30.glGetUniformLocation(cirlce.getProgramID(), "time"), (System.currentTimeMillis() - cirlce.getTime()) / 1000f / time);
-        ShaderUtil.drawQuads();
-        cirlce.unload();
-        RenderUtil.drawFinishShader();
-    }
 
     public static void drawRound(MatrixStack ms, float x, float y, float width, float height, float radius, int color) {
         RenderUtil.drawSetupShader();

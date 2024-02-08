@@ -10,12 +10,13 @@ import com.denger.client.modules.mods.hud.ModuleList;
 import com.denger.client.modules.mods.hud.Overlay;
 import com.denger.client.modules.mods.misc.*;
 import com.denger.client.modules.mods.render.*;
+import com.denger.client.utils.Crypt;
 import net.minecraft.world.Init;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 public class RegisterModule {
     private ArrayList<Module> modules;
@@ -76,8 +77,12 @@ public class RegisterModule {
                 NoCameraClip.class,
                 Hat.class,
                 Criticals.class,
-                SystemSounds.class
-
+                SystemSounds.class,
+                AutoFish.class,
+                DripMode.class,
+                CustomHand.class,
+                NoInteract.class,
+                NameProtect.class
         );
         if (Init.UID().equals("2")) {
             addModules(
@@ -89,20 +94,26 @@ public class RegisterModule {
 
             );
         }
+        modules.sort((person1, person2) -> {
+            String firstLetter1 = Crypt.decrypt(String.valueOf(person1.getName().charAt(0)));
+            String firstLetter2 = Crypt.decrypt(String.valueOf(person2.getName().charAt(0)));
+            return Character.compare(firstLetter1.charAt(0), firstLetter2.charAt(0));
+        });
+
     }
 
     public ArrayList<ShineModule> getModulesShine() {
         return modulesShine;
     }
 
-    public Module getModule(Class<? extends Module> module) {
+    public <T extends Module> T getModule(Class<T> module) {
         if (modulesInstance.containsKey(module)) {
-            return modulesInstance.get(module);
+            return (T) modulesInstance.get(module);
         } else {
             modulesInstance.put(module, modules.stream().filter(module1 -> {
                 return module == module1.getClass();
             }).findFirst().get());
-            return modulesInstance.get(module);
+            return (T) modulesInstance.get(module);
         }
     }
 
@@ -173,11 +184,9 @@ public class RegisterModule {
                     Setting setting = (Setting) field.get(module);
                     setting.setName(annotat.name());
                     setting.setModule(module);
-                    if (annotat.toAdd()) {
-                        module.getSettings().add(setting);
-                        getInstance.getSettingManager().addSett(setting);
-                    }
-
+                    module.getSettings().add(setting);
+                    getInstance.getSettingManager().addSett(setting);
+                    setting.setToRender(annotat.toAdd());
 
                 }
             } catch (IllegalAccessException e) {

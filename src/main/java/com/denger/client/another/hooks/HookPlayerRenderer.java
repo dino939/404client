@@ -2,6 +2,8 @@ package com.denger.client.another.hooks;
 
 import com.denger.client.another.hooks.models.CapeLayerHook;
 import com.denger.client.another.hooks.models.HeadLayerHook;
+import com.denger.client.another.hooks.models.RenderLayerHook;
+import com.denger.client.modules.mods.render.DripMode;
 import com.denger.client.modules.mods.render.NameTag2;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -26,10 +28,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 public class HookPlayerRenderer extends PlayerRenderer {
-
+    public DripMode dripMode = getInstance.getRegisterModule().getModule(DripMode.class);
 
     public HookPlayerRenderer(EntityRendererManager renderManager) {
         super(renderManager);
@@ -45,6 +47,7 @@ public class HookPlayerRenderer extends PlayerRenderer {
         this.addLayer(new ParrotVariantLayer<>(this));
         this.addLayer(new SpinAttackEffectLayer<>(this));
         this.addLayer(new BeeStingerLayer<>(this));
+        this.addLayer(new RenderLayerHook(this));
     }
 
 
@@ -61,11 +64,13 @@ public class HookPlayerRenderer extends PlayerRenderer {
         this.addLayer(new ParrotVariantLayer<>(this));
         this.addLayer(new SpinAttackEffectLayer<>(this));
         this.addLayer(new BeeStingerLayer<>(this));
-
+        this.addLayer(new RenderLayerHook(this));
     }
 
     @Override
     public void render(AbstractClientPlayerEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_) {
+
+
         this.setModelProperties(p_225623_1_);
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderPlayerEvent.Pre(p_225623_1_, this, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_)))
             return;
@@ -77,9 +82,23 @@ public class HookPlayerRenderer extends PlayerRenderer {
         boolean shouldSit = p_225623_1_.isPassenger() && (p_225623_1_.getVehicle() != null && p_225623_1_.getVehicle().shouldRiderSit());
         this.model.riding = shouldSit;
         this.model.young = p_225623_1_.isBaby();
-        float  f = MathHelper.rotLerp(p_225623_3_, p_225623_1_.yBodyRotO, p_225623_1_.yBodyRot);
+        float f = MathHelper.rotLerp(p_225623_3_, p_225623_1_.yBodyRotO, p_225623_1_.yBodyRot);
 
-        float  f1 = MathHelper.rotLerp(p_225623_3_, p_225623_1_.yHeadRotO, p_225623_1_.yHeadRot);
+        float f1 = MathHelper.rotLerp(p_225623_3_, p_225623_1_.yHeadRotO, p_225623_1_.yHeadRot);
+
+        if (dripMode.getState()) {
+            if (dripMode.mod.getCurent().equals("Custom")) {
+                p_225623_4_.scale(dripMode.xz.getVal(), dripMode.y.getVal(), dripMode.xz.getVal());
+            } else if (dripMode.mod.getCurent().equals("AutoDrip")) {
+                float s = 0.03f;
+                dripMode.anim.setSpeed(s);
+                dripMode.anim2.setSpeed(s);
+                float drip = dripMode.anim.getAnim();
+                float drip2 = dripMode.anim2.getAnim();
+                p_225623_4_.scale(drip, drip2, drip);
+            }
+
+        }
 
 
         float f2 = f1 - f;
@@ -160,7 +179,7 @@ public class HookPlayerRenderer extends PlayerRenderer {
         net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(p_225623_1_, p_225623_1_.getDisplayName(), this, p_225623_4_, p_225623_5_, p_225623_6_, p_225623_3_);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
         if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(p_225623_1_))) {
-            if (!getInstance.getRegisterModule().isEnable(NameTag2.class)){
+            if (!getInstance.getRegisterModule().isEnable(NameTag2.class)) {
                 this.renderNameTag(p_225623_1_, renderNameplateEvent.getContent(), p_225623_4_, p_225623_5_, p_225623_6_);
             }
         }

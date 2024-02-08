@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.SEntityPacket;
 import net.minecraft.network.play.server.SHeldItemChangePacket;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "OpQbdlfu", category = Category.COMBAT)
 public class NoPacket extends Module {

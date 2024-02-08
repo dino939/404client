@@ -7,7 +7,7 @@ import com.denger.client.modules.another.ModuleTarget;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "EfbuiDppset", category = Category.MISC)
 public class DethCoords extends Module {

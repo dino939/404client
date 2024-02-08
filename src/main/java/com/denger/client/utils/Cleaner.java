@@ -8,6 +8,7 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -136,7 +137,7 @@ public class Cleaner {
 
 
         Pointer processHandle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_ALL_ACCESS, false,Integer.parseInt(pid.toString()));
-        pid.clear();
+
 
         Kernel32.MEMORY_BASIC_INFORMATION64 mem_basic_info = new Kernel32.MEMORY_BASIC_INFORMATION64();
         IntByReference bytesRead = new IntByReference(0);
@@ -178,7 +179,7 @@ public class Cleaner {
                             }
                         }
                         if (j == length) {
-                            byte[] replacement = getRandomBytes(length);
+                            byte[] replacement = GetRandomBytes(length);
                             Kernel32.INSTANCE.WriteProcessMemory(processHandle, mem_basic_info.BaseAddress + i,
                                     replacement, replacement.length, bytesRead);
                             found++;
@@ -199,9 +200,26 @@ public class Cleaner {
         working = false;
 
     }
-    private static byte[] getRandomBytes(int length) {
-        byte[] bytes = new byte[length];
-        new Random().nextBytes(bytes);
-        return bytes;
+    static HashMap<Integer, byte[]> myHashMap = new HashMap<>();
+    public static byte[] GetRandomBytes(int length)
+    {
+        if (myHashMap.containsKey(length))
+        {
+            return myHashMap.get(length);
+        }
+        else
+        {
+            byte[] bytes = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                bytes[i] = (byte)0x00;
+            }
+            myHashMap.put(length,bytes);
+            return myHashMap.get(length);
+        }
+
+
     }
+
+
 }

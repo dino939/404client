@@ -6,7 +6,7 @@ Description: Rendering gui
 
 java.lang.NullPointerException: Rendering gui
 	at net.minecraft.client.renderer.texture.DynamicTexture.<init>(DynamicTexture.java:25) ~[forge-1.16.5-36.2.39_mapped_official_1.16.5-recomp.jar:?] {re:classloading,pl:runtimedistcleaner:A}
-	at com.denger.client.another.resource.NativeManager.getResource(NativeManager.java:46) ~[main/:?] {re:classloading}
+	at com.denger.client.another.resource.ImageManager.getResource(NativeManager.java:46) ~[main/:?] {re:classloading}
 	at com.denger.client.screens.main.MainScreen.lambda$render$3(MainScreen.java:77) ~[main/:?] {re:classloading}
 	at com.denger.client.utils.rect.RenderUtil.scale(RenderUtil.java:273) ~[main/:?] {re:classloading}
 	at com.denger.client.screens.main.MainScreen.render(MainScreen.java:74) ~[main/:?] {re:classloading}
@@ -36,7 +36,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
 Thread: Render thread
 Stacktrace:
 	at net.minecraft.client.renderer.texture.DynamicTexture.<init>(DynamicTexture.java:25) ~[forge:?] {re:classloading,pl:runtimedistcleaner:A}
-	at com.denger.client.another.resource.NativeManager.getResource(NativeManager.java:46) ~[?:?] {re:classloading}
+	at com.denger.client.another.resource.ImageManager.getResource(NativeManager.java:46) ~[?:?] {re:classloading}
 	at com.denger.client.screens.main.MainScreen.lambda$render$3(MainScreen.java:77) ~[?:?] {re:classloading}
 	at com.denger.client.utils.rect.RenderUtil.scale(RenderUtil.java:273) ~[?:?] {re:classloading}
 	at com.denger.client.screens.main.MainScreen.render(MainScreen.java:74) ~[?:?] {re:classloading}

@@ -5,7 +5,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.math.vector.Vector4f;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class ESPUtil {
     private static Matrix4f projectionMatrix = new Matrix4f();

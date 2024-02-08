@@ -4,7 +4,7 @@ import com.denger.client.utils.ColorUtil;
 
 import java.awt.*;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 import static com.denger.client.utils.ColorUtil.TwoColoreffect;
 
 public enum Themes {
@@ -32,10 +32,10 @@ public enum Themes {
         this.color2 = color2;
     }
      public Color getC(){
-        return  getInstance.executeNative.customColor?getInstance.executeNative.desing.color1.getColor() : color;
+        return  getInstance.execute.customColor?getInstance.execute.desing.color1.getColor() : color;
     }
     public Color getC2(){
-        return  getInstance.executeNative.customColor?getInstance.executeNative.desing.color2.getColor() : color2;
+        return  getInstance.execute.customColor?getInstance.execute.desing.color2.getColor() : color2;
     }
     public int getColor() {
         return TwoColoreffect(getC(), getC2(), Math.abs(System.currentTimeMillis() / 10L) / 100.0 + 6.0F / 60).getRGB();

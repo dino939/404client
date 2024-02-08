@@ -2,7 +2,7 @@ package com.denger.client.screens.main.comp;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 public class Scene {
     public void init(){}

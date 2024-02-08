@@ -7,7 +7,7 @@ import com.denger.client.modules.another.ModuleTarget;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "OpFggfdu",category = Category.MISC)
 public class NoEffect extends Module {

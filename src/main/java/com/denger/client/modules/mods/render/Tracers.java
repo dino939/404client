@@ -8,7 +8,6 @@ import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.utils.ColorUtil;
 import com.denger.client.utils.ESPUtil;
 import com.denger.client.utils.rect.RenderUtil;
-import com.denger.client.utils.rect.notStatic.Bloom3D;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.IRenderCall;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -22,8 +21,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "Usbdfst", category = Category.RENDER)
 public class Tracers extends Module {

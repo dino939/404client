@@ -11,12 +11,11 @@ import com.denger.client.another.settings.sett.MultiBoolSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
-import com.denger.client.utils.AnimationUtils;
+import com.denger.client.utils.anims.Animation;
 import com.denger.client.utils.MathUtils;
 import com.denger.client.utils.PlayerUtil;
 import com.denger.client.utils.Utils;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -30,7 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,8 +37,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 import static com.denger.client.utils.MathUtils.clamp;
 import static com.denger.client.utils.MathUtils.wrapDegrees;
 import static java.lang.Math.*;
@@ -75,7 +73,7 @@ public class Aura extends Module {
     BoolSetting poFov = new BoolSetting().setBol(true);
     @SettingTarget(name = "Сортировка по")
     MultiBoolSetting sortPo = (MultiBoolSetting) new MultiBoolSetting().addBools(poHp, poDist, poFov).setVisible(() -> getTarg.getCurent().equals("Сортировка"));
-    AnimationUtils yawAnim = new AnimationUtils(0.0f, 0.0f, 0.1f), pitchAnim = new AnimationUtils(0.0f, 0.0f, 0.1f);
+    Animation yawAnim = new Animation(0.0f, 0.0f, 0.1f), pitchAnim = new Animation(0.0f, 0.0f, 0.1f);
     float xRotC = 0, yRotC = 0;
     Random random = new Random();
     boolean critflag;

@@ -8,8 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.play.client.CUseEntityPacket;
 import net.minecraft.util.math.EntityRayTraceResult;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "OpBuubdlGsjfoet",category = Category.COMBAT)
 public class NoAttackFriends extends Module {

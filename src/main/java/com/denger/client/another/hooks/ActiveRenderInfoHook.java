@@ -16,8 +16,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.IBlockReader;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.utils.AnimationUtils.fast;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.utils.MathUtils.fast;
 
 public class ActiveRenderInfoHook extends ActiveRenderInfo {
     private boolean initialized;

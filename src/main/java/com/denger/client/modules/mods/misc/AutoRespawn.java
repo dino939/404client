@@ -8,7 +8,7 @@ import com.denger.client.modules.another.ModuleTarget;
 import net.minecraft.network.play.client.CClientStatusPacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "BvupSftqbxo",category = Category.MISC)
 public class AutoRespawn extends Module {

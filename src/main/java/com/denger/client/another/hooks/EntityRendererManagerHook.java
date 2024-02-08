@@ -20,6 +20,6 @@ public class EntityRendererManagerHook extends EntityRendererManager {
 
     @Override
     public <E extends Entity> void render(E p_229084_1_, double p_229084_2_, double p_229084_4_, double p_229084_6_, float p_229084_8_, float p_229084_9_, MatrixStack p_229084_10_, IRenderTypeBuffer p_229084_11_, int p_229084_12_) {
-        System.out.println(1);
+
     }
 }

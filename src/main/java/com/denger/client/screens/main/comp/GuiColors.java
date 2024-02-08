@@ -5,7 +5,7 @@ import com.denger.client.utils.ColorUtil;
 
 import java.awt.*;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 public enum GuiColors {
 

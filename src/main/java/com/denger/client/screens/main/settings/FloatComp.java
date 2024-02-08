@@ -11,8 +11,8 @@ import com.denger.client.screens.main.comp.GuiColors;
 
 import java.text.DecimalFormat;
 
-import static com.denger.client.MainNative.fontManager;
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.fontManager;
+import static com.denger.client.Main.getInstance;
 import static com.denger.client.screens.main.MainScreen.ishover;
 
 public class FloatComp extends SettComp {

@@ -10,7 +10,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameType;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "GsffDbn",category = Category.MISC)
 public class FreeCam extends Module {

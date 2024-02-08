@@ -9,7 +9,7 @@ import com.denger.client.modules.another.ModuleTarget;
 import net.minecraft.util.MovementInputFromOptions;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "HvjXbml", category = Category.MISC)
 public class GuiWalk extends Module {

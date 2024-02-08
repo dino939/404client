@@ -7,7 +7,7 @@ import com.denger.client.another.settings.sett.ModSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
-import com.denger.client.utils.AnimationUtils;
+import com.denger.client.utils.anims.Animation;
 import com.denger.client.utils.MathUtils;
 import com.denger.client.utils.Utils;
 import net.minecraft.block.Blocks;
@@ -21,7 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Comparator;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "LjmmBvsb", category = Category.COMBAT)
 public class KillAura extends Module {
@@ -35,16 +35,16 @@ public class KillAura extends Module {
 
     boolean critflag;
 
-    AnimationUtils yawAnim = new AnimationUtils(0.0f, 0.0f, 0.1f);
-    AnimationUtils pitchAnim = new AnimationUtils(0.0f, 0.0f, 0.1f);
+    Animation yawAnim = new Animation(0.0f, 0.0f, 0.1f);
+    Animation pitchAnim = new Animation(0.0f, 0.0f, 0.1f);
     private LivingEntity target;
     private Vector2f rotations = null;
 
     @Override
     public void onEnable() {
         assert mc.player != null;
-        this.yawAnim = new AnimationUtils(mc.player.yRot, mc.player.yRot, 0.1f);
-        this.pitchAnim = new AnimationUtils(mc.player.xRot, mc.player.xRot, 0.1f);
+        this.yawAnim = new Animation(mc.player.yRot, mc.player.yRot, 0.1f);
+        this.pitchAnim = new Animation(mc.player.xRot, mc.player.xRot, 0.1f);
     }
 
 

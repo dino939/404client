@@ -27,13 +27,35 @@ public class Gif {
     private ImageReader imageReader;
     private int frameCooldown;
 
-    public Gif(String url, int frameCooldown) {
+    public Gif(InputStream in, int frameCooldown) {
         util = new TimerUtil();
         frames = new HashMap<>();
         this.frameCooldown = frameCooldown;
 
         try {
-            InputStream in = new URL(url).openStream();
+            ImageInputStream imageInputStream = ImageIO.createImageInputStream(in);
+            if (imageInputStream != null) {
+                imageReader = ImageIO.getImageReaders(imageInputStream).next();
+                imageReader.setInput(imageInputStream);
+                framesCount = imageReader.getNumImages(true);
+                for (int i = 0; i < framesCount; i++) {
+                    frames.put(i, createTextureFromFrame(i));
+                }
+            } else {
+                throw new IOException("Ошибка при создании ImageInputStream из входного потока");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Gif(String in2, int frameCooldown) {
+        util = new TimerUtil();
+        frames = new HashMap<>();
+        this.frameCooldown = frameCooldown;
+
+        try {
+            InputStream in = new URL(in2).openStream();
             ImageInputStream imageInputStream = ImageIO.createImageInputStream(in);
             if (imageInputStream != null) {
                 imageReader = ImageIO.getImageReaders(imageInputStream).next();
@@ -51,6 +73,9 @@ public class Gif {
     }
 
     public Gif(String url) {
+        this(url, 100);
+    }
+    public Gif(InputStream url) {
         this(url, 100);
     }
 

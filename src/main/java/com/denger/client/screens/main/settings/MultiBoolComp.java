@@ -6,31 +6,28 @@ import com.denger.client.another.settings.sett.MultiBoolSetting;
 import com.denger.client.screens.main.MainScreen;
 import com.denger.client.screens.main.comp.GuiColors;
 import com.denger.client.screens.main.comp.SettComp;
-import com.denger.client.utils.AnimationUtils;
+import com.denger.client.utils.anims.Animation;
 import com.denger.client.utils.ColorUtil;
-import com.denger.client.utils.Transform;
-import com.denger.client.utils.Utils;
-import com.denger.client.utils.rect.RectUtil;
 import com.denger.client.utils.rect.RenderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import java.awt.*;
 import java.util.HashMap;
 
-import static com.denger.client.MainNative.fontManager;
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.fontManager;
+import static com.denger.client.Main.getInstance;
 
 public class MultiBoolComp extends SettComp {
     boolean open = false;
     MultiBoolSetting setting;
-    HashMap<BoolSetting, AnimationUtils> hashMap;
-    AnimationUtils anim = new AnimationUtils(-90,-90,0.2f);
+    HashMap<BoolSetting, Animation> hashMap;
+    Animation anim = new Animation(-90,-90,0.2f);
     public MultiBoolComp(Setting s) {
         super(s);
         setting = (MultiBoolSetting) s;
         hashMap = new HashMap<>();
         setting.getBoolSettings().forEach(set -> {
-            hashMap.put(set, new AnimationUtils(set.getState() ? 1 : 0.4f, set.getState() ? 1 : 0.4f, 0.2f));
+            hashMap.put(set, new Animation(set.getState() ? 1 : 0.4f, set.getState() ? 1 : 0.4f, 0.2f));
         });
     }
 

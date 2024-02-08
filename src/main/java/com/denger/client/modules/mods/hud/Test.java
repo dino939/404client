@@ -7,7 +7,7 @@ import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.world.GameType;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 
 @ModuleTarget(ModName = "BlaBla", category = Category.HUD)

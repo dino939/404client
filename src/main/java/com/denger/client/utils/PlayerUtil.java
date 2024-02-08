@@ -8,7 +8,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class PlayerUtil {
 

@@ -11,7 +11,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.fontManager;
+import static com.denger.client.Main.fontManager;
 import static com.denger.client.screens.main.MainScreen.ishover;
 
 public class MoulePanel {

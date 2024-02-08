@@ -4,9 +4,8 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.ChannelPromise;
-import net.minecraft.network.IPacket;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class ConnectionUtil extends ChannelDuplexHandler {
     public enum Side {IN, OUT}

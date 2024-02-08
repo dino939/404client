@@ -4,6 +4,7 @@ import com.denger.client.another.networkutills.ConnectionUtil;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.settings.sett.FloatSetting;
+import com.denger.client.another.settings.sett.MultiBoolSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
@@ -22,33 +23,44 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "YSbz", category = Category.RENDER)
 public class XRay extends Module {
     public static ArrayList<Blockinfo> render = new ArrayList<>();
     Thread search;
-    @SettingTarget(name = "Обломки")
+    @SettingTarget(name = "Обломки",toAdd = false)
     private BoolSetting Ancient_Debris = new BoolSetting();
-    @SettingTarget(name = "Алмазы")
+    @SettingTarget(name = "Алмазы",toAdd = false)
     private BoolSetting DIAMOND_ORE = new BoolSetting();
-    @SettingTarget(name = "Редстоун")
+    @SettingTarget(name = "Редстоун",toAdd = false)
     private BoolSetting REDSTONE_ORE = new BoolSetting();
-    @SettingTarget(name = "Лазурит")
+    @SettingTarget(name = "Лазурит",toAdd = false)
     private BoolSetting LAPIS_ORE = new BoolSetting();
-    @SettingTarget(name = "Железо")
+    @SettingTarget(name = "Железо",toAdd = false)
     private BoolSetting IRON_ORE = new BoolSetting();
-    @SettingTarget(name = "Золото")
+    @SettingTarget(name = "Золото",toAdd = false)
     private BoolSetting GOLD_ORE = new BoolSetting();
-    @SettingTarget(name = "Изумруды")
+    @SettingTarget(name = "Изумруды",toAdd = false)
     private BoolSetting EMERALD_ORE = new BoolSetting();
-    @SettingTarget(name = "Уголь")
+    @SettingTarget(name = "Уголь",toAdd = false)
     private BoolSetting COAL_ORE = new BoolSetting();
-    @SettingTarget(name = "Квартц")
+    @SettingTarget(name = "Квартц",toAdd = false)
     private BoolSetting QUARTZ_ORE = new BoolSetting();
+    @SettingTarget(name = "Спавнер",toAdd = false)
+    private BoolSetting spawner = new BoolSetting();
+    @SettingTarget(name = "Сундуки",toAdd = false)
+    private BoolSetting chest = new BoolSetting();
+    @SettingTarget(name = "Шалкер",toAdd = false)
+    private BoolSetting shulker = new BoolSetting();
+
     @SettingTarget(name = "Дистанция")
     FloatSetting distanciya = new FloatSetting().setMin(0).setMax(100).setVal(25);
 
+    @SettingTarget(name = "Блоки")
+    MultiBoolSetting hui = new MultiBoolSetting().addBools(
+            Ancient_Debris,DIAMOND_ORE,REDSTONE_ORE,LAPIS_ORE,IRON_ORE,GOLD_ORE,EMERALD_ORE,COAL_ORE,QUARTZ_ORE,spawner,chest,shulker
+    );
 
     @Override
     public void onEnable() {
@@ -69,7 +81,7 @@ public class XRay extends Module {
     public void on3D(RenderWorldLastEvent e) {
         try {
             for (Blockinfo bi : render) {
-                RenderUtil.renderBox(e.getMatrixStack(), bi.getX(), bi.getY(), bi.getZ(), bi.getColor());
+                RenderUtil.renderBox(e.getMatrixStack(), bi.getX()-1, bi.getY(), bi.getZ(), bi.getColor());
             }
         } catch (Throwable ignored) {
         }
@@ -119,6 +131,18 @@ public class XRay extends Module {
                         if (currentState.getBlock().equals(Blocks.NETHER_QUARTZ_ORE)) {
                             if (!QUARTZ_ORE.getState()) continue;
                             render.add(new Blockinfo(chunkX, chunkY, chunkZ, new Color(0xFFFFFFFF, true).hashCode(), currentState.getBlock().getName().getString()));
+                        }
+                        if (currentState.getBlock().getDescriptionId().contains("shulker")) {
+                            if (!shulker.getState()) continue;
+                            render.add(new Blockinfo(chunkX, chunkY, chunkZ, new Color(0xFF8600FF, true).hashCode(), currentState.getBlock().getName().getString()));
+                        }
+                        if (currentState.getBlock() .getDescriptionId().contains("chest")) {
+                            if (!chest.getState()) continue;
+                            render.add(new Blockinfo(chunkX, chunkY, chunkZ, new Color(0xFFFF6200, true).hashCode(), currentState.getBlock().getName().getString()));
+                        }
+                        if (currentState.getBlock() == Blocks.SPAWNER) {
+                            if (!spawner.getState()) continue;
+                            render.add(new Blockinfo(chunkX, chunkY, chunkZ, new Color(0xFF527370, true).hashCode(), currentState.getBlock().getName().getString()));
                         }
                     }
                 }

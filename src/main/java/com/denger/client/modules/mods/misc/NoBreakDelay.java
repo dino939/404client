@@ -9,7 +9,7 @@ import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "OpCsfblEfmbz",category = Category.MISC)
 public class NoBreakDelay extends Module {

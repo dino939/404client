@@ -4,7 +4,8 @@
 
 package com.denger.client.another.hooks.forge.even.addevents;
 
-import com.denger.client.MainNative;
+import com.denger.client.Execute;
+import com.denger.client.Main;
 import com.denger.client.utils.ReflectFileld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.EventBus;
@@ -19,10 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EventManagerForge {
 
-    MainNative instance;
-    public EventManagerForge(MainNative instance){
-        this.instance = instance;
-        register(instance.executeNative);
+    Main instance;
+    public EventManagerForge(Execute instance){
+        register(instance);
     }
     private int busID = (int) new ReflectFileld(MinecraftForge.EVENT_BUS, EventBus.class, 5).getValue();
 

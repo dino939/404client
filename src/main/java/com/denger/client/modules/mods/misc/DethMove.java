@@ -2,7 +2,7 @@ package com.denger.client.modules.mods.misc;
 
 import com.denger.client.another.hooks.forge.even.addevents.Event2D;
 import com.denger.client.another.hooks.forge.even.addevents.WorldUpdate;
-import com.denger.client.another.resource.NativeManager;
+import com.denger.client.another.resource.ImageManager;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.sound.SoundManager;
@@ -22,8 +22,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Objects;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "EfuiNpwf", category = Category.MISC)
 public class DethMove extends Module {
@@ -78,7 +78,7 @@ public class DethMove extends Module {
                 RectUtil.drawRect(0, 0, MathUtils.calc(mc.getWindow().getGuiScaledWidth()), MathUtils.calc(mc.getWindow().getGuiScaledHeight()), -1);
             });
             RenderUtil.scale(0, 0, MathUtils.calc(mc.getWindow().getGuiScaledWidth()), MathUtils.calc(mc.getWindow().getGuiScaledHeight()), anim.getAnim(), () -> {
-                RenderUtil.drawImage(e.getMs(), NativeManager.getResource("imagessss", getInstance.getNativeManager().image), ((float) MathUtils.calc(mc.getWindow().getGuiScaledWidth()) / 2) - 200, ((float) MathUtils.calc(mc.getWindow().getGuiScaledHeight()) / 2) - 50, 400, 100, anim.getAnim() * 255);
+                RenderUtil.drawImage(e.getMs(), ImageManager.getResource("wasted.png"), ((float) MathUtils.calc(mc.getWindow().getGuiScaledWidth()) / 2) - 200, ((float) MathUtils.calc(mc.getWindow().getGuiScaledHeight()) / 2) - 50, 400, 100, anim.getAnim() * 255);
 
             });
         }

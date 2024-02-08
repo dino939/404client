@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL30;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class BlurUtil {
     private static MainWindow window = mc.getWindow();

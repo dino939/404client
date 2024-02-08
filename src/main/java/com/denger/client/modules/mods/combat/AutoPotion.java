@@ -13,7 +13,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "BvupQpujpo", category = Category.COMBAT)
 public class AutoPotion extends Module {

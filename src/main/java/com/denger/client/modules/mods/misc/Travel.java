@@ -8,7 +8,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "Usbwfm",category = Category.MISC)
 public class Travel extends Module {

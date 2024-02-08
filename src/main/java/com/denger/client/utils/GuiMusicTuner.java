@@ -1,5 +1,7 @@
 package com.denger.client.utils;
 
+import com.denger.client.utils.anims.Animation;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -10,7 +12,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.function.Supplier;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 
 public class GuiMusicTuner {
@@ -18,7 +20,7 @@ public class GuiMusicTuner {
     String forceMusicName;
     String tempDirPath = System.getProperty("java.io.tmpdir");
     String format = ".wav";
-    AnimationUtils volume = new AnimationUtils(0.0f, 0.0f, 0.01f);
+    Animation volume = new Animation(0.0f, 0.0f, 0.01f);
     float maxVolume;
     boolean wantToChangeTrack;
     Clip clip;

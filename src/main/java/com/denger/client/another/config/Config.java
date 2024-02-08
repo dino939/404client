@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import java.io.File;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 
 public final class Config

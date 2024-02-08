@@ -6,6 +6,7 @@ import com.denger.client.utils.ColorUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -23,7 +24,7 @@ import org.lwjgl.opengl.GL46;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static com.mojang.blaze3d.platform.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
@@ -38,7 +39,7 @@ public class RenderUtil {
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
         RenderSystem.shadeModel(7425);
-        RenderSystem.depthMask( false);
+        RenderSystem.depthMask(false);
     }
 
     public static void drawImageId(MatrixStack ms, int url, float x, float y, float width, float height, int color) {
@@ -52,6 +53,7 @@ public class RenderUtil {
 
         _disableBlend();
     }
+
     public static void drawLine(double StartX, double StartY, double EndX, double EndY, float thikness, int color) {
         RenderUtil.setupRenderRect();
         GL20.glEnable(2848);
@@ -64,6 +66,7 @@ public class RenderUtil {
         GL20.glDisable(2848);
         RenderUtil.endRenderRect();
     }
+
     public static void endRender() {
         RenderSystem.depthMask(true);
         RenderSystem.shadeModel(7424);
@@ -72,6 +75,33 @@ public class RenderUtil {
         RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
         RenderSystem.enableDepthTest();
+    }
+
+    public static void setScaleRender(int scale) {
+        MainWindow mw = Minecraft.getInstance().getWindow();
+        mw.setGuiScale(scale);
+        RenderSystem.clear(256, Minecraft.ON_OSX);
+        GlStateManager._matrixMode(5889);
+        GlStateManager._loadIdentity();
+        GlStateManager._ortho(0D, mw.getGuiScaledWidth(), mw.getGuiScaledHeight(),
+                0, 1000D, 30000D);
+        GlStateManager._matrixMode(5888);
+        GlStateManager._loadIdentity();
+        GlStateManager._translatef(0, 0, -2000);
+    }
+
+    public static void setScaleRenderStandar() {
+        MainWindow mw = Minecraft.getInstance().getWindow();
+        int scale = mw.calculateScale(mc.options.guiScale, mc.isEnforceUnicode());
+        mw.setGuiScale(scale);
+        RenderSystem.clear(256, Minecraft.ON_OSX);
+        GlStateManager._matrixMode(5889);
+        GlStateManager._loadIdentity();
+        GlStateManager._ortho(0D, mw.getGuiScaledWidth(), mw.getGuiScaledHeight(),
+                0, 1000D, 30000D);
+        GlStateManager._matrixMode(5888);
+        GlStateManager._loadIdentity();
+        GlStateManager._translatef(0, 0, -2000);
     }
 
 
@@ -98,20 +128,21 @@ public class RenderUtil {
         return color;
     }
 
-    public static void setUp3D(boolean blend){
+    public static void setUp3D(boolean blend) {
         GL46.glDepthMask(false);
         GL46.glDisable(2884);
         GL46.glEnable(3042);
         GL46.glDisable(3008);
-        if (blend){
+        if (blend) {
             GL46.glEnable(GL46.GL_BLEND);
             GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE);
         }
 
 
     }
-    public static void end3D(boolean blend){
-        if (blend){
+
+    public static void end3D(boolean blend) {
+        if (blend) {
             GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
             GL46.glDisable(GL46.GL_BLEND);
         }

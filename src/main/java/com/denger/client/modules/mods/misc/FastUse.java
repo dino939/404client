@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "GbtuVtf", category = Category.MISC)
 public class FastUse extends Module {

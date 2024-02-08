@@ -17,8 +17,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "IjuCpy",category = Category.COMBAT)
 public class HitBox extends Module {

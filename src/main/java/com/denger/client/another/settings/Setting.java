@@ -10,7 +10,7 @@ public abstract class Setting {
     private String name;
     private Supplier<Boolean> visible = ()-> true;
     private Module module;
-
+    boolean toRender = true;
     public Setting() {
     }
 
@@ -30,6 +30,10 @@ public abstract class Setting {
     }
 
 
+    public Setting setToRender(boolean toRender) {
+        this.toRender = toRender;
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -40,6 +44,6 @@ public abstract class Setting {
     }
 
     public boolean getVisible() {
-        return visible.get();
+        return toRender ? visible.get(): false;
     }
 }

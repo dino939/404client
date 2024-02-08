@@ -8,7 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.*;
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 public final class ConfigManager {
     public static final File configDirectory = new File(System.getProperty("java.io.tmpdir"));

@@ -10,8 +10,8 @@ import net.minecraft.client.gui.IngameGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 
 public class EventsHandlerUtil {
@@ -37,8 +37,9 @@ public class EventsHandlerUtil {
                 if (!hooked) {
                     hooked = !hooked;
                     try {
-                        Utils.sleepVoid(() -> getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32"), 5000);
+                        Utils.sleepVoid(() -> getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32"), 200);
                     } catch (Exception e) {
+                        System.out.println(e.getCause().getMessage());
                         getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32");
                     }
                     new ReflectFileld(mc, Minecraft.class, IngameGui.class).setValueFinal(new IngameGuiHook(mc));

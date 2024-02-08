@@ -22,8 +22,8 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "UbshfuFtq", category = Category.RENDER)
 public class TargetEsp extends Module {

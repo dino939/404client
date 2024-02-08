@@ -8,7 +8,7 @@ import net.minecraft.client.util.ClientRecipeBook;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.stats.StatisticsManager;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class PlayerControllerHook extends PlayerController {
 

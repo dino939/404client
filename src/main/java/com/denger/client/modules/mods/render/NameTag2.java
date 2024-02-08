@@ -4,7 +4,6 @@ import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.utils.Utils;
-import com.denger.client.utils.rect.RectUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -18,9 +17,7 @@ import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.awt.*;
-
-import static com.denger.client.MainNative.*;
+import static com.denger.client.Main.*;
 
 @ModuleTarget(ModName = "ObnfUbh", category = Category.RENDER)
 public class NameTag2 extends Module {

@@ -3,6 +3,7 @@ package com.denger.client.modules.mods.render;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
 import com.denger.client.another.settings.sett.FloatSetting;
+import com.denger.client.another.settings.sett.MultiBoolSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
@@ -25,37 +26,44 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "YSbzCzqbtt", category = Category.RENDER)
 
 public class XRayBypass extends Module {
-    @SettingTarget(name = "Обломки")
+    @SettingTarget(name = "Обломки",toAdd = false)
     private BoolSetting Ancient_Debris = new BoolSetting();
-    @SettingTarget(name = "Алмазы")
+    @SettingTarget(name = "Алмазы",toAdd = false)
     private BoolSetting DIAMOND_ORE = new BoolSetting();
-    @SettingTarget(name = "Редстоун")
+    @SettingTarget(name = "Редстоун",toAdd = false)
     private BoolSetting REDSTONE_ORE = new BoolSetting();
-    @SettingTarget(name = "Лазурит")
+    @SettingTarget(name = "Лазурит",toAdd = false)
     private BoolSetting LAPIS_ORE = new BoolSetting();
-    @SettingTarget(name = "Железо")
+    @SettingTarget(name = "Железо",toAdd = false)
     private BoolSetting IRON_ORE = new BoolSetting();
-    @SettingTarget(name = "Золото")
+    @SettingTarget(name = "Золото",toAdd = false)
     private BoolSetting GOLD_ORE = new BoolSetting();
-    @SettingTarget(name = "Изумруды")
+    @SettingTarget(name = "Изумруды",toAdd = false)
     private BoolSetting EMERALD_ORE = new BoolSetting();
-    @SettingTarget(name = "Уголь")
+    @SettingTarget(name = "Уголь",toAdd = false)
     private BoolSetting COAL_ORE = new BoolSetting();
-    @SettingTarget(name = "Квартц")
+    @SettingTarget(name = "Квартц",toAdd = false)
     private BoolSetting QUARTZ_ORE = new BoolSetting();
+    @SettingTarget(name = "Сундуки",toAdd = false)
+    private BoolSetting chest = new BoolSetting();
+    @SettingTarget(name = "Шалкер",toAdd = false)
+    private BoolSetting shulker = new BoolSetting();
+    @SettingTarget(name = "Спавнер",toAdd = false)
+    private BoolSetting spawner = new BoolSetting();
+    ArrayList<BlockInfoUtil> blockInfoUtils = new ArrayList<>(), blockInfoUtilsProven = new ArrayList<>();
     @SettingTarget(name = "Дистанция")
     FloatSetting distanciya = new FloatSetting().setMin(0).setMax(100).setVal(25);
     @SettingTarget(name = "Задержка")
     FloatSetting zaderjca = new FloatSetting().setMin(0).setMax(50).setVal(20);
-
-    ArrayList<BlockInfoUtil> blockInfoUtils = new ArrayList<>(), blockInfoUtilsProven = new ArrayList<>();
-
-
+    @SettingTarget(name = "Блоки")
+    MultiBoolSetting hui = new MultiBoolSetting().addBools(
+            Ancient_Debris,DIAMOND_ORE,REDSTONE_ORE,LAPIS_ORE,IRON_ORE,GOLD_ORE,EMERALD_ORE,COAL_ORE,QUARTZ_ORE,spawner,chest,shulker
+    );
     @Override
     public void onEnable() {
         for (double chunkX = mc.player.getX() - distanciya.getVal(); chunkX <= mc.player.getX() + distanciya.getVal(); chunkX++) {
@@ -71,6 +79,9 @@ public class XRayBypass extends Module {
                     addOre(blockPos, Blocks.DIAMOND_ORE, DIAMOND_ORE.getState(), new Color(0, 0, 255));
                     addOre(blockPos, Blocks.EMERALD_ORE, EMERALD_ORE.getState(), new Color(0, 255, 0));
                     addOre(blockPos, Blocks.ANCIENT_DEBRIS, Ancient_Debris.getState(), new Color(255, 0, 0));
+                    addOre(blockPos, Blocks.SPAWNER, spawner.getState(), new Color(0xFF8600FF));
+                    addOre(blockPos, Blocks.CHEST, chest.getState(), new Color(0xFFFF6200));
+                    addOre(blockPos, Blocks.SHULKER_BOX, shulker.getState(), new Color(0xFF527370));
                 }
             }
         }

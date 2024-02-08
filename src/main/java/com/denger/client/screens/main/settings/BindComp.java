@@ -8,7 +8,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.denger.client.screens.main.comp.GuiColors;
 import org.lwjgl.glfw.GLFW;
 
-import static com.denger.client.MainNative.fontManager;
+import static com.denger.client.Main.fontManager;
 import static com.denger.client.screens.main.MainScreen.ishover;
 
 public class BindComp extends SettComp {

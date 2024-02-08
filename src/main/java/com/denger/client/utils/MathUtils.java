@@ -2,6 +2,7 @@
 package com.denger.client.utils;
 
 import net.minecraft.client.MainWindow;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -10,22 +11,35 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Random;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 public class MathUtils {
     private static final Random random = new Random();
 
     public static int scale = 2;
-
+    private static final float EPSILON = 1e-6f;
     public static double getNormalDouble(double d, int numberAfterZopyataya) {
         return (new BigDecimal(d)).setScale(numberAfterZopyataya, RoundingMode.HALF_EVEN).doubleValue();
     }
 
+    public static double deltaTime() {
+        float fps = Integer.parseInt(Minecraft.getInstance().fpsString.split(" ")[0]);
+        return fps > 0 ? (1.0000 / fps) : 1;
+    }
+
+    public static float fast(float end, float start, float multiple) {
+        return (1 - MathUtils.clamp((float) (deltaTime() * multiple), 0, 1)) * end + MathUtils.clamp((float) (deltaTime() * multiple), 0, 1) * start;
+    }
     public static double getNormalDouble(double d) {
         return (new BigDecimal(d)).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
     public static double sq(double a) {
         return a * a;
+    }
+
+
+    public static boolean approximatelyEqual(float a, float b) {
+        return Math.abs(a - b) < EPSILON;
     }
 
     public static double cathet(double h, double a) {
@@ -86,7 +100,7 @@ public class MathUtils {
 
     public static float calcPercentage(float value, float min, float max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException("Значение должно быть в пределах от " + min + " до " + max);
+            value = clamp(value,min,max);
         }
 
         float range = max - min;

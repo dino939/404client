@@ -4,8 +4,8 @@ import com.denger.client.utils.AnimationUtil;
 import com.denger.client.utils.ColorUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import static com.denger.client.MainNative.fontManager;
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.fontManager;
+import static com.denger.client.Main.getInstance;
 
 public class Button {
     private float posX, posY;

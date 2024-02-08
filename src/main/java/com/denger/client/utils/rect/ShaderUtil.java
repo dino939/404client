@@ -14,7 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static org.lwjgl.opengl.GL20.*;
 
 public class ShaderUtil {
@@ -36,9 +36,6 @@ public class ShaderUtil {
                 break;
             case "roundRectOutline":
                 fragmentShaderID = createShader(new ByteArrayInputStream(roundRectOutline.getBytes()), GL_FRAGMENT_SHADER);
-                break;
-            case "jumpcirlce":
-                fragmentShaderID = createShader(new ByteArrayInputStream(jumpcirlce.getBytes()), GL_FRAGMENT_SHADER);
                 break;
             case "kawaseDownBloom":
                 fragmentShaderID = createShader(new ByteArrayInputStream(kawaseDownBloom.getBytes()), GL_FRAGMENT_SHADER);
@@ -205,6 +202,7 @@ public class ShaderUtil {
 
 private final String outline = "#version 120 \n" +
         "uniform sampler2D sampler;\n" +
+        "uniform vec4 color;\n" +
         "void main(void)\n" +
         "{\n" +
         "float s = 0.001;" +
@@ -213,7 +211,7 @@ private final String outline = "#version 120 \n" +
         "   || texture2D(sampler, vec2(gl_TexCoord[0].x - s, 1. - gl_TexCoord[0].y)).a == 0. && t.a != 0." +
         "   || texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y - s)).a == 0. && t.a != 0." +
         "   || texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y + s)).a == 0. && t.a != 0.) {" +
-        "   t.rgb = vec3(0., 0., 0.);" +
+        "   t.rgba = color;" +
         "} else t = vec4(.0);" +
         "gl_FragColor = t; \n" +
         "}\n";
@@ -299,22 +297,7 @@ private final String outline = "#version 120 \n" +
             "    gl_FragColor = vec4(color.rgb, smoothedAlpha);// mix(quadColor, shadowColor, 0.0);\n" +
             "\n" +
             "}";
-    private final String jumpcirlce =
-            "#ifdef GL_ES\n" +
-                    "precision mediump float;\n" +
-                    "#endif\n" +
-                    "\n" +
-                    "uniform float time;\n" +
-                    "uniform vec2 resolution;\n" +
-                    "\n" +
-                    "void main( void ) \n" +
-                    "{\n" +
-                    "\tvec2 p = (2.0 * gl_FragCoord.xy - resolution.xy) / resolution.y;\n" +
-                    "    \tfloat r = length(p) * 1.0;\n" +
-                    "\tr = 2.0 * r - 1.0;\n" +
-                    "\tfloat alpha = 1.0 / (20.0 * abs(r));\n" +
-                    "\tgl_FragColor = vec4(alpha * vec3(1.5, 2.0, 1.5), alpha);\n" +
-                    "}";
+
     private final String kawaseDownBloom = "#version 120\n" +
             "\n" +
             "            uniform sampler2D inTexture;\n" +

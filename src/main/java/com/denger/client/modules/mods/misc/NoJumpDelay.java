@@ -9,7 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "OpKvnqEfmbz", category = Category.MISC)
 public class NoJumpDelay extends Module {

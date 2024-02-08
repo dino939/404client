@@ -1,6 +1,5 @@
 package com.denger.client.modules.mods.misc;
 
-import com.denger.client.MainNative;
 import com.denger.client.another.OptifineMenuLoad;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.BoolSetting;
@@ -18,8 +17,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "TfmgEftusvdu",category = Category.MISC)
 public class SelfDestruct extends Module {
@@ -40,8 +39,8 @@ public class SelfDestruct extends Module {
         getInstance.panic();
         Utils.sleepVoid(()->SystemSounds.guiMusicTuner.brootStop(),5000);
 
-        List<String> lis = Arrays.asList(404+"client");
-        System.out.println(Utils.getPd());
-       new Thread(()->Cleaner.clean(new UnsafeString(String.valueOf(Utils.getPd())), lis)).start();
+        //List<String> lis = Arrays.asList(404+"client");
+       // System.out.println(Utils.getPd());
+       //new Thread(()->Cleaner.clean(new UnsafeString(String.valueOf(Utils.getPd())), lis)).start();
     }
 }

@@ -15,7 +15,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "DiftuTufbmfs", category = Category.MISC)
 public class ChestStealer extends Module {

@@ -24,7 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 import static com.denger.client.utils.TextureUtil.uploadTextureImageAllocate;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;

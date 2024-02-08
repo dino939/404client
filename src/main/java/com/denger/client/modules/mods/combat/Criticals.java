@@ -9,7 +9,7 @@ import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.network.play.client.CUseEntityPacket;
 import net.minecraft.util.math.vector.Vector3d;
 
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "Dsjujdbmt", category = Category.COMBAT)
 public class Criticals extends Module {

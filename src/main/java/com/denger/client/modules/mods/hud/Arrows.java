@@ -22,7 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import static com.denger.client.MainNative.*;
+import static com.denger.client.Main.*;
 
 @ModuleTarget(ModName = "Bsspxt", category = Category.HUD, enable = true, bind = GLFW.GLFW_KEY_R, cooldown = 300)
 public class Arrows extends Module {

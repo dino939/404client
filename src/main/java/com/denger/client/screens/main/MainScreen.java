@@ -1,6 +1,6 @@
 package com.denger.client.screens.main;
 
-import com.denger.client.another.resource.NativeManager;
+import com.denger.client.another.resource.ImageManager;
 import com.denger.client.modules.another.Category;
 import com.denger.client.screens.main.comp.Button;
 import com.denger.client.screens.main.comp.GuiColors;
@@ -9,6 +9,9 @@ import com.denger.client.screens.main.comp.SettComp;
 import com.denger.client.screens.main.scenes.ModuleScene;
 import com.denger.client.utils.AnimationUtil;
 import com.denger.client.utils.ColorUtil;
+import com.denger.client.utils.MathUtils;
+import com.denger.client.utils.Utils;
+import com.denger.client.utils.anims.Animation;
 import com.denger.client.utils.rect.BlurUtil;
 import com.denger.client.utils.rect.RectUtil;
 import com.denger.client.utils.rect.RenderUtil;
@@ -16,17 +19,19 @@ import com.denger.client.utils.rect.StencilUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.IRenderCall;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.text.ITextComponent;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.denger.client.MainNative.*;
+import static com.denger.client.Main.*;
 
 public class MainScreen extends Screen {
     private float x, y, w, h, mx, my, sx, sy, scale;
-    AnimationUtil animX, animY, animation, animation2;
+    Animation animX, animY;
+    AnimationUtil animation, animation2;
     ArrayList<Button> buttons;
     private boolean Dragging, bool;
     private Scene curScene;
@@ -41,8 +46,8 @@ public class MainScreen extends Screen {
         w = 500;
         h = 300;
         buttons = new ArrayList<>();
-        animX = new AnimationUtil(x, x, 350);
-        animY = new AnimationUtil(y, y, 350);
+        animX = new Animation(x, x, 0.05f);
+        animY = new Animation(y, y, 0.05f);
         animation = new AnimationUtil(0, 0, 1000);
         animation2 = new AnimationUtil(0, 0, 1000);
         Arrays.asList(Category.values()).forEach((category -> {
@@ -54,7 +59,16 @@ public class MainScreen extends Screen {
 
     @Override
     public void render(MatrixStack p_230430_1_, int p_230430_2_, int p_230430_3_, float p_230430_4_) {
-        SettComp.UpdateMouse(p_230430_2_, p_230430_3_);
+        RenderUtil.setScaleRender(2);
+
+
+        Vector2f vec = Utils.getMouseScaled(p_230430_2_, p_230430_3_);
+        p_230430_2_ = (int) vec.x;
+        p_230430_3_ = (int) vec.y;
+        SettComp.UpdateMouse(vec.x, vec.y);
+        animX.speed = 0.15f;
+        animY.speed = 0.15f;
+
         sx = x;
         sy = y + 40;
         scale = animation.getAnim();
@@ -62,6 +76,7 @@ public class MainScreen extends Screen {
             info.run();
             info = null;
         }
+
         IRenderCall runnable = () -> {
             RenderUtil.scale(x, y, w, h, (bool ? animation2.getAnim() : animation.getAnim()), () -> {
                 RectUtil.drawRound(x, y, w, h, 6, ColorUtil.swapAlpha(Color.BLACK.getRGB(), scale * 150));
@@ -71,10 +86,12 @@ public class MainScreen extends Screen {
         BlurUtil.registerRenderCall(runnable);
         BlurUtil.draw(6);
 
+        int finalP_230430_2_ = p_230430_2_;
+        int finalP_230430_3_ = p_230430_3_;
         RenderUtil.scale(x, y, w, h, (bool ? animation2.getAnim() : animation.getAnim()), () -> {
             float icoX = 20, iocY = 7;
 
-            RectUtil.drawRoundedTexture(NativeManager.getResource("logo", getInstance.getNativeManager().logo), x + icoX, y + iocY, 25, 25, 4);
+            RectUtil.drawRoundedTexture(ImageManager.getResource("logo.png"), x + icoX, y + iocY, 25, 25, 4);
 
             RectUtil.drawline(x, w, y + 40, 1, GuiColors.White.getColor());
             //отрисовка сцены
@@ -83,8 +100,8 @@ public class MainScreen extends Screen {
                 RectUtil.drawRound(sx, sy, w, 260, 6, -1);
                 StencilUtil.readStencilBuffer(1);
                 try {
-                    curScene.render(p_230430_1_, p_230430_2_, p_230430_3_, p_230430_4_);
-                }catch (NullPointerException e){
+                    curScene.render(p_230430_1_, finalP_230430_2_, finalP_230430_3_, p_230430_4_);
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
 
@@ -98,30 +115,43 @@ public class MainScreen extends Screen {
             }
         });
 
-
-        // драг система
-        if (!Dragging) {
-            mx = (p_230430_2_ - x);
-            my = (p_230430_3_ - y);
-        } else {
-            animX.setTo((p_230430_2_ - mx));
-            animY.setTo((p_230430_3_ - my));
-        }
         x = animX.getAnim();
         y = animY.getAnim();
+        float f1 = 1 - animation.getAnim();
+        if (f1 >0.1f && !bool){
+            y += MathUtils.calculateValue(MathUtils.calcPercentage(f1,0.1f,1),0,250);
+        }
+        // драг система
+
         if (scale <= 0.05 && !bool) {
-           getInstance.getConfigManager().saveConfig("32423r23febfbfjhbsmfb32");
+            getInstance.getConfigManager().saveConfig("32423r23febfbfjhbsmfb32");
             mc.setScreen(null);
         }
+        RenderUtil.setScaleRenderStandar();
 
     }
 
+    @Override
+    public boolean mouseDragged(double p_231045_1_, double p_231045_3_, int p_231045_5_, double p_231045_6_, double p_231045_8_) {
+
+
+        if (Dragging) {
+            animX.to += (float) (p_231045_6_);
+            animY.to += (float) (p_231045_8_);
+        }
+        return super.mouseDragged(p_231045_1_, p_231045_3_, p_231045_5_, p_231045_6_, p_231045_8_);
+    }
 
     @Override
     public boolean mouseClicked(double p_231044_1_, double p_231044_3_, int p_231044_5_) {
+        Vector2f vec = Utils.getMouseScaled(p_231044_1_, p_231044_3_);
+        p_231044_1_ = vec.x;
+        p_231044_3_ = vec.y;
         Dragging = ishover(x, y, 100, 45, p_231044_1_, p_231044_3_) && p_231044_5_ == 0;
+        double finalP_231044_1_ = p_231044_1_;
+        double finalP_231044_3_ = p_231044_3_;
         buttons.forEach(button -> {
-            button.onClick(p_231044_1_, p_231044_3_, p_231044_5_);
+            button.onClick(finalP_231044_1_, finalP_231044_3_, p_231044_5_);
         });
 
         if (curScene != null && ishover(x, y + 40, w, 260, p_231044_1_, p_231044_3_))
@@ -132,12 +162,15 @@ public class MainScreen extends Screen {
     @Override
     public boolean mouseReleased(double p_231048_1_, double p_231048_3_, int p_231048_5_) {
         Dragging = false;
-
+        Vector2f vec = Utils.getMouseScaled(p_231048_1_, p_231048_3_);
+        p_231048_1_ = vec.x;
+        p_231048_3_ = vec.y;
         if (curScene != null) curScene.mouseReleased(p_231048_1_, p_231048_3_, p_231048_5_);
         return super.mouseReleased(p_231048_1_, p_231048_3_, p_231048_5_);
     }
 
     public static boolean ishover(float xx, float yy, float width, float height, double mouseX, double mouseY) {
+
         if (mouseX > xx && mouseX < width + xx && mouseY > yy && mouseY < yy + height) {
             return true;
         }
@@ -152,6 +185,9 @@ public class MainScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double p_231043_1_, double p_231043_3_, double p_231043_5_) {
+        Vector2f vec = Utils.getMouseScaled(p_231043_1_, p_231043_3_);
+        p_231043_1_ = vec.x;
+        p_231043_3_ = vec.y;
         if (curScene != null) curScene.scrole((float) p_231043_5_);
         return super.mouseScrolled(p_231043_1_, p_231043_3_, p_231043_5_);
     }
@@ -160,7 +196,7 @@ public class MainScreen extends Screen {
     public void onClose() {
         bool = false;
         animation.goTo(0);
-        animation2.setTo(2);
+        animation2.goTo(2);
         if (curScene != null) curScene.onClose();
         if (getInstance.panic) {
         }
@@ -172,7 +208,6 @@ public class MainScreen extends Screen {
         bool = true;
         animation.goTo(1);
         animation2.goTo(1);
-
     }
 
     public void setScene(Scene curScene) {

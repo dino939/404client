@@ -1,5 +1,6 @@
 package com.denger.client.modules.mods.render;
 
+import com.denger.client.another.hooks.forge.even.addevents.LayerEvent;
 import com.denger.client.another.settings.SettingTarget;
 import com.denger.client.another.settings.sett.ColorSetting;
 import com.denger.client.another.settings.sett.ModSetting;
@@ -10,15 +11,20 @@ import com.denger.client.utils.ColorUtil;
 import com.denger.client.utils.rect.RenderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.NewChatGui;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.awt.*;
 
-import static com.denger.client.MainNative.getInstance;
-import static com.denger.client.MainNative.mc;
+import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 @ModuleTarget(ModName = "Ibu", category = Category.RENDER)
 public class Hat extends Module {
@@ -32,20 +38,20 @@ public class Hat extends Module {
     ColorSetting colorSetting2 = (ColorSetting) new ColorSetting().setColor(new Color(-1)).setVisible(() -> mods.getCurent().equals("Кастомный") && type.getCurent().equals("Китайская"));
 
     @SubscribeEvent
-    public void onWorldRender(RenderWorldLastEvent e) {
+    public void onWorldRender(LayerEvent e) {
         assert (mc.level != null);
-        ClientPlayerEntity t = mc.player;
-        if (t == null || mc.options.getCameraType().isFirstPerson()) {
-            return;
-        }
+        AbstractClientPlayerEntity t = e.getPlayer();
         MatrixStack ms = e.getMatrixStack();
         float pt = e.getPartialTicks();
-        double x = t.xOld + (t.position().x - t.xOld) * (double) pt - mc.getEntityRenderDispatcher().camera.getPosition().x;
-        double y = t.yOld + (t.position().y - t.yOld) * (double) pt - mc.getEntityRenderDispatcher().camera.getPosition().y;
-        double z = t.zOld + (t.position().z - t.zOld) * (double) pt - mc.getEntityRenderDispatcher().camera.getPosition().z;
+
+        float f = MathHelper.lerp(pt, t.yRotO, t.yRot) - MathHelper.lerp(pt, t.yBodyRotO, t.yBodyRot);
+        float f1 =180 -  MathHelper.lerp(pt, t.xRotO, t.xRot);
         ms.pushPose();
-        ms.translate(x, y, z);
         RenderUtil.setupRender();
+        RenderSystem.depthMask( true);
+        RenderSystem.enableDepthTest();
+        ms.mulPose(Vector3f.YP.rotationDegrees(f));
+        ms.mulPose(Vector3f.XP.rotationDegrees(-f1));
         int c = 0;
         int c2 = 0;
         switch (mods.getCurent()) {
@@ -82,7 +88,7 @@ public class Hat extends Module {
 
     private void chinahat(float[] colors, float[] colors2, MatrixStack ms) {
         assert mc.player != null;
-        float height = mc.player.getBbHeight() + 0.1f;
+        float height = 0.55f;
 
         bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
         for (int i = 0; i <= 360; i++) {
@@ -106,7 +112,7 @@ public class Hat extends Module {
     }
     private void ninfa(float[] colors, MatrixStack ms) {
         assert mc.player != null;
-        float height = mc.player.getBbHeight();
+        float height = 0.40f;
 
         bufferbuilder.begin(8, DefaultVertexFormats.POSITION_COLOR);
         for (int i = 0; i <= 360; i++) {
@@ -121,7 +127,7 @@ public class Hat extends Module {
     }
     private void cilindr(float[] colors, MatrixStack ms){
         assert mc.player != null;
-        float height = mc.player.getBbHeight()-0.085f;
+        float height = 0.40f;
         float[] garay = ColorUtil.rgb(new Color(0x1E1C1C).getRGB());
         float[] black = ColorUtil.rgb(Color.BLACK.getRGB());
         RenderSystem.lineWidth(4);

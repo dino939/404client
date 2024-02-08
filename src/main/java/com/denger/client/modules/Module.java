@@ -13,8 +13,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-import static com.denger.client.MainNative.eventManager;
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.eventManager;
+import static com.denger.client.Main.getInstance;
 
 public abstract class Module {
 

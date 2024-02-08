@@ -26,4 +26,29 @@ public class Crypt {
         }
         return result.toString();
     }
+    public static String decrypt(String encryptedMessage) {
+        StringBuilder result = new StringBuilder();
+        for (char c : encryptedMessage.toCharArray()) {
+            if (c > 'A' && c <= 'Z') {
+                result.append((char)(c - 1));
+            } else if (c == 'A') {
+                result.append('Z');
+            } else if (c > 'a' && c <= 'z') {
+                result.append((char)(c - 1));
+            } else if (c == 'a') {
+                result.append('z');
+            } else if (c > 'А' && c <= 'Я') {
+                result.append((char)(c - 1));
+            } else if (c == 'А') {
+                result.append('Я');
+            } else if (c > 'а' && c <= 'я') {
+                result.append((char)(c - 1));
+            } else if (c == 'а') {
+                result.append('я');
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
+    }
 }

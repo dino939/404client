@@ -11,7 +11,7 @@ import com.denger.client.modules.another.Category;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.denger.client.MainNative.getInstance;
+import static com.denger.client.Main.getInstance;
 
 @ModuleTarget(ModName = "GphDpmps",category = Category.RENDER)
 public class FogColor extends Module {
