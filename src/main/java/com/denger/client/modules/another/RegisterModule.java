@@ -9,6 +9,7 @@ import com.denger.client.modules.mods.hud.Design;
 import com.denger.client.modules.mods.hud.ModuleList;
 import com.denger.client.modules.mods.hud.Overlay;
 import com.denger.client.modules.mods.misc.*;
+import com.denger.client.modules.mods.misc.Timer;
 import com.denger.client.modules.mods.render.*;
 import com.denger.client.utils.Crypt;
 import net.minecraft.world.Init;
@@ -82,7 +83,7 @@ public class RegisterModule {
                 DripMode.class,
                 CustomHand.class,
                 NoInteract.class,
-                NameProtect.class
+                Timer.class
         );
         if (Init.UID().equals("2")) {
             addModules(
@@ -90,7 +91,8 @@ public class RegisterModule {
                     DethCoords.class,
                     NoAttackFriends.class,
                     MiddleClickFriend.class,
-                    AutoPotion.class
+                    AutoPotion.class,
+                    NameProtect.class
 
             );
         }

@@ -71,10 +71,10 @@ public class IngameGuiHook extends IngameGui {
     private FontRenderer fontrenderer = null;
     private RenderGameOverlayEvent eventParent;
     private GuiOverlayDebugForge debugOverlay;
-    PlayerTabOverlayGuiHook tabList;
+    //PlayerTabOverlayGuiHook tabList;
     public IngameGuiHook(Minecraft mc) {
         super(mc);
-        tabList = new PlayerTabOverlayGuiHook(mc,this);
+        //tabList = new PlayerTabOverlayGuiHook(mc,this);
         debugOverlay = new GuiOverlayDebugForge(mc);
     }
 

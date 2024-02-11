@@ -1,14 +1,17 @@
 package com.denger.client.another.networkutills;
 
+import com.denger.client.another.hooks.FontRendererHook;
 import com.denger.client.another.hooks.GameRendererHook;
 import com.denger.client.another.hooks.IngameGuiHook;
 import com.denger.client.modules.Module;
 import com.denger.client.utils.ReflectFileld;
 import com.denger.client.utils.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.IngameGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import static com.denger.client.Main.getInstance;
 import static com.denger.client.Main.mc;
@@ -44,7 +47,7 @@ public class EventsHandlerUtil {
                     }
                     new ReflectFileld(mc, Minecraft.class, IngameGui.class).setValueFinal(new IngameGuiHook(mc));
                     new ReflectFileld(mc, Minecraft.class, 25).setValueFinal(new GameRendererHook(mc, mc.getResourceManager(), mc.renderBuffers()));
-                    //ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, mc, new FontRendererHook(ObfuscationReflectionHelper.getPrivateValue(FontRenderer.class, mc.font, "field_211127_e")), "field_71466_p");
+                   // ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, mc, new FontRendererHook(ObfuscationReflectionHelper.getPrivateValue(FontRenderer.class, mc.font, "field_211127_e")), "field_71466_p");
                 }
                 initialized = true;
             }

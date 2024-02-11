@@ -14,9 +14,9 @@ public class NameProtect extends Module {
     String name = "";
     @Override
     public void onEnable() {
-        new ReflectFileld(mc, Minecraft.class,"isLocalServer").setValue(false);
-        name = (String) new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).getFinalValue();
-       // new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).setValue("HuiVRot");
+       // new ReflectFileld(mc, Minecraft.class,"isLocalServer").setValue(false);
+       // name = (String) new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).getFinalValue();
+       //// new ReflectFileld(mc.player.getGameProfile(),GameProfile.class,1).setValue("HuiVRot");
     }
 
     @Override
