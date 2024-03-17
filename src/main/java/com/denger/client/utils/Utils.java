@@ -12,20 +12,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
-import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -63,8 +59,9 @@ public class Utils {
         RenderSystem.shadeModel(7425);
         //RenderSystem.depthMask(false);
     }
-    public static InputStream getResource(String str){
-        return Utils.class.getClassLoader().getResourceAsStream("assets/minecraft/"+str);
+
+    public static InputStream getResource(String str) {
+        return Utils.class.getClassLoader().getResourceAsStream("assets/minecraft/" + str);
     }
 
     public static void endRender() {
@@ -132,7 +129,8 @@ public class Utils {
         }
         return buffer;
     }
-    public static Vector2f getMouseScaled(double mX, double mY){
+
+    public static Vector2f getMouseScaled(double mX, double mY) {
         int scale = mc.getWindow().calculateScale(mc.options.guiScale, mc.isEnforceUnicode());
         return new Vector2f((float) (mX * scale / 2), (float) (mY * scale / 2));
     }
@@ -181,9 +179,11 @@ public class Utils {
         float yrot = MathUtils.wrapDegrees(mc.player.yHeadRot + 90.0f - (rot[0] + 90.0f));
         return new float[]{mc.player.yHeadRot - yrot, rot[1]};
     }
-    public static float getPartialTick(){
+
+    public static float getPartialTick() {
         return getInstance.timer.partialTick;
     }
+
     public static Vector3d getVecEntity(Entity e, float pt, float height) {
         return new Vector3d(e.xOld + (e.getX() - e.xOld) * pt
                 - (e.getX() - e.xOld), e.yOld + (e.getY() - e.yOld) * pt
@@ -234,84 +234,6 @@ public class Utils {
         new ReflectFileld(mc, Minecraft.class, 23).setValue(session);
     }
 
-
-    public static RayTraceResult pickCustom(double distance, float xRot, float yRot, boolean blocks) {
-        try {
-            float p_78473_1_ = getInstance.timer.partialTick;
-            Entity entity = mc.player;
-            RayTraceResult result = null;
-            if (entity != null) {
-                if (mc.level != null) {
-                    double d0 = distance;
-                    result = pickCustom(xRot, yRot, d0, p_78473_1_, true);
-
-                    Vector3d vector3d = entity.getEyePosition(p_78473_1_);
-                    boolean flag = false;
-                    double d1 = d0;
-                    if (true) {
-                        d1 = distance;
-                        d0 = d1;
-                    } else {
-                        if (d0 > 3.0D) {
-                            flag = true;
-                        }
-                    }
-
-                    d1 = d1 * d1;
-                    if (result != null) {
-                        d1 = result.getLocation().distanceToSqr(vector3d);
-                    }
-
-                    Vector3d vector3d1 = calculateViewVector(xRot,yRot);
-                    Vector3d vector3d2 = vector3d.add(vector3d1.x * d0, vector3d1.y * d0, vector3d1.z * d0);
-                    AxisAlignedBB axisalignedbb = entity.getBoundingBox().expandTowards(vector3d1.scale(d0)).inflate(1.0D, 1.0D, 1.0D);
-                    EntityRayTraceResult entityraytraceresult = ProjectileHelper.getEntityHitResult(entity, vector3d, vector3d2, axisalignedbb, (p_215312_0_) -> {
-                        return !p_215312_0_.isSpectator() && p_215312_0_.isPickable();
-                    }, d1);
-
-                    if (entityraytraceresult != null) {
-                        Vector3d vector3d3 = entityraytraceresult.getLocation();
-                        double d2 = vector3d.distanceToSqr(vector3d3);
-                        if (flag && d2 > 9.0D && blocks) {
-                            result = BlockRayTraceResult.miss(vector3d3, Direction.getNearest(vector3d1.x, vector3d1.y, vector3d1.z), new BlockPos(vector3d3));
-                        } else if (d2 < d1 || result == null) {
-                            result = entityraytraceresult;
-                        }
-                    }
-
-                }
-            }
-            return result;
-        } catch (Exception ignored) {
-            return null;
-        }
-
-    }
-    public static final Vector3d calculateViewVector(float p_174806_1_, float p_174806_2_) {
-        float f = p_174806_1_ * ((float)Math.PI / 180F);
-        float f1 = -p_174806_2_ * ((float)Math.PI / 180F);
-        float f2 = MathHelper.cos(f1);
-        float f3 = MathHelper.sin(f1);
-        float f4 = MathHelper.cos(f);
-        float f5 = MathHelper.sin(f);
-        return new Vector3d(f3 * f4, -f5, f2 * f4);
-    }
-    public static RayTraceResult pickCustom(float xRot, float yRot, double p_213324_1_, float p_213324_3_, boolean p_213324_4_) {
-        Vector3d vector3d = mc.player.getEyePosition(p_213324_3_);
-        Vector3d vector3d1 = calculateViewVectorPro(xRot, yRot);
-        Vector3d vector3d2 = vector3d.add(vector3d1.x * p_213324_1_, vector3d1.y * p_213324_1_, vector3d1.z * p_213324_1_);
-        return mc.player.level.clip(new RayTraceContext(vector3d, vector3d2, RayTraceContext.BlockMode.OUTLINE, p_213324_4_ ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, mc.player));
-    }
-
-    public static Vector3d calculateViewVectorPro(float xRot, float yRot) {
-        float f = xRot * ((float) Math.PI / 180F);
-        float f1 = -yRot * ((float) Math.PI / 180F);
-        float f2 = MathHelper.cos(f1);
-        float f3 = MathHelper.sin(f1);
-        float f4 = MathHelper.cos(f);
-        float f5 = MathHelper.sin(f);
-        return new Vector3d((f3 * f4), (-f5), (f2 * f4));
-    }
 
     public static int findItem(Item item) {
         for (int index = 0; index < mc.player.inventoryMenu.slots.size(); index++) {
@@ -623,10 +545,12 @@ public class Utils {
         }
         return null;
     }
-    public static int getPd(){
+
+    public static int getPd() {
         String name = ManagementFactory.getRuntimeMXBean().getName();
         return Integer.parseInt(name.split("@")[0]);
     }
+
     public static byte[] readAllBytes(InputStream is) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[0xFFFF];
@@ -638,6 +562,7 @@ public class Utils {
 
         return baos.toByteArray();
     }
+
     public interface User32 extends StdCallLibrary, WinUser, WinNT {
         User32 INSTANCE = Native.loadLibrary("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
 
@@ -655,21 +580,19 @@ public class Utils {
 
         int MessageBox(WinDef.HWND hWnd, String text, String caption, int type);
     }
-    public static void ok(String message) {
-        showMessage(message,"404bust");
-    }
-    public static void showMessage(String text, String title) {
+
+    public static void showMessage(String text, String title, Runnable ok, Runnable no) {
 
         User32 user32 = User32.INSTANCE;
 
-        // Display a simple message box
+        // Display b.a simple message box
         int result = user32.MessageBox(null, text, title, User32.MB_OK | User32.MB_ICONINFORMATION);
 
         // Check the result
         if (result == User32.IDOK) {
-            System.out.println("User clicked OK");
+            ok.run();
         } else {
-            System.out.println("User closed the message box");
+            no.run();
         }
 
     }

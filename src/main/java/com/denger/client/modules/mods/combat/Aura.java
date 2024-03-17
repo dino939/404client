@@ -11,10 +11,8 @@ import com.denger.client.another.settings.sett.MultiBoolSetting;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
+import com.denger.client.utils.*;
 import com.denger.client.utils.anims.Animation;
-import com.denger.client.utils.MathUtils;
-import com.denger.client.utils.PlayerUtil;
-import com.denger.client.utils.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -50,14 +48,16 @@ public class Aura extends Module {
     BoolSetting custDist = new BoolSetting().setBol(false);
     @SettingTarget(name = "Дистанция")
     FloatSetting distanciya = (FloatSetting) new FloatSetting().setMin(1).setMax(6).setVal(3.3f).setVisible(() -> !custDist.getState());
-    @SettingTarget(name = "Крит режим")
-    private ModSetting сrit = new ModSetting().setMods("умный", "толко", "без").setCurent("умный");
+    @SettingTarget(name = "Только криты")
+    private BoolSetting сrit = new BoolSetting().setBol(true);
+    @SettingTarget(name = "Умные криты")
+    private BoolSetting сritSmart = new BoolSetting().setBol(true);
     @SettingTarget(name = "Ротации")
     private ModSetting rots = new ModSetting().setMods("Matrix", "NCP", "Vulcan", "Test").setCurent("Vulcan");
-    public static Entity target;
-    @SettingTarget(name = "Таргет")
-    public ModSetting getTarg = new ModSetting().setMods("RayTrace", "Сортировка").setCurent("Сортировка");
-    //
+    public static LivingEntity target;
+    @SettingTarget(name = "Таргет",toAdd = false)
+    public ModSetting getTarg = new ModSetting().setMods("Сортировка").setCurent("Сортировка");
+    //"RayTrace",
     @SettingTarget(name = "Игроков", toAdd = false)
     BoolSetting players = new BoolSetting().setBol(true);
     @SettingTarget(name = "Животных", toAdd = false)
@@ -75,8 +75,8 @@ public class Aura extends Module {
     MultiBoolSetting sortPo = (MultiBoolSetting) new MultiBoolSetting().addBools(poHp, poDist, poFov).setVisible(() -> getTarg.getCurent().equals("Сортировка"));
     Animation yawAnim = new Animation(0.0f, 0.0f, 0.1f), pitchAnim = new Animation(0.0f, 0.0f, 0.1f);
     float xRotC = 0, yRotC = 0;
-    Random random = new Random();
     boolean critflag;
+    float prevAdditionYaw;
 
     public Aura() {
         setModSetting(rots);
@@ -86,7 +86,7 @@ public class Aura extends Module {
     public void onUpdate(WorldUpdate e) {
         setTarget();
 
-        if (target != null) {
+        if (target != null && !rots.getCurent().equals("Test")) {
 
             rotation(target);
             xRotC = pitchAnim.getAnim();
@@ -102,13 +102,13 @@ public class Aura extends Module {
                 if (target instanceof PlayerEntity) {
                     if (axe != 0 && ((PlayerEntity) target).isBlocking()) {
                         mc.player.connection.send(new CHeldItemChangePacket(axe));
-                        attackModule();
+                        attackModule(target);
                         mc.player.connection.send(new CHeldItemChangePacket(mc.player.inventory.selected));
                     } else {
-                        attackModule();
+                        attackModule(target);
                     }
                 } else {
-                    attackModule();
+                    attackModule(target);
                 }
 
             }
@@ -125,13 +125,12 @@ public class Aura extends Module {
     @SubscribeEvent
     public void rotationEvent(RotationEvent e) {
         if (target == null) return;
-        e.setStepCancel(false);
         e.setyRot(yRotC);
         e.setxRot(xRotC);
 
     }
 
-    public void rotation(Entity t) {
+    public void rotation(LivingEntity t) {
 
         switch (rots.getCurent()) {
             case "Matrix":
@@ -185,29 +184,44 @@ public class Aura extends Module {
         this.pitchAnim.to = rot2[1];
     }
 
-    public void rotTest(Entity t) {
-        float speed = 0.5f;
-        float speedAnim = 0.2f;
-        if (isInHit(mc.player, t)) {
-            Vector3d vec3d = getVector3d(mc.player, t);
+    public void rotTest(LivingEntity t) {
+        final Vector3d targetPos = CombatUtil.getVecTarget(t,
+                1.5f +
+                        getDist());
 
-            float rawYaw = wrapDegrees((float) (toDegrees(atan2(vec3d.z, vec3d.x)) - 90));
-            float rawPitch = wrapDegrees((float) toDegrees(-atan2(vec3d.y, hypot(vec3d.x, vec3d.z))));
+        final double playerX = mc.player.getX();
+        final double playerY = mc.player.getY() + (double) mc.player.getEyeHeight();
+        final double playerZ = mc.player.getZ();
 
-            float yawDelta = wrapDegrees(rawYaw - mc.player.yRot);
-            float pitchDelta = wrapDegrees(rawPitch - mc.player.xRot);
+        final double targetXOffset = targetPos.x - playerX;
+        final double targetYOffset = targetPos.y - playerY;
+        final double targetZOffset = targetPos.z - playerZ;
+        final double targetHorizontalDistance = MathUtils.sqrt(targetXOffset, targetZOffset);
 
-            if (abs(yawDelta) > 180) yawDelta -= signum(yawDelta) * 360;
+        float[] rotations = new float[]{
+                (float) Math.toDegrees(Math.atan2(targetZOffset, targetXOffset)) - 90.0F,
+                (float) (-Math.toDegrees(Math.atan2(targetYOffset, targetHorizontalDistance)))
+        };
 
-            float additionYaw = yawDelta;
-            float additionPitch = pitchDelta;
-            this.yawAnim.speed = speedAnim;
-            this.pitchAnim.speed = speedAnim;
-            float yaw = mc.player.yRot + additionYaw + random.nextInt(3) - 1;
-            float pitch = mc.player.xRot + additionPitch + random.nextInt(3) - 1;
-            this.yawAnim.to = getSensitivity(yaw);
-            this.pitchAnim.to = getSensitivity(clamp(pitch, -89, 89));
+        final float yawDiff = (rotations[0] - xRotC);
+        final float pitchDiff = rotations[1] - this.yRotC;
+        final float wrappedYawDiff = (int) MathHelper.wrapDegrees(yawDiff);
+
+        float finalYaw = MathUtils.upgradeClamp(wrappedYawDiff, -60.0F, 60.0F);
+
+        final float finalPitch = MathUtils.upgradeClamp(pitchDiff, -35.F, 35.F);
+
+        if (Math.abs(finalYaw - this.prevAdditionYaw) < 4.0f) {
+            finalYaw = SensitivityUtil.calculateSensitivity(this.prevAdditionYaw + 4.5f);
         }
+
+        rotations[0] = this.xRotC + finalYaw;
+        rotations[1] = MathUtils.upgradeClamp(this.yRotC + finalPitch / 4.0F, -90.0F, 90.0F);
+
+        float gcd = SensitivityUtil.calculateGCDValue();
+
+        rotations[0] = (float) ((double) rotations[0] - (double) (rotations[0] - this.xRotC) % gcd);
+        rotations[1] = (float) ((double) rotations[1] - (double) (rotations[1] - yRotC) % gcd);
     }
 
     public float getDist() {
@@ -274,9 +288,9 @@ public class Aura extends Module {
                 target = getTarget();
                 break;
             case "RayTrace":
-                RayTraceResult traceResult = Utils.pickCustom(getDist(), mc.player.xRot, mc.player.yRot, true);
-                if (traceResult instanceof EntityRayTraceResult) {
-                    target = ((EntityRayTraceResult) traceResult).getEntity();
+                RayTraceResult traceResult = CombatUtil.pickCustom(getDist(), mc.player.xRot, mc.player.yRot, true);
+                if (traceResult instanceof EntityRayTraceResult && ((EntityRayTraceResult) traceResult).getEntity() instanceof LivingEntity) {
+                    target = (LivingEntity) ((EntityRayTraceResult) traceResult).getEntity();
                 } else {
                     target = null;
                 }
@@ -284,7 +298,7 @@ public class Aura extends Module {
         }
     }
 
-    private Entity getTarget() {
+    private LivingEntity getTarget() {
         if (mc.level == null || mc.player == null) return null;
 
         boolean players = this.players.getState();
@@ -333,43 +347,23 @@ public class Aura extends Module {
         return Math.abs(yaw - MathHelper.wrapDegrees(mc.player.yRot));
     }
 
-    public void attackModule() {
-        RayTraceResult result = Utils.pickCustom(mc.gameMode.getPickRange(), pitchAnim.getAnim(), yawAnim.getAnim(), false);
-        if (!(result instanceof EntityRayTraceResult) || ((EntityRayTraceResult) result).getEntity() != target) {
-            return;
-        }
-        if (mc.level == null) {
-            return;
-        }
-
+    public void attackModule(Entity t) {
+        assert mc.player != null;
         boolean flag = mc.player.getAttackStrengthScale(0.5f) > 0.9f;
-        boolean flag2 = flag && mc.player.fallDistance != 0.0f &&
-                !mc.player.isOnGround() &&
-                !mc.player.isRidingJumpable();
+        boolean flag2 = flag && mc.player.fallDistance != 0.0f && !mc.player.isOnGround() && !mc.player.isRidingJumpable();
+        float f5 = mc.player.getAttackStrengthScale(0.0f);
+        if ((mc.level != null ? mc.level.getBlockState(new BlockPos(mc.player.getX(), mc.player.getY() + 0.10000000149011612, mc.player.getZ())).getBlock() : null) == Blocks.AIR) ;
 
-        boolean ff1 = flag2 && this.critflag;
-        boolean ff = mc.player.isOnGround() || mc.player.isInWater() ||
-                mc.level.getBlockState(new BlockPos(mc.player.getX(), mc.player.getY() + 0.10000000149011612, mc.player.getZ())).getBlock() != Blocks.AIR;
-        boolean f = true;
-        switch (сrit.getCurent()) {
-            case "smart":
-                f = ff;
-                break;
-            case "none":
-                f = true;
-                break;
-            case "only":
-                f = ff1;
-                break;
-        }
+        boolean f = !mc.options.keyJump.isDown() || flag2 && this.critflag;
 
-        float attackStrength = mc.player.getAttackStrengthScale(0.0f);
-        float rand = MathUtils.randomFloat(0.80f, 0.9f);
-        if (attackStrength > rand && f) {
-            mc.gameMode.attack(mc.player, ((EntityRayTraceResult) mc.hitResult).getEntity());
+        if ((double) f5 > 0.9 && f) {
+            if (mc.player.isSprinting()) {
+                mc.player.setSprinting(false);
+            }
+            assert mc.gameMode != null;
+            mc.gameMode.attack(mc.player, t);
             mc.player.swing(Hand.MAIN_HAND);
         }
-
         this.critflag = flag2;
     }
 }

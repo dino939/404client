@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.denger.client.Main.getInstance;
+
 public class Gif {
     static int num = 0;
     private final HashMap<Integer, ResourceLocation> frames;
@@ -25,7 +27,7 @@ public class Gif {
     private int currentFrame = 0;
     private final TimerUtil util;
     private ImageReader imageReader;
-    private int frameCooldown;
+    private final int frameCooldown;
 
     public Gif(InputStream in, int frameCooldown) {
         util = new TimerUtil();
@@ -82,6 +84,7 @@ public class Gif {
     private ResourceLocation createTextureFromFrame(int index) throws IOException {
         BufferedImage frame = getFrame(index); // Получение изображения для кадра
         NativeImage nativeImage = NativeImage.read(Objects.requireNonNull(convertImageToPngInputStream(frame)));
+        num ++;
         return Minecraft.getInstance().getTextureManager().register(num + "texture", new DynamicTexture(nativeImage));
     }
 
@@ -128,5 +131,8 @@ public class Gif {
             }
         }
     }
-
+    public ResourceLocation getCurrentFrame(float speed) {
+        int id = (int)((double)(System.currentTimeMillis() - getInstance.getInitTime()) / (double)this.frames.size() * (double)speed) % this.frames.size();
+        return frames.get(id);
+    }
 }

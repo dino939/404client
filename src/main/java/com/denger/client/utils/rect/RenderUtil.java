@@ -273,7 +273,7 @@ public class RenderUtil {
         RenderSystem.enableDepthTest();
     }
 
-    public static int loadTexture(BufferedImage image) throws Exception {
+    public static int loadTexture(BufferedImage image) {
         int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
         ByteBuffer buffer = BufferUtils.createByteBuffer((int) (pixels.length * 4));
         for (int pixel : pixels) {
@@ -284,13 +284,13 @@ public class RenderUtil {
         }
         buffer.flip();
         int textureID = GL30.glGenTextures();
-        GL30.glBindTexture((int) 3553, (int) textureID);
-        GL30.glTexParameteri((int) 3553, (int) 10242, (int) 33071);
-        GL30.glTexParameteri((int) 3553, (int) 10243, (int) 33071);
-        GL30.glTexParameteri((int) 3553, (int) 10241, (int) 9729);
-        GL30.glTexParameteri((int) 3553, (int) 10240, (int) 9729);
-        GL30.glTexImage2D((int) 3553, (int) 0, (int) 32856, (int) image.getWidth(), (int) image.getHeight(), (int) 0, (int) 6408, (int) 5121, (ByteBuffer) buffer);
-        GL30.glBindTexture((int) 3553, (int) 0);
+        GL30.glBindTexture(3553, (int) textureID);
+        GL30.glTexParameteri(3553, (int) 10242, (int) 33071);
+        GL30.glTexParameteri(3553, (int) 10243, (int) 33071);
+        GL30.glTexParameteri(3553, (int) 10241, (int) 9729);
+        GL30.glTexParameteri(3553, (int) 10240, (int) 9729);
+        GL30.glTexImage2D(3553, 0, (int) 32856, (int) image.getWidth(), (int) image.getHeight(), (int) 0, (int) 6408, (int) 5121, (ByteBuffer) buffer);
+        GL30.glBindTexture(3553, 0);
         return textureID;
     }
 

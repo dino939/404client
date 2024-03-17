@@ -8,6 +8,7 @@ import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.utils.ColorUtil;
+import com.denger.client.utils.UnsafeString;
 import com.denger.client.utils.rect.RenderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,6 +17,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.NewChatGui;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -87,6 +89,7 @@ public class Hat extends Module {
     }
 
     private void chinahat(float[] colors, float[] colors2, MatrixStack ms) {
+
         assert mc.player != null;
         float height = 0.55f;
 

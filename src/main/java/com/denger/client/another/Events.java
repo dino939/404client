@@ -65,7 +65,7 @@ public class Events {
 
         if (!(mc.gameMode instanceof PlayerControllerHook)) {
             assert mc.player != null;
-            mc.gameMode = new PlayerControllerHook(mc, mc.player.connection);
+        //    mc.gameMode = new PlayerControllerHook(mc, mc.player.connection);
        }
  }
 }

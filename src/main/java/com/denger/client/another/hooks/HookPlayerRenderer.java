@@ -5,8 +5,11 @@ import com.denger.client.another.hooks.models.HeadLayerHook;
 import com.denger.client.another.hooks.models.RenderLayerHook;
 import com.denger.client.modules.mods.render.DripMode;
 import com.denger.client.modules.mods.render.NameTag2;
+import com.denger.client.utils.Utils;
+import com.denger.client.utils.rect.ShaderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -29,10 +32,12 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 
 import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 public class HookPlayerRenderer extends PlayerRenderer {
     public DripMode dripMode = getInstance.getRegisterModule().getModule(DripMode.class);
-
+    private static final MainWindow window = mc.getWindow();
+    private final ShaderUtil bloom = new ShaderUtil("bloomy");
     public HookPlayerRenderer(EntityRendererManager renderManager) {
         super(renderManager);
         this.layers.clear();
@@ -69,9 +74,15 @@ public class HookPlayerRenderer extends PlayerRenderer {
 
     @Override
     public void render(AbstractClientPlayerEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_) {
-
-
+        //bloom.load();
+        //bloom.setUniformf("radius", 3);
+        //bloom.setUniformi("sampler1", 0);
+        //bloom.setUniformi("sampler2", 1);
+        //bloom.setUniformfb("kernel", Utils.getKernel(3));
+        //bloom.setUniformf("texelSize", 1.0F / (float)window.getWidth(), 1.0F / (float)window.getHeight());
+        //bloom.setUniformf("direction", 2.0F, 0.0F);
         this.setModelProperties(p_225623_1_);
+
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderPlayerEvent.Pre(p_225623_1_, this, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_)))
             return;
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre<>(p_225623_1_, this, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_)))
@@ -180,12 +191,12 @@ public class HookPlayerRenderer extends PlayerRenderer {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
         if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(p_225623_1_))) {
             if (!getInstance.getRegisterModule().isEnable(NameTag2.class)) {
-                this.renderNameTag(p_225623_1_, renderNameplateEvent.getContent(), p_225623_4_, p_225623_5_, p_225623_6_);
+                 this.renderNameTag(p_225623_1_, renderNameplateEvent.getContent(), p_225623_4_, p_225623_5_, p_225623_6_);
             }
         }
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<>(p_225623_1_, this, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_));
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderPlayerEvent.Post(p_225623_1_, this, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_));
-
+        //bloom.unload();
     }
 
     private void setModelProperties(AbstractClientPlayerEntity p_177137_1_) {

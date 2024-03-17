@@ -424,7 +424,7 @@ public class IngameGuiHook extends IngameGui {
         int left = width / 2 + 91;
         int top = height - right_height;
         right_height += 10;
-        boolean unused = false;// Unused flag in vanilla, seems to be part of a 'fade out' mechanic
+        boolean unused = false;// Unused flag in vanilla, seems to be part of b.a 'fade out' mechanic
 
         FoodStats stats = minecraft.player.getFoodData();
         int level = stats.getFoodLevel();
@@ -440,7 +440,7 @@ public class IngameGuiHook extends IngameGui {
                 icon += 36;
                 background = 13;
             }
-            if (unused) background = 1; //Probably should be a += 1 but vanilla never uses this
+            if (unused) background = 1; //Probably should be b.a += 1 but vanilla never uses this
 
             if (player.getFoodData().getSaturationLevel() <= 0.0F && tickCount % (level * 3 + 1) == 0) {
                 y = top + (random.nextInt(3) - 1);

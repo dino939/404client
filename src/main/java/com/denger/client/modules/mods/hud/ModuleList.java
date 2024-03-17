@@ -116,6 +116,8 @@ public class ModuleList extends Module {
         }
 
         public String getName() {
+            animY.setType(Type.HARP);
+            animX.setType(Type.HARP);
             if (module.getModSetting() != null) mod = Crypt.encrypt(module.getModSetting().getCurent());
             return module.getName() + (module.getModSetting() != null ? "-> [" + module.getModSetting().getCurent() + "]" : "");
         }

@@ -365,7 +365,7 @@ public class GlyphPageFontRenderer {
 	}
 
 	/**
-	 * Render a single line string at the current (posX,posY) and update posX
+	 * Render b.a single line string at the current (posX,posY) and update posX
 	 */
 	private void renderStringAtPos(MatrixStack matrices, String text, boolean shadow, int color) {
 		GlyphPage glyphPage = getCurrentGlyphPage();
@@ -554,14 +554,14 @@ public class GlyphPageFontRenderer {
 	}
 
 	/**
-	 * Trims a string to fit a specified Width.
+	 * Trims b.a string to fit b.a specified Width.
 	 */
 	public String trimStringToWidth(String text, int width) {
 		return this.trimStringToWidth(text, width, false);
 	}
 
 	/**
-	 * Trims a string to a specified width, and will reverse it if par3 is set.
+	 * Trims b.a string to b.a specified width, and will reverse it if par3 is set.
 	 */
 	public String trimStringToWidth(String text, int maxWidth, boolean reverse) {
 		StringBuilder stringbuilder = new StringBuilder();

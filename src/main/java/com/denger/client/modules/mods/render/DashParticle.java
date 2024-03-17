@@ -13,6 +13,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector2f;
@@ -42,7 +43,6 @@ public class DashParticle extends Module {
     @SettingTarget(name = "Диапазон")
     FloatSetting range = new FloatSetting().setMin(1).setMax(4).setVal(1);
     ArrayList<Particl> particls = new ArrayList<>();
-    GifManager gifManager = getInstance.getGifManager();
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent renderWorldLastEvent) {
@@ -54,7 +54,7 @@ public class DashParticle extends Module {
         particls.removeIf(particl -> {
             return particl.timer.hasReached(particl.time);
         });
-        if (mc.player.xOld != mc.player.getX() || mc.player.yOld != mc.player.getY() || mc.player.zOld != mc.player.getZ()) {
+        if (mc.player.xOld != mc.player.getX() ||  mc.player.zOld != mc.player.getZ()) {
 
             // Utils.getVecEntity(mc.player, renderWorldLastEvent.getPartialTicks(), 0);
             for (int i = 0; i < particleCount.getVal(); i++) {
@@ -109,10 +109,10 @@ public class DashParticle extends Module {
                 bufferbuilder.vertex(matrix, endX + 0.2f, endY + 0.2f, 0).color(ColorUtil.r(color2), ColorUtil.g(color2), ColorUtil.b(color2), ColorUtil.a(color2)).uv(1.0F, 1.0F).endVertex();
                 bufferbuilder.vertex(matrix, endX + 0.2f, startY - 0.2f, 0).color(ColorUtil.r(color2), ColorUtil.g(color2), ColorUtil.b(color2), ColorUtil.a(color2)).uv(1.0F, 0.0F).endVertex();
 
-                bufferbuilder.vertex(matrix, startX, startY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.a(color)).uv(0.0F, 0.0F).endVertex();
-                bufferbuilder.vertex(matrix, startX, endY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.a(color)).uv(0.0F, 1.0F).endVertex();
-                bufferbuilder.vertex(matrix, endX, endY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.a(color)).uv(1.0F, 1.0F).endVertex();
-                bufferbuilder.vertex(matrix, endX, startY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.a(color)).uv(1.0F, 0.0F).endVertex();
+               // bufferbuilder.vertex(matrix, startX, startY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.b.a(color)).uv(0.0F, 0.0F).endVertex();
+               // bufferbuilder.vertex(matrix, startX, endY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.b.a(color)).uv(0.0F, 1.0F).endVertex();
+               // bufferbuilder.vertex(matrix, endX, endY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.b.a(color)).uv(1.0F, 1.0F).endVertex();
+               // bufferbuilder.vertex(matrix, endX, startY, 0).color(ColorUtil.r(color), ColorUtil.g(color), ColorUtil.b(color), ColorUtil.b.a(color)).uv(1.0F, 0.0F).endVertex();
                 GL46.glDepthMask(false);
                 GL46.glDisable(2884);
                 GL46.glEnable(3042);
@@ -173,12 +173,11 @@ public class DashParticle extends Module {
             this.color = color;
             this.timer = new TimerUtil();
             this.pos = e.position();
-            float add = MathUtils.getBps(e) > 1?0: (float) (MathUtils.getBps(e) * 4);
-            add = MathUtils.clamp(add,2,99);
            // this.pos2 = new Vector3d(smoothPos((float) e.getX(), (float) e.xOld),smoothPos((float) e.getY(), (float) e.yOld),smoothPos((float) e.getZ(), (float) e.zOld));
-           this.pos2 = e.getPosition((e.isOnGround() ? 4 : 2)+add);
-
-
+           this.pos2 = e.getPosition((2));
+        }
+        public Vector3d getPrePos(Entity entity,float prev){
+return null;
         }
         public float smoothPos(float pos,float oldPos){
             float prev = (float) (pos-oldPos);

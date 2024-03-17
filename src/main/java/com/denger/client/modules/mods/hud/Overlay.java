@@ -30,11 +30,11 @@ public class Overlay extends Module {
         float a = cycleAnimation.getAnim();
         if (e.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             BloomUtil.registerRenderCall(()->{
-                RenderUtil.drawImageId(e.getMatrixStack(), Utils.getTextureId(ImageManager.getResource("extazyy.png")),a, 10, 80, 80, getInstance.theme.getColor(100));
+               // RenderUtil.drawImageId(e.getMatrixStack(), Utils.getTextureId(ImageManager.getResource("extazyy.png")),b.a, 10, 80, 80, getInstance.theme.getColor(100));
             });
             BloomUtil.draw(6);
             BlurUtil.registerRenderCall(()->{
-                RenderUtil.drawImageId(e.getMatrixStack(), Utils.getTextureId(ImageManager.getResource("extazyy.png")),a, 10, 80, 80, getInstance.theme.getColor(100));
+               // RenderUtil.drawImageId(e.getMatrixStack(), Utils.getTextureId(ImageManager.getResource("extazyy.png")),b.a, 10, 80, 80, getInstance.theme.getColor(100));
             });
             BlurUtil.draw(6);
 

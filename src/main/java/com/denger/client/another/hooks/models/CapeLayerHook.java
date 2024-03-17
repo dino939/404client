@@ -5,6 +5,8 @@ import com.denger.client.another.resource.ImageManager;
 import com.denger.client.modules.mods.render.CustomCape;
 import com.denger.client.utils.Utils;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -28,7 +30,7 @@ public class CapeLayerHook extends CapeLayer {
     public CapeLayerHook(IEntityRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> p_i50950_1_) {
         super(p_i50950_1_);
     }
-    Gif gif = new Gif(Utils.getResource("texture/gifs/cape.gif"));
+    Gif gif = new Gif(Utils.getResource("texture/gifs/Comp.gif"),40);
     @Override
     public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, AbstractClientPlayerEntity p_225628_4_, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
         if (CustomCape.enable && p_225628_4_ == mc.player) {
@@ -36,6 +38,7 @@ public class CapeLayerHook extends CapeLayer {
                 ItemStack itemstack = p_225628_4_.getItemBySlot(EquipmentSlotType.CHEST);
                 if (itemstack.getItem() != Items.ELYTRA) {
                     p_225628_1_.pushPose();
+
                     p_225628_1_.translate(0.0D, 0.0D, 0.125D);
                     double d0 = MathHelper.lerp(p_225628_7_, p_225628_4_.xCloakO, p_225628_4_.xCloak) - MathHelper.lerp(p_225628_7_, p_225628_4_.xo, p_225628_4_.getX());
                     double d1 = MathHelper.lerp(p_225628_7_, p_225628_4_.yCloakO, p_225628_4_.yCloak) - MathHelper.lerp(p_225628_7_, p_225628_4_.yo, p_225628_4_.getY());
@@ -64,6 +67,7 @@ public class CapeLayerHook extends CapeLayer {
                     p_225628_1_.mulPose(Vector3f.YP.rotationDegrees(180.0F - f3 / 2.0F));
                     IVertexBuilder ivertexbuilder = p_225628_2_.getBuffer(RenderType.entitySolid(getCape()));
                     this.getParentModel().renderCloak(p_225628_1_, ivertexbuilder, p_225628_3_, OverlayTexture.NO_OVERLAY);
+
                     p_225628_1_.popPose();
                 }
             }
@@ -77,7 +81,7 @@ public class CapeLayerHook extends CapeLayer {
             case "аниме":
                 return ImageManager.getResource("cape2.png");
             case "гиф":
-                return gif.getResource();
+                return gif.getCurrentFrame(2);
             default:
                 return ImageManager.getResource("cape.png" );
         }

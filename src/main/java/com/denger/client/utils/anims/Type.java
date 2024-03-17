@@ -4,5 +4,6 @@ public enum Type {
     LERP,
     HARP,
     SIMPLE,
-    FAST;
+    FAST,
+    EaseBackIn;
 }

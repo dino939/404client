@@ -18,44 +18,53 @@ public class MathUtils {
 
     public static int scale = 2;
     private static final float EPSILON = 1e-6f;
-    public static double getNormalDouble(double d, int numberAfterZopyataya) {
-        return (new BigDecimal(d)).setScale(numberAfterZopyataya, RoundingMode.HALF_EVEN).doubleValue();
-    }
+    private static final long startTime = System.currentTimeMillis();
 
     public static double deltaTime() {
-        float fps = Integer.parseInt(Minecraft.getInstance().fpsString.split(" ")[0]);
+        float fps = 60;
+        try {
+            fps = Integer.parseInt(Minecraft.getInstance().fpsString.split(" ")[0]);
+        }catch (Exception ignore){}
         return fps > 0 ? (1.0000 / fps) : 1;
     }
 
     public static float fast(float end, float start, float multiple) {
         return (1 - MathUtils.clamp((float) (deltaTime() * multiple), 0, 1)) * end + MathUtils.clamp((float) (deltaTime() * multiple), 0, 1) * start;
     }
-    public static double getNormalDouble(double d) {
-        return (new BigDecimal(d)).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
-    }
-    public static double sq(double a) {
-        return a * a;
-    }
 
-
+    public static float upgradeClamp(float def, float min, float max) {
+        return Math.min(Math.max(def, min), max);
+    }
     public static boolean approximatelyEqual(float a, float b) {
         return Math.abs(a - b) < EPSILON;
     }
 
-    public static double cathet(double h, double a) {
-        return Math.sqrt(sq(h) - sq(a));
+    public static double sqrt(double var1, double var3) {
+        return Math.sqrt(Math.pow(var1, 2.0) + Math.pow(var3, 2.0));
     }
-
     public static int calc(int value) {
         MainWindow mainWindow = mc.getWindow();
         return (int) (value * mainWindow.getGuiScale() / scale);
     }
+
     public static double getDifferenceOf(final double num1, final double num2) {
         return (Math.abs(num2 - num1) > Math.abs(num1 - num2)) ? Math.abs(num1 - num2) : Math.abs(num2 - num1);
     }
-    public static double easeInOutQuad(double x, int step) {
-        return x < 0.5 ? 2.0 * x * x : 1.0 - Math.pow(-2.0 * x + 2.0, step) / 2.0;
+
+    public static float interpolate(float a, float a1, float result1, float a2, float result2) {
+        return result1 + ((a - a1) * (result2 - result1)) / (a2 - a1);
     }
+
+    public static float interpolate3(float x, float x1, float y1, float x2, float y2, float x3, float y3) {
+        float result1 = interpolate(x, x1, y1, x2, y2);
+        float result2 = interpolate(x, x2, y2, x3, y3);
+        return interpolate(x, x1, result1, x3, result2);
+    }
+
+    public static double easeInOutQuad(double value) {
+        return value < 0.5 ? 2.0 * value * value : 1.0 - Math.pow(-2.0 * value + 2.0, 2.0) / 2.0;
+    }
+
     public static float roundToDecimal(float value, int decimalPlaces) {
         if (decimalPlaces < 0) {
             throw new IllegalArgumentException("Decimal places must be non-negative");
@@ -64,11 +73,17 @@ public class MathUtils {
         double multiplier = Math.pow(10, decimalPlaces);
         return (float) (Math.round(value * multiplier) / multiplier);
     }
+
+    public static float getTimeSpeedValue(float speed, int num) {
+        return ((float) (System.currentTimeMillis() - startTime) / num * speed) % num;
+    }
+
     public static double getDistanceXZ(Vector3d vector1, Vector3d vector2) {
-         double distanceX = vector2.x - vector1.x;
+        double distanceX = vector2.x - vector1.x;
         double distanceZ = vector2.z - vector1.z;
         return Math.sqrt(distanceX * distanceX + distanceZ * distanceZ);
     }
+
     public float calc(float value) {
         MainWindow mainWindow = mc.getWindow();
         return value * (int) (value * mainWindow.getGuiScale() / scale);
@@ -100,7 +115,7 @@ public class MathUtils {
 
     public static float calcPercentage(float value, float min, float max) {
         if (value < min || value > max) {
-            value = clamp(value,min,max);
+            value = clamp(value, min, max);
         }
 
         float range = max - min;
@@ -156,19 +171,17 @@ public class MathUtils {
         return Math.random() * (max - min) + min;
     }
 
-    public static int randomize(int max, int min) {
-        return -min + (int) (Math.random() * (double) (max - -min + 1));
-    }
-
     public static float randomFloat(float f2, float f3) {
         if (f2 == f3 || f3 - f2 <= 0.0f) {
             return f2;
         }
         return (float) ((double) f2 + (double) (f3 - f2) * Math.random());
     }
+
     public static int randomInt(int min, int max) {
-      return random.nextInt(max - min) + min;
+        return random.nextInt(max - min) + min;
     }
+
     public static double getIncremental(double val, double inc) {
         double one = 1.0 / inc;
         return (double) Math.round(val * one) / one;
@@ -178,56 +191,6 @@ public class MathUtils {
         return variable == Math.floor(variable) && !Double.isInfinite(variable);
     }
 
-    public static float[] constrainAngle(float[] vector) {
-        vector[0] = vector[0] % 360.0f;
-        vector[1] = vector[1] % 360.0f;
-        while (vector[0] <= -180.0f) {
-            vector[0] = vector[0] + 360.0f;
-        }
-        while (vector[1] <= -180.0f) {
-            vector[1] = vector[1] + 360.0f;
-        }
-        while (vector[0] > 180.0f) {
-            vector[0] = vector[0] - 360.0f;
-        }
-        while (vector[1] > 180.0f) {
-            vector[1] = vector[1] - 360.0f;
-        }
-        return vector;
-    }
-
-    public static double randomize(double min, double max) {
-        double shifted;
-        Random random = new Random();
-        double range = max - min;
-        double scaled = random.nextDouble() * range;
-        if (scaled > max) {
-            scaled = max;
-        }
-        if ((shifted = scaled + min) > max) {
-            shifted = max;
-        }
-        return shifted;
-    }
-
-
-    public static float percentLerp(float initialValue, float finalValue, float speed, float acceleration) {
-
-        float speedloc = MathUtils.calculateValue(acceleration,0,speed);
-
-
-        return lerp(initialValue, finalValue, speedloc);
-    }
-
-    public static float harmonic(float startValue, float endValue, float speed) {
-
-        float to = startValue + speed/2;
-        if (to > endValue) {
-            to = endValue;
-        }
-
-        return to;
-    }
     public static float lerp(float a, float b, float f) {
         return a + f * (b - a);
     }
@@ -253,11 +216,8 @@ public class MathUtils {
         return new BigDecimal(floored, MathContext.DECIMAL64).stripTrailingZeros().doubleValue();
     }
 
-
-
     public static float lerpRandom(float a, float b, float f, float random) {
-        Random randomz = new Random();
-        float randomFactor = randomz.nextFloat() * random;
+        float randomFactor = MathUtils.random.nextFloat() * random;
         return a + (f * randomFactor) * (b - a);
     }
 

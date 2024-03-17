@@ -11,6 +11,7 @@ import com.denger.client.another.models.PetManager;
 import com.denger.client.another.networkutills.EventsHandlerUtil;
 import com.denger.client.another.resource.GifManager;
 import com.denger.client.another.resource.ImageManager;
+import com.denger.client.another.retransform.TransformManager;
 import com.denger.client.another.settings.SettingManager;
 import com.denger.client.another.sound.SoundManager;
 import com.denger.client.modules.another.RegisterModule;
@@ -28,11 +29,12 @@ public class Main {
     public Timer timer;
     public Execute execute;
     private RegisterModule registerModule;
-    private ImageManager imageManager;
     private SettingManager settingManager;
     private MainScreen mainScreen;
     private SoundManager soundManager;
     private FriendManager friendManager;
+    private TransformManager transformManager;
+    private long initTime;
     public boolean render = true;
     public boolean beta;
     public boolean panic = false;
@@ -44,8 +46,10 @@ public class Main {
     private Events events;
     private ConfigManager configManager;
     public static boolean optifine = false;
+
     public void init() {
         getInstance = this;
+        initTime = System.currentTimeMillis();
         execute = new Execute(this);
         eventManager = new EventManagerForge(execute);
         fontManager = new FontManager();
@@ -59,6 +63,7 @@ public class Main {
         execute.hook();
         eventManager.register(events);
         eventManager.register(new EventsHandlerUtil());
+        transformManager = new TransformManager();
         execute.start();
     }
 
@@ -75,7 +80,6 @@ public class Main {
         execute.panic();
         registerModule.panic();
         execute = null;
-        imageManager = null;
         friendManager = null;
         fontManager = null;
         soundManager = null;
@@ -90,40 +94,29 @@ public class Main {
     public SettingManager getSettingManager() {
         return settingManager;
     }
-
     public RegisterModule getRegisterModule() {
         return registerModule;
     }
-
     public MainScreen getMainScreen() {
         return mainScreen;
     }
-
-    public ImageManager getNativeManager() {
-        return imageManager;
-    }
-
     public SoundManager getSoundManager() {
         return soundManager;
     }
-
     public FriendManager getFriendManager() {
         return friendManager;
     }
-
     public Execute getExecute() {
         return execute;
     }
-
     public PetManager getPetManager() {
         return petManager;
     }
-
-    public GifManager getGifManager() {
-        return gifManager;
-    }
-
     public ConfigManager getConfigManager() {
         return configManager;
     }
+    public long getInitTime() {
+        return initTime;
+    }
+
 }

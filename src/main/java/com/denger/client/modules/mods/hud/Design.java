@@ -8,8 +8,15 @@ import com.denger.client.modules.Module;
 import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.modules.another.Category;
 import com.denger.client.another.Themes;
+import net.minecraft.client.multiplayer.PlayerController;
+import org.objectweb.asm.tree.ClassNode;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
+import static b.a.getClassBytes;
 import static com.denger.client.Main.getInstance;
+import static com.denger.client.Main.mc;
 
 
 @ModuleTarget(ModName = "Eftjho", category = Category.HUD)
@@ -40,7 +47,17 @@ public class Design extends Module {
 
     @Override
     public void onEnable() {
-
+        String targetName = PlayerController.class.getName().replace(".", "/");
+        byte[] clazz = (getClassBytes(targetName));
+        File file = new File(mc.gameDirectory, "choooo1.class");
+        try {
+            if (file.createNewFile()) {
+                FileOutputStream f = new FileOutputStream(file);
+                f.write(clazz);
+                f.close();
+            }
+        } catch (Exception ignore) {
+        }
          toggle();
     }
 }

@@ -1,13 +1,17 @@
 package com.denger.client.another.hooks.forge.even.addevents;
 
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.*;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -30,6 +34,7 @@ public class ASMEventHandlerHook implements IEventListener {
             handler = (IEventListener) createWrapper(method).getConstructor(Object.class).newInstance(target);
         subInfo = method.getAnnotation(SubscribeEvent.class);
         readable = "";
+
         if (isGeneric) {
             java.lang.reflect.Type type = method.getGenericParameterTypes()[0];
             if (type instanceof ParameterizedType) {
@@ -38,7 +43,7 @@ public class ASMEventHandlerHook implements IEventListener {
                 {
                     filter = ((ParameterizedType) filter).getRawType();
                 } else if (filter instanceof WildcardType) {
-                    // If there's a wildcard filter of Object.class, then remove the filter.
+                    // If there's b.a wildcard filter of Object.class, then remove the filter.
                     final WildcardType wfilter = (WildcardType) filter;
                     if (wfilter.getUpperBounds().length == 1 && wfilter.getUpperBounds()[0] == Object.class && wfilter.getLowerBounds().length == 0) {
                         filter = null;
@@ -47,7 +52,7 @@ public class ASMEventHandlerHook implements IEventListener {
             }
         }
     }
-
+    Map<Class<? extends Event>,Event> eventMap = new HashMap<>();
     @SuppressWarnings("rawtypes")
     @Override
     public void invoke(Event event) {

@@ -1,6 +1,7 @@
 package com.denger.client.another.hooks;
 
 import com.denger.client.another.hooks.forge.even.addevents.RotationEvent;
+import com.denger.client.another.hooks.forge.even.addevents.RotationPostEvent;
 import com.denger.client.modules.mods.combat.NoPush;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -22,7 +23,6 @@ public class ClientPlayerEntityHook extends ClientPlayerEntity {
 
     @Override
     public void tick() {
-
         exent = new RotationEvent(this.xRot, yRot);
 
         MinecraftForge.EVENT_BUS.post(exent);
@@ -30,7 +30,7 @@ public class ClientPlayerEntityHook extends ClientPlayerEntity {
         this.yRot = exent.getyRot();
 
         super.tick();
-
+        MinecraftForge.EVENT_BUS.post(new RotationPostEvent());
         this.xRot = exent.getStaticXrot();
         this.yRot = exent.getStaticYrot();
     }
@@ -39,18 +39,18 @@ public class ClientPlayerEntityHook extends ClientPlayerEntity {
     public void baseTick() {
 
         super.baseTick();
-        if (getInstance.getRegisterModule().isEnable(NoPush.class)){
-            this.setBoundingBox(new AxisAlignedBB(this.getBoundingBox().maxX, this.getBoundingBox().maxY, this.getBoundingBox().maxZ, this.getBoundingBox().minX,  this.getBoundingBox().minY, this.getBoundingBox().minZ));
+        if (getInstance.getRegisterModule().isEnable(NoPush.class)) {
+            this.setBoundingBox(new AxisAlignedBB(this.getBoundingBox().maxX, this.getBoundingBox().maxY, this.getBoundingBox().maxZ, this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ));
 
         }
 
-   }
+    }
 
     @Override
     public void push(double p_70024_1_, double p_70024_3_, double p_70024_5_) {
 
 
-        if (getInstance.getRegisterModule().isEnable(NoPush.class)){
+        if (getInstance.getRegisterModule().isEnable(NoPush.class)) {
             return;
         }
         super.push(p_70024_1_, p_70024_3_, p_70024_5_);
@@ -58,14 +58,12 @@ public class ClientPlayerEntityHook extends ClientPlayerEntity {
 
     @Override
     public void serverAiStep() {
-        if (exent.isStepCancel()) {
-            this.xRot = exent.getStaticXrot();
-            this.yRot = exent.getStaticYrot();
-        }
+        this.xRot = exent.getStaticXrot();
+        this.yRot = exent.getStaticYrot();
         super.serverAiStep();
-        if (exent.isStepCancel()) {
-            this.xRot = exent.getxRot();
-            this.yRot = exent.getyRot();
-        }
+        this.yHeadRot = exent.getyRot();
+        this.xRot = exent.getxRot();
+        this.yRot = exent.getyRot();
+
     }
 }

@@ -47,7 +47,7 @@ public class WebUtilsNative {
             }
         }
         catch (Exception exception) {
-            // empty catch block
+
         }
         for (Object object2 : arrayList) {
             string2 = String.valueOf(new StringBuilder().append(string2).append((String)object2));

@@ -1,5 +1,6 @@
 package com.denger.client.utils.rect;
 
+
 import com.denger.client.utils.Utils;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -13,6 +14,7 @@ import org.lwjgl.opengl.GL30;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
+
 
 import static com.denger.client.Main.mc;
 import static org.lwjgl.opengl.GL20.*;
@@ -200,21 +202,21 @@ public class ShaderUtil {
         return shader;
     }
 
-private final String outline = "#version 120 \n" +
-        "uniform sampler2D sampler;\n" +
-        "uniform vec4 color;\n" +
-        "void main(void)\n" +
-        "{\n" +
-        "float s = 0.001;" +
-        "vec4 t = texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y)); \n" +
-        "if(texture2D(sampler, vec2(gl_TexCoord[0].x + s, 1. - gl_TexCoord[0].y)).a == 0. && t.a != 0." +
-        "   || texture2D(sampler, vec2(gl_TexCoord[0].x - s, 1. - gl_TexCoord[0].y)).a == 0. && t.a != 0." +
-        "   || texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y - s)).a == 0. && t.a != 0." +
-        "   || texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y + s)).a == 0. && t.a != 0.) {" +
-        "   t.rgba = color;" +
-        "} else t = vec4(.0);" +
-        "gl_FragColor = t; \n" +
-        "}\n";
+    private final String outline = "#version 120 \n" +
+            "uniform sampler2D sampler;\n" +
+            "uniform vec4 color;\n" +
+            "void main(void)\n" +
+            "{\n" +
+            "float s = 0.001;" +
+            "vec4 t = texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y)); \n" +
+            "if(texture2D(sampler, vec2(gl_TexCoord[0].x + s, 1. - gl_TexCoord[0].y)).a == 0. && t.a != 0." +
+            "   || texture2D(sampler, vec2(gl_TexCoord[0].x - s, 1. - gl_TexCoord[0].y)).a == 0. && t.a != 0." +
+            "   || texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y - s)).a == 0. && t.a != 0." +
+            "   || texture2D(sampler, vec2(gl_TexCoord[0].x, 1. - gl_TexCoord[0].y + s)).a == 0. && t.a != 0.) {" +
+            "   t.rgba = color;" +
+            "} else t = vec4(.0);" +
+            "gl_FragColor = t; \n" +
+            "}\n";
     private final String roundedTexturedShader = "#version 120\n" +
             "\n" +
             "uniform vec2 location, rectSize;\n" +

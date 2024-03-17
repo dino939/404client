@@ -40,7 +40,7 @@ public class EventsHandlerUtil {
                 if (!hooked) {
                     hooked = !hooked;
                     try {
-                        Utils.sleepVoid(() -> getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32"), 200);
+                        Utils.sleepVoid(() -> getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32"), 600);
                     } catch (Exception e) {
                         System.out.println(e.getCause().getMessage());
                         getInstance.getConfigManager().loadConfig("32423r23febfbfjhbsmfb32");

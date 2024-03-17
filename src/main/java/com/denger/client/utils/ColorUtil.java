@@ -13,6 +13,7 @@ public class ColorUtil {
     public static Color swapAlpha(final Color color, final int alpha) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), MathHelper.clamp(alpha, 0, 255));
     }
+
     public static Color swapAlpha(Color color, float alpha) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
     }
@@ -41,24 +42,34 @@ public class ColorUtil {
     public static float r(int color) {
         return (float) (color >> 16 & 255) / 255.0F;
     }
-
     public static float g(int color) {
         return (float) (color >> 8 & 255) / 255.0F;
     }
-
     public static float b(int color) {
         return (float) (color & 255) / 255.0F;
     }
-
     public static float a(int color) {
         return (float) (color >> 24 & 255) / 255.0F;
+    }
+    public static int getRed(int color) {
+        return color >> 16 & 255;
+    }
+    public static int getGreen(int color) {
+        return color >> 8 & 255;
+    }
+    public static int getBlue(int color) {
+        return color & 255;
+    }
+    public static int getAlpha(int color) {
+        return color >> 24 & 255;
     }
 
     public static float[] rgb(int color) {
         return new float[]{(color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, (color >> 24 & 0xFF) / 255.0F};
     }
+
     public static float[] rgba(int color) {
-        return new float[]{(color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, (color >> 24 & 0xFF) / 255.0F,(color >> 24 & 255) / 255.0F};
+        return new float[]{(color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, (color >> 24 & 0xFF) / 255.0F, (color >> 24 & 255) / 255.0F};
     }
 
     public static int getColor(int red, int green, int blue) {
@@ -74,28 +85,24 @@ public class ColorUtil {
     }
 
     public static int getRainbow() {
-        int drgb;
         int color;
-        int argb;
         float[] hue = new float[]{(float) (System.currentTimeMillis() % 11520L) / 11520.0f};
         int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
         int red = rgb >> 16 & 255;
         int green = rgb >> 8 & 255;
         int blue = rgb & 255;
-        color = argb = ColorUtil.toRGBA(red, green, blue, 255);
+        color = ColorUtil.toRGBA(red, green, blue, 255);
         return color;
     }
 
     public static int getRainbow2() {
-        int drgb;
         int color;
-        int argb;
         float[] hue = new float[]{(float) (System.currentTimeMillis() % 11520L) / 11520.0f};
         int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
         int red = rgb >> 16 & 255;
         int green = rgb >> 8 & 255;
         int blue = rgb & 255;
-        color = argb = ColorUtil.toRGBA(red - 15, green - 15, blue - 15, 255);
+        color = toRGBA(red - 15, green - 15, blue - 15, 255);
         return color;
     }
 

@@ -5,7 +5,6 @@ import net.minecraftforge.eventbus.api.Event;
 public class RotationEvent extends Event {
     private float xRot, yRot;
     private final float staticXrot, staticYrot;
-    private boolean stepCancel = true;
     public RotationEvent(float xRot, float yRot) {
         this.staticXrot = xRot;
         this.staticYrot = yRot;
@@ -13,9 +12,6 @@ public class RotationEvent extends Event {
         this.yRot = yRot;
     }
 
-    public void setStepCancel(boolean stepCancel) {
-        this.stepCancel = stepCancel;
-    }
 
     public float getxRot() {
         return xRot;
@@ -33,9 +29,6 @@ public class RotationEvent extends Event {
         this.yRot = yRot;
     }
 
-    public boolean isStepCancel() {
-        return stepCancel;
-    }
 
     public float getStaticXrot() {
         return staticXrot;

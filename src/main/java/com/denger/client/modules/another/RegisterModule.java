@@ -71,7 +71,7 @@ public class RegisterModule {
                 AntiAfk.class,
                 Scaffold.class,
                 HitBubble.class,
-                Aura.class,
+              //  Aura.class,
                 TargetEsp.class,
                 AutoGapple.class,
                 NoPacket.class,
@@ -84,6 +84,7 @@ public class RegisterModule {
                 CustomHand.class,
                 NoInteract.class,
                 Timer.class
+              //  KillAura.class
         );
         if (Init.UID().equals("2")) {
             addModules(

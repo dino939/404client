@@ -78,7 +78,7 @@ public class EventManagerForge {
             throw new IllegalArgumentException(
                     "Method " + method + " has @SubscribeEvent annotation. " +
                             "It has " + parameterTypes.length + " arguments, " +
-                            "but event handler methods require a single argument only."
+                            "but event handler methods require b.a single argument only."
             );
         }
 

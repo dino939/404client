@@ -10,6 +10,7 @@ import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
 import com.denger.client.utils.ColorUtil;
 import com.denger.client.utils.MathUtils;
+import com.denger.client.utils.TimerUtil;
 import com.denger.client.utils.rect.RenderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -44,12 +45,18 @@ public class HitBubble extends Module {
     @SettingTarget(name = "Сохранение камеры")
     BoolSetting rotationC = new BoolSetting().setBol(true);
     @SettingTarget(name = "Длительность")
-    FloatSetting speed = new FloatSetting().setMin(1000).setMax(5000).setVal(2500).seType("ms");
+    FloatSetting speed = new FloatSetting().setMin(1000).setMax(5000).setVal(2900).seType("ms");
     private ResourceLocation bubble;
     ArrayList<Bubble> bubbles = new ArrayList<>();
+    TimerUtil cooldown = new TimerUtil();
 
     @SubscribeEvent
     public void onAttack(AttackEntityEvent event) {
+        if (cooldown.hasReached(15)){
+            cooldown.reset();
+        }else {
+            return;
+        }
         assert mc.player != null;
         if (event.getPlayer() == mc.player) {
             bubbles.add(new Bubble(new Vector3d(event.getTarget().getX(), event.getTarget().getY(), event.getTarget().getZ()), (float) (event.getTarget().getBbHeight() / 1.6), mc.gameRenderer.getMainCamera().rotation().copy(), getInstance.theme.getC().getRGB()));
@@ -81,7 +88,6 @@ public class HitBubble extends Module {
 
 
             matrixStack.translate(0, 0, 0.5f);
-            BufferBuilder buffer = Tessellator.getInstance().getBuilder();
 
 
             if (bubbleObj.getLifeProgers() <= 0.5f) {
@@ -94,12 +100,12 @@ public class HitBubble extends Module {
             bubbleObj.color = ColorUtil.swapAlpha(bubbleObj.color, MathUtils.clamp((1 - bubbleObj.getLifeProgers()), 0, 1) * 255);
             mc.getTextureManager().bind(getBubbleTex());
             RenderUtil.scale(matrixStack, -5, -5, 10, 10, bubbleObj.anim, () -> {
-                RenderUtil.rotate(matrixStack, -5, -5, 10, 10, rotationOwn.getState() ? bubbleObj.getLifeProgers() * 360 : 0, () -> {
-                    buffer.begin(GL20.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
-                    buffer.vertex(matrixStack.last().pose(), -5, -5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), ColorUtil.a(bubbleObj.color)).uv(0.0F, 0.0F).endVertex();
-                    buffer.vertex(matrixStack.last().pose(), -5, 5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), ColorUtil.a(bubbleObj.color)).uv(0.0F, 1.0F).endVertex();
-                    buffer.vertex(matrixStack.last().pose(), 5, 5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), ColorUtil.a(bubbleObj.color)).uv(1.0F, 1.0F).endVertex();
-                    buffer.vertex(matrixStack.last().pose(), 5, -5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), ColorUtil.a(bubbleObj.color)).uv(1.0F, 0.0F).endVertex();
+                RenderUtil.rotate(matrixStack, -5, -5, 10, 10, rotationOwn.getState() ? bubbleObj.getLifeProgers() * -(360*speed.getVal()/500) : 0, () -> {
+                    bufferbuilder.begin(GL20.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+                    bufferbuilder.vertex(matrixStack.last().pose(), -5, -5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), bubbleObj.anim).uv(0.0F, 0.0F).endVertex();
+                    bufferbuilder.vertex(matrixStack.last().pose(), -5, 5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), bubbleObj.anim).uv(0.0F, 1.0F).endVertex();
+                    bufferbuilder.vertex(matrixStack.last().pose(), 5, 5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), bubbleObj.anim).uv(1.0F, 1.0F).endVertex();
+                    bufferbuilder.vertex(matrixStack.last().pose(), 5, -5, 0).color(ColorUtil.r(bubbleObj.color), ColorUtil.g(bubbleObj.color), ColorUtil.b(bubbleObj.color), bubbleObj.anim).uv(1.0F, 0.0F).endVertex();
 
                     GL46.glDepthMask(false);
                     GL46.glDisable(2884);
@@ -107,7 +113,7 @@ public class HitBubble extends Module {
                     GL46.glDisable(3008);
                     GL46.glEnable(GL46.GL_BLEND);
                     GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GL46.GL_ONE);
-                    Tessellator.getInstance().end();
+                    tessellator.end();
 
                     GL46.glBlendFunc(GL46.GL_SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
                     GL46.glDisable(GL46.GL_BLEND);

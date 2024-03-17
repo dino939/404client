@@ -4,6 +4,7 @@ import com.denger.client.another.hooks.forge.even.addevents.WorldUpdate;
 import com.denger.client.modules.Module;
 import com.denger.client.modules.another.Category;
 import com.denger.client.modules.another.ModuleTarget;
+import com.denger.client.utils.CombatUtil;
 import com.denger.client.utils.EntityUtil;
 import com.denger.client.utils.MathUtils;
 import com.denger.client.utils.Utils;
@@ -60,7 +61,7 @@ public class SexAura extends Module {
             return false;
         assert getMe() != null;
         float[] rots = rotations(entity);
-        return getMe().canSee(entity) && !entity.isInWater() && (!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative()) /*&& !AntiBot.entityIsBotAdded(entity)*/ && SexAura.getMe().position().distanceTo(Utils.pickCustom(range + 2, rots[1], rots[0], false).getLocation()) <= range;
+        return getMe().canSee(entity) && !entity.isInWater() && (!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative()) /*&& !AntiBot.entityIsBotAdded(entity)*/ && SexAura.getMe().position().distanceTo(CombatUtil.pickCustom(range + 2, rots[1], rots[0], false).getLocation()) <= range;
     }
 
     public static float[] rotations(Entity entity) {
